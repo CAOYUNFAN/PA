@@ -39,9 +39,9 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_help(char *args);
-static int cmd_si(char *args);//1
-static int cmd_info(char *args);//r
-static int cmd_x(char *args);//x
+static int cmd_si(char *args);
+static int cmd_info(char *args);
+static int cmd_x(char *args);
 static int cmd_p(char *args);
 static int cmd_w(char *args);
 static int cmd_d(char *args);
@@ -106,6 +106,15 @@ static int cmd_info(char *args){
 }
 
 static int cmd_x(char *args){
+	int n,ex;
+	extern word_t vaddr_read(vaddr_t addr,int len);
+	sscanf(args,"%d 0x%x",&n,&ex);
+	for(int k=1,i=0;k<(n+3)/4;++k){
+		printf("0x%x:",ex+i);
+		for(int j=0;j<4&&i<n*4;++j,i+=4)
+			printf("\t0x%08x", vaddr_read( ex+i , 4 ));
+		printf("\n");
+	}
 	return 0;
 }
 
@@ -126,12 +135,12 @@ void sdb_set_batch_mode() {
 }
 
 void sdb_mainloop() {
-  if (is_batch_mode) {
+   if (is_batch_mode) {
     cmd_c(NULL);
     return;
   }
 
-  for (char *str; (str = rl_gets()) != NULL; ) {
+   for (char *str; (str = rl_gets()) != NULL; ) {
     char *str_end = str + strlen(str);
 
     /* extract the first token as the command */
