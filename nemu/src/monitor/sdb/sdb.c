@@ -39,6 +39,12 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_help(char *args);
+static int cmd_si(char *args);//1
+static int cmd_info(char *args);//r
+static int cmd_x(char *args);//x
+static int cmd_p(char *args);
+static int cmd_w(char *args);
+static int cmd_d(char *args);
 
 static struct {
   const char *name;
@@ -49,13 +55,19 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
 
+  {"si","Let the program execute N instructions in a single step and pause execution, when N is not given, it defaults to 1",cmd_si},
+  {"info"," r :print register status; w :print monitoring point information",cmd_info},
+  {"x","Find the value of expression expr and take the result as the starting memeory address,which outputs n consecutive 4 bytes in hexadecimal form",cmd_x},
+  {"p","Find the value of expression expr",cmd_p},
+  {"w","When the value of expression expr changes, program execution is suspended",cmd_w},
+  {"d","Delete the monitoring point with sequence number n",cmd_d}
   /* TODO: Add more commands */
 
 };
 
 #define NR_CMD ARRLEN(cmd_table)
 
-static int cmd_help(char *args) {
+ static int cmd_help(char *args) {
   /* extract the first argument */
   char *arg = strtok(NULL, " ");
   int i;
@@ -76,6 +88,37 @@ static int cmd_help(char *args) {
     printf("Unknown command '%s'\n", arg);
   }
   return 0;
+}
+
+static int cmd_si(char *args){
+	char *temp=strtok(args," ");
+	int x=(temp==NULL)?1:atol(temp);
+	cpu_exec(x);
+	return 0;
+}
+
+static int cmd_info(char *args){
+	if(*args=='r') isa_reg_display();
+	else{
+
+	}
+	return 0;
+}
+
+static int cmd_x(char *args){
+	return 0;
+}
+
+static int cmd_p(char *args){
+	return 0;
+}
+
+static int cmd_w(char *args){
+	return 0;
+}
+
+static int cmd_d(char *args){
+	return 0;
 }
 
 void sdb_set_batch_mode() {
