@@ -109,12 +109,8 @@ static int cmd_x(char *args){
 	int n,ex;
 	extern word_t vaddr_read(vaddr_t addr,int len);
 	sscanf(args,"%d 0x%x",&n,&ex);
-	for(int k=1,i=0;k<(n+3)/4;++k){
-		printf("0x%x:",ex+i);
-		for(int j=0;j<4&&i<n*4;++j,i+=4)
-			printf("\t0x%08x", vaddr_read( ex+i , 4 ));
-		printf("\n");
-	}
+	for(int i=0,j=ex;i<n;++i,j+=4)
+		printf("0x%x:\t0x%x\n",j,vaddr_read(j,4));
 	return 0;
 }
 
