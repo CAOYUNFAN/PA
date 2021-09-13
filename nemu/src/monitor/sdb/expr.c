@@ -9,7 +9,7 @@ enum {
   TK_NOTYPE = 256, TK_EQ,
 
   /* TODO: Add more token types */
-  TK_NUM,
+  TK_NUM,TK_NEGATIVE,TK_POSITIVE,TK_HEXNUM,TK_REG
 };
 
 static struct rule {
@@ -81,7 +81,7 @@ static bool make_token(char *e) {
 
         position += substr_len;
 
-        /* TODO: Now a new token is recognized with rules[i]. Add codes
+         /* TODO: Now a new token is recognized with rules[i]. Add codes
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
@@ -108,6 +108,20 @@ static bool make_token(char *e) {
   return true;
 }
 
+void pre_check_parenteses(){
+	int temp=0;
+	for(int i=0;i<nr_token;++i){
+		if(tokens[i].type=='(') ++temp;
+		if(tokens[i].type==')') --temp;
+		if(temp<0) assert(0);
+
+		if(tokens[i].type=='+'||tokens[i].type=='-')
+			if(i==0||(tokens[i-1].type!=TK_NUM && tokens[i-1].type!=TK_HEXNUM && tokens[i-1].type!=TK_REG && tokens[i-1].type!=')')) tokens[i].type=(tokens[i].type=='+')?TK_POSITIVE:TK_NEGATIVE;
+	}
+	return;
+}
+
+word_t eval(int p,int q);
 
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
@@ -116,7 +130,62 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
+  pre_check_parenteses();
+  
+  return eval(0,nr_token-1);
+}
 
-  return 0;
+bool check_parenteses(int p,int q){
+	if(tokens[p].type!='('||tokens[q].type!=')') return 0;
+	int temp=1,i=p+1;
+	while(temp&&i<=q){
+		if(tokens[i].type=='(') ++temp;
+		if(tokens[i].type==')') --temp;
+	}
+	if(i==q) return 1;
+	return 0;
+}
+
+static int get(int x){
+	if(x==TK_POSITIVE||x==TK_NEGATIVE) return 1;
+	if(x=='*'||x=='/') return 2;
+	if(x=='+'||x=='-') return 3;
+
+	return -1;
+}
+
+word_t eval(int p,int q){
+	if(p>q) assert(0);
+ 	if(p==q){
+		word_t ans;
+		sscanf(tokens[p].str,"%d",&ans);
+		return ans;
+	}
+	if(check_parenteses(p,q)){
+		return eval(p+1,q-1);
+	}
+	int pos=q+1,prio=0;
+	for(int i=q;i>=p;--i){
+		if(tokens[i].type==TK_NUM||tokens[i].type==TK_HEXNUM||tokens[i].type==TK_REG) continue;
+		int temp=get(tokens[i].type);
+		if(temp>prio) prio=temp,pos=i;
+	}
+	if(prio==1){
+		while(pos>0&&get(tokens[pos-1].type)==2) --pos;
+		word_t val=eval(pos+1,q);
+		switch(tokens[pos].type){
+			case TK_POSITIVE:return val;
+			case TK_NEGATIVE:return -val;
+			default:assert(0);
+		}
+	}
+	word_t val1=eval(p,pos-1);
+	word_t val2=eval(pos+1,q);
+	switch(tokens[pos].type){
+		case '+': return val1+val2;
+		case '-': return val1-val2;
+		case '*': return val1*val2;
+		case '/': return val1/val2;
+		default:assert(0);
+	}
 }
