@@ -99,7 +99,7 @@ static bool make_token(char *e) {
       }
     }
 
-    if (i == NR_REGEX) {
+     if (i == NR_REGEX) {
       printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
       return false;
     }
@@ -108,12 +108,12 @@ static bool make_token(char *e) {
   return true;
 }
 
-void pre_check_parenteses(){
+void pre_check_parenteses(bool *success){
 	int temp=0;
 	for(int i=0;i<nr_token;++i){
 		if(tokens[i].type=='(') ++temp;
 		if(tokens[i].type==')') --temp;
-		if(temp<0) assert(0);
+		if(temp<0){*success=0;return;}
 
 		if(tokens[i].type=='+'||tokens[i].type=='-')
 			if(i==0||(tokens[i-1].type!=TK_NUM && tokens[i-1].type!=TK_HEXNUM && tokens[i-1].type!=TK_REG && tokens[i-1].type!=')')) tokens[i].type=(tokens[i].type=='+')?TK_POSITIVE:TK_NEGATIVE;
@@ -121,18 +121,28 @@ void pre_check_parenteses(){
 	return;
 }
 
-word_t eval(int p,int q);
+word_t eval(int p,int q,bool *success);
 
 word_t expr(char *e, bool *success) {
+  *success=1;
   if (!make_token(e)) {
     *success = false;
     return 0;
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  pre_check_parenteses();
-  
-  return eval(0,nr_token-1);
+  pre_check_parenteses(success);
+  word_t ans;
+  if(!*success){
+	printf("Unmatched parentheses!\n");
+	return 0;
+  }
+  ans=eval(0,nr_token-1,success);
+  if(*success) return ans;
+  else{
+	printf("There exists mathematical errors. Fail to cacluate.\n");
+    return 0;	
+  }
 }
 
 bool check_parenteses(int p,int q){
@@ -154,7 +164,7 @@ static int get(int x){
 	return -1;
 }
 
-word_t eval(int p,int q){
+word_t eval(int p,int q,bool *success){
 	if(p>q) assert(0);
  	if(p==q){
 		word_t ans;
@@ -162,7 +172,7 @@ word_t eval(int p,int q){
 		return ans;
 	}
 	if(check_parenteses(p,q)){
-		return eval(p+1,q-1);
+		return eval(p+1,q-1,success);
 	}
 	int pos=q+1,prio=0;
 	for(int i=q;i>=p;--i){
@@ -172,20 +182,20 @@ word_t eval(int p,int q){
 	}
 	if(prio==1){
 		while(pos>0&&get(tokens[pos-1].type)==2) --pos;
-		word_t val=eval(pos+1,q);
+		word_t val=eval(pos+1,q,success);
 		switch(tokens[pos].type){
 			case TK_POSITIVE:return val;
 			case TK_NEGATIVE:return -val;
 			default:assert(0);
 		}
 	}
-	word_t val1=eval(p,pos-1);
-	word_t val2=eval(pos+1,q);
+	word_t val1=eval(p,pos-1,success);
+	word_t val2=eval(pos+1,q,success);
 	switch(tokens[pos].type){
 		case '+': return val1+val2;
 		case '-': return val1-val2;
 		case '*': return val1*val2;
-		case '/': return val1/val2;
+		case '/': if(val2==0) {*success=false;return 0;}else return val1/val2;
 		default:assert(0);
 	}
 }
