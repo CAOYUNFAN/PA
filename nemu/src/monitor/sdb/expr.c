@@ -140,7 +140,7 @@ word_t expr(char *e, bool *success) {
 	printf("Unmatched parentheses!\n");
 	return 0;
   }
-  printf("1-stage!\n");
+//  printf("1-stage!\n");
   ans=eval(0,nr_token-1,success);
   if(*success) return ans;
   else{
@@ -170,7 +170,7 @@ static int get(int x){
 }
 
 word_t eval(int p,int q,bool *success){
-//	printf("eval:%d-%d\n",p,q);
+	printf("eval:%d-%d\n",p,q);
 	if(p>q) assert(0);
  	if(p==q){
 		word_t ans;
