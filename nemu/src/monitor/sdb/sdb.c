@@ -115,6 +115,10 @@ static int cmd_x(char *args){
 }
 
 static int cmd_p(char *args){
+	bool success;
+	word_t ans=expr(args,&success);
+	if(success) printf("%u\n",ans);
+	else printf("Mistakes happen.\n");
 	return 0;
 }
 
