@@ -131,7 +131,7 @@ word_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-  printf("Make_token complete!\n");
+//  printf("Make_token complete!\n");
 
   /* TODO: Insert codes to evaluate the expression. */
   pre_check_parenteses(success);
@@ -140,6 +140,7 @@ word_t expr(char *e, bool *success) {
 	printf("Unmatched parentheses!\n");
 	return 0;
   }
+  printf("1-stage!\n");
   ans=eval(0,nr_token-1,success);
   if(*success) return ans;
   else{
