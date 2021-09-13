@@ -8,7 +8,7 @@ int is_exit_status_bad();
 #include <isa.h>
 void check(){
 	FILE *fp;
-	fp=fopen("input","r");
+	fp=fopen("../tools/gen-expr/input","r");
 	extern word_t expr(char *e,bool *success);
 	word_t x,i=0;char *st="";bool success=0;
 	while(fscanf(fp,"%u%s",&x,st)!=EOF){
