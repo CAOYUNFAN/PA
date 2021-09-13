@@ -155,10 +155,10 @@ bool check_parenteses(int p,int q){
 	for(;temp&&i<=q;++i){
 		if(tokens[i].type=='(') ++temp;
 		if(tokens[i].type==')') --temp;
-		printf("%d\n",i);
+//		printf("%d\n",i);
 	}
-	if(i==q&&temp==0) return 1;
-	return 0;
+	if(i>=q&&temp==0) return true;
+	return false;
 }
 
 static int get(int x){
