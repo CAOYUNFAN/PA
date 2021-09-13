@@ -170,7 +170,7 @@ word_t eval(int p,int q,bool *success){
 		word_t ans;
 		sscanf(tokens[p].str,"%d",&ans);
 		return ans;
-	}
+	} 
 	if(check_parenteses(p,q)){
 		return eval(p+1,q-1,success);
 	}
@@ -181,7 +181,7 @@ word_t eval(int p,int q,bool *success){
 		if(temp>prio) prio=temp,pos=i;
 	}
 	if(prio==1){
-		while(pos>0&&get(tokens[pos-1].type)==2) --pos;
+		while(pos>p&&get(tokens[pos-1].type)==2) --pos;
 		word_t val=eval(pos+1,q,success);
 		switch(tokens[pos].type){
 			case TK_POSITIVE:return val;
