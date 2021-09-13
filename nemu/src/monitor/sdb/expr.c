@@ -117,6 +117,7 @@ void pre_check_parenteses(bool *success){
 
 		if(tokens[i].type=='+'||tokens[i].type=='-')
 			if(i==0||(tokens[i-1].type!=TK_NUM && tokens[i-1].type!=TK_HEXNUM && tokens[i-1].type!=TK_REG && tokens[i-1].type!=')')) tokens[i].type=(tokens[i].type=='+')?TK_POSITIVE:TK_NEGATIVE;
+		printf("%d\n",i);
 	}
 	return;
 }
