@@ -117,7 +117,7 @@ void pre_check_parenteses(bool *success){
 
 		if(tokens[i].type=='+'||tokens[i].type=='-')
 			if(i==0||(tokens[i-1].type!=TK_NUM && tokens[i-1].type!=TK_HEXNUM && tokens[i-1].type!=TK_REG && tokens[i-1].type!=')')) tokens[i].type=(tokens[i].type=='+')?TK_POSITIVE:TK_NEGATIVE;
-		printf("%d\n",i);
+//		printf("%d\n",i);
 	}
 	if(temp) *success=0;
 	return;
@@ -150,7 +150,7 @@ word_t expr(char *e, bool *success) {
 bool check_parenteses(int p,int q){
 	if(tokens[p].type!='('||tokens[q].type!=')') return 0;
 	int temp=1,i=p+1;
-	while(temp&&i<=q){
+	for(;temp&&i<=q;++i){
 		if(tokens[i].type=='(') ++temp;
 		if(tokens[i].type==')') --temp;
 	}
