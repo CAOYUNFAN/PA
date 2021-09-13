@@ -168,6 +168,7 @@ static int get(int x){
 }
 
 word_t eval(int p,int q,bool *success){
+	printf("aval:%d-%d\n",p,q);
 	if(p>q) assert(0);
  	if(p==q){
 		word_t ans;
