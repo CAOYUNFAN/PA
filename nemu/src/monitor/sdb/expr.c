@@ -155,9 +155,9 @@ bool check_parenteses(int p,int q){
 	for(;temp&&i<=q;++i){
 		if(tokens[i].type=='(') ++temp;
 		if(tokens[i].type==')') --temp;
-//		printf("%d\n",i);
+		printf("%d\n",i);
 	}
-	if(i==q) return 1;
+	if(i==q&&temp==0) return 1;
 	return 0;
 }
 
@@ -178,7 +178,7 @@ word_t eval(int p,int q,bool *success){
 		return ans;
 	} 
 	if(check_parenteses(p,q)){
-		printf("eval:%d-%d\n",p,q);
+//		printf("eval:%d-%d\n",p,q);
 //		char ch=getchar();putchar(ch);
 		word_t ans=eval(p+1,q-1,success);
 		return ans;
