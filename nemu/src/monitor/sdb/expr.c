@@ -168,7 +168,7 @@ static int get(int x){
 }
 
 word_t eval(int p,int q,bool *success){
-	printf("eval:%d-%d\n",p,q);
+//	printf("eval:%d-%d\n",p,q);
 	if(p>q) assert(0);
  	if(p==q){
 		word_t ans;
@@ -177,7 +177,7 @@ word_t eval(int p,int q,bool *success){
 	} 
 	if(check_parenteses(p,q)){
 		printf("eval:%d-%d\n",p,q);
-		char ch=getchar();putchar(ch);
+//		char ch=getchar();putchar(ch);
 		return eval(p+1,q-1,success);
 	}
 	int pos=q+1,prio=0;
