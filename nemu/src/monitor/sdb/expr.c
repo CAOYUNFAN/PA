@@ -9,7 +9,7 @@ enum {
   TK_NOTYPE = 256, TK_EQ,
 
   /* TODO: Add more token types */
-  TK_NUM,TK_NEGATIVE,TK_POSITIVE,TK_HEXNUM,TK_REG
+  TK_NUM,TK_NEGATIVE,TK_POSITIVE,TK_HEXNUM,TK_REG,TK_NEQ,TK_AND,TK_OR,TK_REF
 };
 
 static struct rule {
@@ -28,9 +28,15 @@ static struct rule {
   {"\\-",'-'},			//minus
   {"\\*",'*'},
   {"\\/",'/'},
+  {"%",'%'},
   {"[0-9]+",TK_NUM},
   {"\\(",'('},
-  {"\\)",')'}
+  {"\\)",')'},
+  {"0x[0-9,a-f]+",TK_HEXNUM},
+  {"\\$[a-z]{2,3}",TK_REG},
+  {"!=",TK_NEQ},
+  {"&&",TK_AND},
+  {"\\|\\|",TK_OR},
 };
 
 #define NR_REGEX ARRLEN(rules)
