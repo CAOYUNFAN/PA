@@ -8,7 +8,7 @@ int is_exit_status_bad();
 #include <isa.h>
 void check(){
 	FILE *fp;
-	fp=fopen("../../tools/gen-expr/input","r");
+	fp=fopen("~/ics2021/nemu/tools/gen-expr/input","r");
 	assert(fp==NULL);
 	extern word_t expr(char *e,bool *success);
 	word_t x,i=0;char *st="";bool success=0;
