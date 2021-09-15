@@ -49,3 +49,33 @@ void free_wp(WP *wp){
 	Log("Watch point %d has been freed.\n",wp->NO);
 	return;
 }
+
+void show_checkpoints(){
+	if(head==NULL){
+		printf("Nothing to show.\n");
+		return;
+	}
+	for(WP *now=head;now!=NULL;now=now->next)
+		printf("chechpoint%d:\n  %s\n  data=%u\n",now->NO,now->exp,now->data);
+	return;
+}
+
+void checkpoint_del(int x){
+	if(head!=NULL){
+		if(head->NO==x){
+			WP *temp=head;
+			head=head->next;
+			free_wp(temp);
+			return;
+		}
+		for(WP *now=head;now->next!=NULL;now=now->next)
+			if(now->next->NO==x){
+				WP *temp=now->next;
+				now->next=now->next->next;
+				free_wp(temp);
+				return;
+			}
+	}
+	printf("Nothing to del!\n");
+	return;
+}

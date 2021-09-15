@@ -99,8 +99,9 @@ static int cmd_si(char *args){
 
 static int cmd_info(char *args){
 	if(*args=='r') isa_reg_display();
-	else{
-
+	if(*args=='w'){
+		extern void show_checkpoints();
+		show_checkpoints();
 	}
 	return 0;
 }
@@ -127,6 +128,9 @@ static int cmd_w(char *args){
 }
 
 static int cmd_d(char *args){
+	int x;sscanf(args,"%d",&x);
+	extern void checkpoint_del(int x);
+	checkpoint_del(x);
 	return 0;
 }
 
