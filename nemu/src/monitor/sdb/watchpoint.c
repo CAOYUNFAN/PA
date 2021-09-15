@@ -8,7 +8,7 @@ typedef struct watchpoint {
 
   /* TODO: Add more members if necessary */
   word_t data;
-  char* exp;
+  char exp[1000];
   bool success;
 } WP;
 
