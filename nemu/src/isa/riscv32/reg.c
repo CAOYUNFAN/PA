@@ -16,10 +16,13 @@ void isa_reg_display() {
 
 word_t isa_reg_str2val(const char *s, bool *success) {
 	printf("%s\n",s);
-	for(int i=0;i<32;++i)
-	if(strcmp(s,regs[i])==0){
-		*success=true;
-		return gpr(i);
+	for(int i=0;i<32;++i){
+		printf("%s ",regs[i]);
+		if(strcmp(s,regs[i])==0){
+			*success=true;
+			return gpr(i);
+		}
+		printf("%d\n",strcmp(s,regs[i]));
 	}
 	*success=false;
 	return 0;
