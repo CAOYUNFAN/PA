@@ -124,6 +124,8 @@ static int cmd_p(char *args){
 }
 
 static int cmd_w(char *args){
+	extern void new_WP(char *args);
+	new_WP(args);
 	return 0;
 }
 

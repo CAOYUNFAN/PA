@@ -55,8 +55,11 @@ void show_checkpoints(){
 		printf("Nothing to show.\n");
 		return;
 	}
-	for(WP *now=head;now!=NULL;now=now->next)
-		printf("chechpoint%d:\n  %s\n  data=%u\n",now->NO,now->exp,now->data);
+	for(WP *now=head;now!=NULL;now=now->next){
+		printf("chechpoint%d:\n  %s\n",now->NO,now->exp);
+		if(now->success) printf("  data=%u\n",now->data);
+		else printf("  Cannot be calculated!\n");
+	}
 	return;
 }
 
@@ -79,3 +82,5 @@ void checkpoint_del(int x){
 	printf("Nothing to del!\n");
 	return;
 }
+
+void new_WP(char *args){new_wp(args);return;}
