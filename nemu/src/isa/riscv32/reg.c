@@ -15,14 +15,14 @@ void isa_reg_display() {
 }
 
 word_t isa_reg_str2val(const char *s, bool *success) {
-	printf("%s\n",s+1);
+//	printf("%s\n",s+1);
 	for(int i=0;i<32;++i){
 //		printf("%s ",regs[i]);
 		if(strcmp(s+1,regs[i])==0){
 			*success=true;
-//			return gpr(i);
+			return gpr(i);
 		}
-		printf("%d\n",strcmp(s+1,regs[i]));
+//		printf("%d\n",strcmp(s+1,regs[i]));
 	}
 	*success=false;
 	return 0;
