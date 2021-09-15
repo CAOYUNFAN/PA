@@ -121,8 +121,12 @@ void pre_check_parenteses(bool *success){
 		if(tokens[i].type==')') --temp;
 		if(temp<0){*success=0;return;}
 
-		if(tokens[i].type=='+'||tokens[i].type=='-')
-			if(i==0||(tokens[i-1].type!=TK_NUM && tokens[i-1].type!=TK_HEXNUM && tokens[i-1].type!=TK_REG && tokens[i-1].type!=')')) tokens[i].type=(tokens[i].type=='+')?TK_POSITIVE:TK_NEGATIVE;
+		if(tokens[i].type=='+'||tokens[i].type=='-'||tokens[i].type=='*')
+			if(i==0||(tokens[i-1].type!=TK_NUM && tokens[i-1].type!=TK_HEXNUM && tokens[i-1].type!=TK_REG && tokens[i-1].type!=')')){
+				if(tokens[i].type=='+') tokens[i].type=TK_POSITIVE;
+				if(tokens[i].type=='-') tokens[i].type=TK_NEGATIVE;
+				if(tokens[i].type=='*') tokens[i].type=TK_REF;
+			}
 //		printf("%d\n",i);
 	}
 	if(temp) *success=0;
@@ -150,7 +154,7 @@ word_t expr(char *e, bool *success) {
   ans=eval(0,nr_token-1,success);
   if(*success) return ans;
   else{
-	printf("There exists mathematical errors. Fail to cacluate.\n");
+	printf("There exists mathematical errors or something else. Fail to cacluate.\n");
     return 0;	
   }
 }
@@ -168,8 +172,8 @@ bool check_parenteses(int p,int q){
 }
 
 static int get(int x){
-	if(x==TK_POSITIVE||x==TK_NEGATIVE) return 1;
-	if(x=='*'||x=='/') return 2;
+	if(x==TK_POSITIVE||x==TK_NEGATIVE||x==TK_REF) return 1;
+	if(x=='*'||x=='/'||x=='%') return 2;
 	if(x=='+'||x=='-') return 3;
 
 	return -1;
@@ -180,8 +184,11 @@ word_t eval(int p,int q,bool *success){
 	if(p>q) assert(0);
  	if(p==q){
 		word_t ans;
-		sscanf(tokens[p].str,"%d",&ans);
-		return ans;
+		if(tokens[p].type==TK_NUM) sscanf(tokens[p].str,"%d",&ans);
+		if(tokens[p].type==TK_HEXNUM) sscanf(tokens[p].str,"0x%x",&ans);
+		if(tokens[p].type==TK_REG) ans=isa_reg_str2val(tokens[p].str,success);
+		if(*success) return ans;
+		else return 0;
 	} 
 	if(check_parenteses(p,q)){
 //		printf("eval:%d-%d\n",p,q);
@@ -189,18 +196,30 @@ word_t eval(int p,int q,bool *success){
 		word_t ans=eval(p+1,q-1,success);
 		return ans;
 	}
-	int pos=q+1,prio=0;
+	int pos=q+1,prio=0,top=0;
 	for(int i=q;i>=p;--i){
 		if(tokens[i].type==TK_NUM||tokens[i].type==TK_HEXNUM||tokens[i].type==TK_REG) continue;
-		int temp=get(tokens[i].type);
-		if(temp>prio) prio=temp,pos=i;
+		if(tokens[i].type==')'){
+			++top;
+			continue;
+		}
+		if(tokens[i].type==')'){
+			--top;
+			continue;
+		}
+		if(!top){
+			int temp=get(tokens[i].type);
+			if(temp>prio) prio=temp,pos=i;
+		}
 	}
 	if(prio==1){
 		while(pos>p&&get(tokens[pos-1].type)==2) --pos;
 		word_t val=eval(pos+1,q,success);
+		extern word_t vaddr_read(vaddr_t addr,int len);
 		switch(tokens[pos].type){
 			case TK_POSITIVE:return val;
 			case TK_NEGATIVE:return -val;
+			case TK_REF:return vaddr_read(val,4); 
 			default:assert(0);
 		}
 	}
@@ -211,6 +230,7 @@ word_t eval(int p,int q,bool *success){
 		case '-': return val1-val2;
 		case '*': return val1*val2;
 		case '/': if(val2==0) {*success=false;return 0;}else return val1/val2;
+		case '%': if(val2==0) {*success=false;return 0;}else return val1%val2;
 		default:assert(0);
 	}
 }
