@@ -219,7 +219,7 @@ word_t eval(int p,int q,bool *success){
 			++top;
 			continue;
 		}
-		if(tokens[i].type==')'){
+		if(tokens[i].type=='('){
 			--top;
 			continue;
 		}
