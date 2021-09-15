@@ -9,7 +9,7 @@ enum {
   TK_NOTYPE = 256, TK_EQ,
 
   /* TODO: Add more token types */
-  TK_NUM,TK_NEGATIVE,TK_POSITIVE,TK_HEXNUM,TK_REG,TK_NEQ,TK_AND,TK_OR,TK_REF
+  TK_NUM,TK_NEGATIVE,TK_POSITIVE,TK_HEXNUM,TK_REG,TK_NEQ,TK_AND,TK_OR,TK_REF,TK_GREAT,TK_LESS,TK_SHL,TK_SHR,
 };
 
 static struct rule {
@@ -37,6 +37,15 @@ static struct rule {
   {"!=",TK_NEQ},
   {"&&",TK_AND},
   {"\\|\\|",TK_OR},
+  {">=",TK_GREAT},
+  {"<=",TK_LESS},
+  {">>",TK_SHR},
+  {"<<",TK_SHL},
+  {">",'>'},
+  {"<",'<'},
+  {"&",'&'},
+  {"\\|",'|'},
+  {"\\^",'^'}
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -175,7 +184,14 @@ static int get(int x){
 	if(x==TK_POSITIVE||x==TK_NEGATIVE||x==TK_REF) return 1;
 	if(x=='*'||x=='/'||x=='%') return 2;
 	if(x=='+'||x=='-') return 3;
-
+	if(x==TK_SHL||x==TK_SHR) return 4;
+	if(x=='>'||x=='<'||x==TK_GREAT||x==TK_LESS) return 5;
+	if(x==TK_EQ||x==TK_NEQ) return 6;
+	if(x=='&') return 7;
+	if(x=='^') return 8;
+	if(x=='|') return 9;
+	if(x==TK_AND) return 10;
+	if(x==TK_OR) return 11;
 	return -1;
 }
 
@@ -231,6 +247,18 @@ word_t eval(int p,int q,bool *success){
 		case '*': return val1*val2;
 		case '/': if(val2==0) {*success=false;return 0;}else return val1/val2;
 		case '%': if(val2==0) {*success=false;return 0;}else return val1%val2;
+		case TK_SHL: return val1<<val2;
+		case TK_SHR: return val1>>val2;
+		case '<': return (unsigned)(val1<val2);
+		case TK_LESS: return (unsigned)(val1<=val2);
+		case '>': return (unsigned)(val1>val2);
+		case TK_GREAT: return (unsigned)(val1>=val2);
+		case TK_EQ: return (unsigned)(val1==val2);
+		case TK_NEQ: return (unsigned)(val1!=val2);
+		case '&':return val1&val2;
+		case '|':return val1|val2;
+		case TK_AND: return (unsigned)((bool)val1&&(bool)val2);
+		case TK_OR: return (unsigned)((bool)val1||(bool)val2);
 		default:assert(0);
 	}
 }
