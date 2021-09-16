@@ -8,3 +8,6 @@ submit:
 	STUID=$(STUID) STUNAME=$(STUNAME) bash -c "$$(curl -s http://jyywiki.cn/static/submit.sh)"
 
 .PHONY: default submit
+
+count:
+	find ./nemu/ -name *[.][ch] | xargs cat | grep -v "^." |wc -l
