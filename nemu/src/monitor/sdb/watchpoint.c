@@ -85,6 +85,6 @@ void checkpoint_del(int x){
 
 void new_WP(char *args){new_wp(args);return;}
 
-bool check(){
+bool watchpoint_check(){
 	return 0;
 }

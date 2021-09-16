@@ -24,8 +24,8 @@ void device_update();
 static void debug_hook(vaddr_t pc, const char *asmbuf) {
   log_write("%s\n", asmbuf);
   if (g_print_step) { puts(asmbuf); }
-  extern bool check();
-  if(check()) nemu_state.state=NEMU_STOP;
+  extern bool watchpoint_check();
+  if(watchpoint_check()) nemu_state.state=NEMU_STOP;
 }
 #endif
 
