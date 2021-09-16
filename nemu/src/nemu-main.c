@@ -14,6 +14,7 @@ void check(){
 	extern word_t expr(char *e,bool *success);
 	word_t x,i=0;char st[10000],ch[10000];bool success=0;
  	while(fgets(ch,1,fp)!=NULL){
+		printf("AAAAAA!\n");
 		sscanf(ch,"%u %s",&x,st);
 		printf("%u %s ",++i,st);
 		word_t temp=expr(st,&success);
@@ -23,7 +24,7 @@ void check(){
 }
 
 int main(int argc, char *argv[]) {
-	check();
+//	check();
   /* Initialize the monitor. */
 #ifdef CONFIG_TARGET_AM
   am_init_monitor();
