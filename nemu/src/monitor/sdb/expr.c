@@ -105,6 +105,7 @@ static bool make_token(char *e) {
 		  case TK_NOTYPE:break;
            default:{
 			tokens[nr_token].type=rules[i].token_type;
+			memset(tokens[nr_token].str,0,sizeof(tokens[nr_token].str));
 			strncpy(tokens[nr_token++].str,substr_start,substr_len);
 			break;
 		  }
@@ -161,7 +162,7 @@ word_t expr(char *e, bool *success) {
 	printf("Unmatched parentheses!\n");
 	return 0;
   }
-  printf("to %d:",nr_token);
+  printf("%d:",nr_token);
   for(int i=0;i<nr_token;++i) printf("%s ",tokens[i].str);
   printf("\n");
   ans=eval(0,nr_token-1,success);
