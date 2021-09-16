@@ -12,8 +12,9 @@ void check(){
 	assert(fp!=NULL);
 //	if(fp!=NULL) printf("OPEN SUCCEED!\n");
 	extern word_t expr(char *e,bool *success);
-	word_t x;char st[10000],ch[10000];bool success=0;
+	word_t x,cc=0;char st[10000],ch[10000];bool success=0;
   	while(fgets(ch,1000,fp)!=NULL){
+		++cc;
 //		printf("%s\n",ch);
 		int i;
 		x=0;
@@ -22,7 +23,7 @@ void check(){
 		int j=0;
 		for(i++;i<strlen(ch)-1;i++,j++) st[j]=ch[i];
 		st[j]='\0';
-		printf("%s\n",st);
+		printf("%u:%s\n",cc,st);
 		word_t temp=expr(st,&success);
 //		printf("%u\n",temp);
 		if(!success||x!=temp) assert(0);
