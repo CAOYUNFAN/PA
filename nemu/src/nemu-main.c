@@ -24,7 +24,7 @@ void check(){
 }
 
 int main(int argc, char *argv[]) {
-//	check();
+	check();
   /* Initialize the monitor. */
 #ifdef CONFIG_TARGET_AM
   am_init_monitor();
