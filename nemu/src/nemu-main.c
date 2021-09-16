@@ -28,13 +28,13 @@ void check(){
 }
 
 int main(int argc, char *argv[]) {
-//	check();
   /* Initialize the monitor. */
 #ifdef CONFIG_TARGET_AM
   am_init_monitor();
 #else
   init_monitor(argc, argv);
 #endif
+	check();
 
   /* Start engine. */
   engine_start();
