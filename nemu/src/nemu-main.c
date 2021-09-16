@@ -18,7 +18,7 @@ void check(){
 		int i;
 		x=0;
 		for(i=0;ch[i]!=' ';++i) x=(x*10u)+ch[i]-'0';
-		printf("%u ",x);
+//		printf("%u ",x);
 		strcpy(st,ch+i+1);
 		printf("%s\n",st);
 		word_t temp=expr(st,&success);
