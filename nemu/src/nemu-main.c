@@ -12,9 +12,10 @@ void check(){
 //	assert(fp!=NULL);
 	if(fp!=NULL) printf("OPEN SUCCEED!\n");
 	extern word_t expr(char *e,bool *success);
-	word_t x,i=0;char st[10000];bool success=0;
- 	while(fscanf(fp,"%u%s",&x,st)!=EOF){
-		printf("%d %s ",++i,st);
+	word_t x,i=0;char st[10000],ch[10000];bool success=0;
+ 	while(fgets(ch,10000,fp)!=NULL){
+		sscanf(ch,"%u %s",&x,st);
+		printf("%u %s ",++i,st);
 		word_t temp=expr(st,&success);
 		printf("%u\n",temp);
 		if(!success||x!=temp) assert(0);
