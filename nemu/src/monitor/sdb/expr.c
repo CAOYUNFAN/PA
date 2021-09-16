@@ -148,7 +148,7 @@ word_t eval(int p,int q,bool *success);
 word_t expr(char *e, bool *success) {
   *success=1;
 //  printf("%s\n",e);
-  printf("%d:",nr_token);
+//  printf("%d:",nr_token);
   if (!make_token(e)) {
     *success = false;
     return 0;
