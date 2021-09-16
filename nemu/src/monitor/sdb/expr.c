@@ -146,7 +146,8 @@ word_t eval(int p,int q,bool *success);
 
 word_t expr(char *e, bool *success) {
   *success=1;
-  printf("%s\n",e);
+//  printf("%s\n",e);
+  printf("%d:",nr_token);
   if (!make_token(e)) {
     *success = false;
     return 0;
@@ -160,7 +161,7 @@ word_t expr(char *e, bool *success) {
 	printf("Unmatched parentheses!\n");
 	return 0;
   }
-//  printf("1-stage!\n");
+  printf("to %d:",nr_token);
   for(int i=0;i<nr_token;++i) printf("%s ",tokens[i].str);
   printf("\n");
   ans=eval(0,nr_token-1,success);
