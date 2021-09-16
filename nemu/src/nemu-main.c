@@ -18,13 +18,13 @@ void check(){
 		int i;
 		x=0;
 		for(i=0;ch[i]!=' ';++i) x=(x*10u)+ch[i]-'0';
-		printf("%u ",x);
+//		printf("%u ",x);
 		int j=0;
 		for(i++;i<strlen(ch)-1;i++,j++) st[j]=ch[i];
 		st[j]='\0';
 		printf("%s\n",st);
 		word_t temp=expr(st,&success);
-		printf("%u\n",temp);
+//		printf("%u\n",temp);
 		if(!success||x!=temp) assert(0);
 	}
 }
