@@ -10,7 +10,7 @@ void check(){
 	FILE *fp;
 	fp=fopen("/home/cao/ics2021/nemu/tools/gen-expr/input","r");
 //	assert(fp!=NULL);
-//	if(fp!=NULL) printf("OPEN SUCCEED!\n");
+	if(fp!=NULL) printf("OPEN SUCCEED!\n");
 	extern word_t expr(char *e,bool *success);
 	word_t x,i=0;char st[10000];bool success=0;
  	while(fscanf(fp,"%u%s",&x,st)!=EOF){
