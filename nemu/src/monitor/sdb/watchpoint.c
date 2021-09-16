@@ -84,3 +84,7 @@ void checkpoint_del(int x){
 }
 
 void new_WP(char *args){new_wp(args);return;}
+
+bool check(){
+	return 0;
+}
