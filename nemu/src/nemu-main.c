@@ -13,7 +13,7 @@ void check(){
 	if(fp!=NULL) printf("OPEN SUCCEED!\n");
 	extern word_t expr(char *e,bool *success);
 	word_t x,i=0;char st[10000],ch[10000];bool success=0;
- 	while(fgets(ch,1,fp)!=NULL){
+ 	while(fgets(ch,1000,fp)!=NULL){
 		printf("AAAAAA!\n");
 		sscanf(ch,"%u %s",&x,st);
 		printf("%u %s ",++i,st);
