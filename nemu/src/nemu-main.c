@@ -21,7 +21,7 @@ void check(){
 		printf("%u ",x);
 		int j=0;
 		for(i++;i<strlen(ch)-1;i++,j++) st[j]=ch[i];
-		st[j+1]='\0';
+		st[j]='\0';
 		printf("%s\n",st);
 		word_t temp=expr(st,&success);
 		printf("%u\n",temp);
