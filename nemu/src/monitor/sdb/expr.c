@@ -101,9 +101,9 @@ static bool make_token(char *e) {
          * of tokens, some extra actions should be performed.
          */
 
-        switch (rules[i].token_type) {
+         switch (rules[i].token_type) {
 		  case TK_NOTYPE:break;
-          default:{
+           default:{
 			tokens[nr_token].type=rules[i].token_type;
 			strncpy(tokens[nr_token++].str,substr_start,substr_len);
 			break;
@@ -146,6 +146,7 @@ word_t eval(int p,int q,bool *success);
 
 word_t expr(char *e, bool *success) {
   *success=1;
+  printf("%s\n",e);
   if (!make_token(e)) {
     *success = false;
     return 0;
@@ -160,6 +161,8 @@ word_t expr(char *e, bool *success) {
 	return 0;
   }
 //  printf("1-stage!\n");
+  for(int i=0;i<nr_token;++i) printf("%s ",tokens[i].str);
+  printf("\n");
   ans=eval(0,nr_token-1,success);
   if(*success) return ans;
   else{
