@@ -14,12 +14,12 @@ void check(){
 	extern word_t expr(char *e,bool *success);
 	word_t x;char st[10000],ch[10000];bool success=0;
  	while(fgets(ch,1000,fp)!=NULL){
-		printf("%s\n",ch);
+//		printf("%s\n",ch);
 		int i;
 		x=0;
 		for(i=0;ch[i]!=' ';++i) x=(x*10u)+ch[i]-'0';
-		printf("%u %d\n",x,i);
-		strcpy(st,ch+i);
+		printf("%u ",x);
+		strcpy(st,ch+i+1);
 		printf("%s\n",st);
 		word_t temp=expr(st,&success);
 		printf("%u\n",temp);
