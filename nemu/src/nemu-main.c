@@ -8,7 +8,7 @@ int is_exit_status_bad();
 #include <isa.h>
 void check(){
 	FILE *fp;
-	fp=fopen("home/cao/ics2021/nemu/tools/gen-expr/input","r");
+	fp=fopen("/home/cao/ics2021/nemu/tools/gen-expr/input","r");
 	assert(fp==NULL);
 	extern word_t expr(char *e,bool *success);
 	word_t x,i=0;char *st="";bool success=0;
@@ -19,7 +19,7 @@ void check(){
 }
 
 int main(int argc, char *argv[]) {
-//	check();
+	check();
   /* Initialize the monitor. */
 #ifdef CONFIG_TARGET_AM
   am_init_monitor();
