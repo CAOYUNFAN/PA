@@ -14,7 +14,7 @@ void check(){
 	extern word_t expr(char *e,bool *success);
 	word_t x,i=0;char st[10000],ch[10000];bool success=0;
  	while(fgets(ch,1000,fp)!=NULL){
-		printf("AAAAAA!\n");
+		printf("%s\n",ch);
 		sscanf(ch,"%u %s",&x,st);
 		printf("%u %s ",++i,st);
 		word_t temp=expr(st,&success);
