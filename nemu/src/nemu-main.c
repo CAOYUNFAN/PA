@@ -12,7 +12,7 @@ void check(){
 //	assert(fp!=NULL);
 	if(fp!=NULL) printf("OPEN SUCCEED!\n");
 	extern word_t expr(char *e,bool *success);
-	word_t x,i=0;char *st="";bool success=0;
+	word_t x,i=0;char st[10000];bool success=0;
 	while(fscanf(fp,"%u%s",&x,st)!=EOF){
 		printf("%d\n",++i);
 		assert(x==expr(st,&success));
