@@ -9,7 +9,7 @@ int is_exit_status_bad();
 void check(){
 	FILE *fp;
 	fp=fopen("/home/cao/ics2021/nemu/tools/gen-expr/input","r");
-	assert(fp==NULL);
+	assert(fp!=NULL);
 	extern word_t expr(char *e,bool *success);
 	word_t x,i=0;char *st="";bool success=0;
 	while(fscanf(fp,"%u%s",&x,st)!=EOF){
