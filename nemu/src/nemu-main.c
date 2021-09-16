@@ -12,11 +12,15 @@ void check(){
 //	assert(fp!=NULL);
 	if(fp!=NULL) printf("OPEN SUCCEED!\n");
 	extern word_t expr(char *e,bool *success);
-	word_t x,i=0;char st[10000],ch[10000];bool success=0;
+	word_t x;char st[10000],ch[10000];bool success=0;
  	while(fgets(ch,1000,fp)!=NULL){
 		printf("%s\n",ch);
-		sscanf(ch,"%u %s",&x,st);
-		printf("%u %s ",++i,st);
+		int i;
+		x=0;
+		for(i=0;ch[i]!=' ';++i) x=(x*10u)+ch[i]-'0';
+		printf("%u %d\n",x,i);
+		strcpy(st,ch+i);
+		printf("%s\n",st);
 		word_t temp=expr(st,&success);
 		printf("%u\n",temp);
 		if(!success||x!=temp) assert(0);
