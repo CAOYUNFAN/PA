@@ -86,5 +86,20 @@ void checkpoint_del(int x){
 void new_WP(char *args){new_wp(args);return;}
 
 bool watchpoint_check(){
-	return 0;
+	bool ans=0;
+	for(WP * now=head;now!=NULL;now=now->next){
+		bool success=1;
+		word_t a=expr(now->exp,&success);
+		if(success!=now->success||(success&&now->success&&a!=now->data)){
+			ans=1;
+			printf("Checkpoint NO.%d has been changed. Its expr:%s\n",now->NO,now->exp);
+			if(!now->success) printf("Old value cannot be cacluated.\n");
+			else printf("Old value=%u\n",now->data);
+			if(!success) printf("Now value cannot be cacluated.\n");
+			else printf("Now value=%u\n",a);
+			now->success=success;
+			now->data=a;
+		}
+	}
+	return ans;
 }
