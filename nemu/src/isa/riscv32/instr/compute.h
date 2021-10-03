@@ -20,6 +20,10 @@ def_EHelper(jalr){
 def_EHelper(add){
 	rtl_add(s,id_dest->preg,id_src1->preg,id_src2->preg);
 }
+def_EHelper(sltiu){
+	rtl_subi(s,id_dest->preg,id_src1->preg,id_src2->imm);
+	rtl_srli(s,id_dest->preg,id_dest->preg,31);
+}
 /*def_EHelper(sw){
 	rtl_sm(s,id_dest->preg,id_src1->preg,id_src2->imm,4);
 }*/
