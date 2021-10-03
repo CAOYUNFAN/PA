@@ -43,14 +43,14 @@ static def_DHelper(S) {
 }
 
 static def_DHelper(J) {
-  sword_t simm= (s->isa.instr.j.simm20<<19)|(s->isa.instr.j.imm19_12<<11)|(s->isa.instr.j.imm11<<10)|(s->isa.instr.j.imm10_1);
+  sword_t simm= (s->isa.instr.j.simm20<<20)|(s->isa.instr.j.imm19_12<<12)|(s->isa.instr.j.imm11<<11)|(s->isa.instr.j.imm10_1<<1);
   decode_op_i(s ,id_src1, simm, false);
   decode_op_r(s ,id_dest, s->isa.instr.j.rd,true);
 }
 
 /*static def_Dhelper(B){
 	decode_op_i(s,id_src1,s->isa.instr.b.rs1,false);
-	sword_t simm=(s->isa.instr.b.simm12<<11)|(s->isa.instr,b.imm11<<10)|(s->isa.instr.b.imm10_5<<4)|(s->isa.instr.b.imm4_1);
+	sword_t simm=(s->isa.instr.b.simm12<<12)|(s->isa.instr,b.imm11<<11)|(s->isa.instr.b.imm10_5<<5)|(s->isa.instr.b.imm4_1<<1);
 	decode_op_i(s,id_src2, simm,false);
 	decode_op_r(s,id_dest, s->isa.instr.b.rs2,false);
 }
