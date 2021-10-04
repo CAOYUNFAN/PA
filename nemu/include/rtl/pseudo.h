@@ -22,12 +22,16 @@ static inline def_rtl(not, rtlreg_t *dest, const rtlreg_t* src1) {
 
 static inline def_rtl(neg, rtlreg_t *dest, const rtlreg_t* src1) {
   // dest <- -src1
-  TODO();
+  rtl_sub(s,dest,rz,dest);
 }
 
 static inline def_rtl(sext, rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- signext(src1[(width * 8 - 1) .. 0])
-  TODO();
+  switch(width){
+		case 1:*dest=(int32_t)((int8_t)((uint8_t)*src1));
+		case 2:*dest=(int32_t)((int16_t)((uint16_t)*src1));
+		default:panic("Unexpected length!");
+	} 
 }
 
 static inline def_rtl(zext, rtlreg_t* dest, const rtlreg_t* src1, int width) {
@@ -37,6 +41,7 @@ static inline def_rtl(zext, rtlreg_t* dest, const rtlreg_t* src1, int width) {
 
 static inline def_rtl(msb, rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- src1[width * 8 - 1]
-  TODO();
+  rtl_srli(s,dest,src1,width*8-1);
+  rtl_andi(s,dest,dest,1);
 }
 #endif
