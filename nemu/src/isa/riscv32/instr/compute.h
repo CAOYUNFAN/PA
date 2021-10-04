@@ -39,6 +39,15 @@ def_CYF_ALL(srl)
 def_CYF_ALL(sra)
 def_CYF_ALL(and)
 
+def_CYF_REG(mulu_lo)
+def_CYF_REG(muls_hi)
+def_CYF_REG(mulu_hi)
+def_CYF_REG(mulsu_hi)
+def_CYF_REG(divs_q)
+def_CYF_REG(divs_r)
+def_CYF_REG(divu_q)
+def_CYF_REG(divu_r)
+
 #define def_CYF_REG2(name,type) def_EHelper(name){\
 	rtl_setrelop(s,concat(RELOP_,type),id_dest->preg,id_src1->preg,id_src2->preg);\
 }
