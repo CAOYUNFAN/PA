@@ -59,4 +59,22 @@ def_EHelper(bltu){
 def_EHelper(bgeu){
 	rtl_jrelop(s,RELOP_GEU,id_src1->preg,id_src2->preg,s->pc+id_dest->imm);
 }
+def_EHelper(slti){
+	rtl_setrelopi(s,RELOP_LT,id_dest->preg,id_src1->preg,id_src2->imm);
+}
+def_EHelper(xori){
+	rtl_xori(s,id_dest->preg,id_src1->preg,id_src2->imm);
+}
+def_EHelper(ori){
+	rtl_ori(s,id_dest->preg,id_src1->preg,id_src2->imm);
+}
+def_EHelper(andi){
+	rtl_andi(s,id_dest->preg,id_src1->preg,id_src2->imm);
+}
+def_EHelper(slli){
+	rtl_slli(s,id_dest->preg,id_src1->preg,id_src2->imm);
+}
+def_EHelper(srli){
+	rtl_srli(s,id_dest->preg,id_src1->preg,id_src2->imm);
+}
 
