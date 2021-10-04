@@ -41,6 +41,4 @@ def_EHelper(xor){
 def_EHelper(or){
 	rtl_or(s,id_dest->preg,id_src1->preg,id_src2->preg);
 }
-def_EHelper(sb){
-	rtl_sm(s,id_dest->preg,id_src1->preg,id_src2->imm,1);
-}
+
