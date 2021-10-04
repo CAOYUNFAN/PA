@@ -41,4 +41,22 @@ def_EHelper(xor){
 def_EHelper(or){
 	rtl_or(s,id_dest->preg,id_src1->preg,id_src2->preg);
 }
+def_EHelper(srai){
+	rtl_srai(s,id_dest->preg,id_src1->preg,id_src2->imm);
+}
+def_EHelper(sra){
+	rtl_srai(s,id_dest->preg,id_src1->preg,id_src2->imm);
+}
+def_EHelper(blt){
+	rtl_jrelop(s,RELOP_LT,id_src1->preg,id_src2->preg,s->pc+id_dest->imm);
+}
+def_EHelper(bge){
+	rtl_jrelop(s,RELOP_GE,id_src1->preg,id_src2->preg,s->pc+id_dest->imm);
+}
+def_EHelper(bltu){
+	rtl_jrelop(s,RELOP_LTU,id_src1->preg,id_src2->preg,s->pc+id_dest->imm);
+}
+def_EHelper(bgeu){
+	rtl_jrelop(s,RELOP_GEU,id_src1->preg,id_src2->preg,s->pc+id_dest->imm);
+}
 
