@@ -32,6 +32,9 @@ def_EHelper(beq){
 def_EHelper(bne){
 	rtl_jrelop(s,RELOP_NE,id_src1->preg,id_src2->preg,s->pc+id_dest->imm);
 }
+def_EHelper(sltu){
+	rtl_setrelop(s,RELOP_LTU,id_dest->preg,id_src1->preg,id_src2->preg);
+}
 /*def_EHelper(sw){
 	rtl_sm(s,id_dest->preg,id_src1->preg,id_src2->imm,4);
 }*/

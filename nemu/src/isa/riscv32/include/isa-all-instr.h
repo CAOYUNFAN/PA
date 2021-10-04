@@ -4,6 +4,6 @@
 #define INSTR_NULLARY(f) f(inv) f(nemu_trap)
 #define INSTR_UNARY(f) 
 #define INSTR_BINARY(f) f(lui) f(auipc) f(jal)
-#define INSTR_TERNARY(f) f(lw) f(sw) f(addi) f(jalr) f(add) f(sltiu) f(beq) f(bne) f(sub)
+#define INSTR_TERNARY(f) f(lw) f(sw) f(addi) f(jalr) f(add) f(sltiu) f(beq) f(bne) f(sub) f(sltu)
 
 def_all_EXEC_ID();
