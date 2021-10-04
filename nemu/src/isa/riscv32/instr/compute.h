@@ -23,6 +23,12 @@ def_EHelper(add){
 def_EHelper(sltiu){
 	rtl_setrelopi(s,RELOP_LTU,id_dest->preg,id_src1->preg,id_src2->imm);
 }
+def_EHelper(beq){
+	rtl_jrelop(s,RELOP_EQ,id_src1->preg,id_dest->preg,s->pc+id_src2->imm);
+}
+def_EHelper(bne){
+	rtl_jrelop(s,RELOP_NE,id_src1->preg,id_dest->preg,s->pc+id_src2->imm);
+}
 /*def_EHelper(sw){
 	rtl_sm(s,id_dest->preg,id_src1->preg,id_src2->imm,4);
 }*/
