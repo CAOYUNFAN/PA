@@ -28,8 +28,8 @@ static inline def_rtl(neg, rtlreg_t *dest, const rtlreg_t* src1) {
 static inline def_rtl(sext, rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- signext(src1[(width * 8 - 1) .. 0])
   switch(width){
-		case 1:*dest=(int32_t)((int8_t)((uint8_t)*src1));
-		case 2:*dest=(int32_t)((int16_t)((uint16_t)*src1));
+		case 1:*dest=(int32_t)((int8_t)((uint8_t)*src1));break;
+		case 2:*dest=(int32_t)((int16_t)((uint16_t)*src1));break;
 		default:panic("Unexpected length!");
 	} 
 }
