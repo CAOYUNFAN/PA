@@ -107,10 +107,17 @@ static int cmd_info(char *args){
 }
 
 static int cmd_x(char *args){
-	int n,ex;
+	int n;
+	char ex[100];
+	bool success=1;
 	extern word_t vaddr_read(vaddr_t addr,int len);
-	sscanf(args,"%d 0x%x",&n,&ex);
-	for(int i=0,j=ex;i<n;++i,j+=4)
+	sscanf(args,"%d %s",&n,ex);
+	word_t j=expr(ex,&success);
+	if(!success){
+		printf("Invalid expr!\n");
+		return 0;
+	}
+	for(int i=0;i<n;++i,j+=4)
 		printf("0x%08x:\t0x%08x\n",j,vaddr_read(j,4));
 	return 0;
 }
