@@ -41,7 +41,7 @@ static void fetch_decode_exec_updatepc(Decode *s) {
 }
 
 #ifdef CONFIG_ITRACE
-char * ring_buffer[16];
+char ring_buffer[16][100];
 int now=-1,cover=-1;
 #endif
 
