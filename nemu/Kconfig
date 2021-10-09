@@ -151,7 +151,7 @@ config MTRACE
 
 config MTRACE_COND
   depends on MTRACE
-  bool "Only trace instructions when the condition is true"
+  string "Only trace instructions when the condition is true"
   default "true"
 
 config DIFFTEST
