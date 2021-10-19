@@ -5,6 +5,7 @@
 #include "sdb.h"
 
 static int is_batch_mode = false;
+static int ftrace_mode = false;
 
 void init_regex();
 void init_wp_pool();
@@ -32,6 +33,12 @@ static int cmd_c(char *args) {
   return 0;
 }
 
+void ftrace_init(char *args) {
+	ftrace_mode=true;
+	FILE *fp=fopen(args,"r");
+	Assert(fp,"Can not open '%s'",args);
+	fclose(fp);
+}
 
 static int cmd_q(char *args) {
   nemu_state.state=NEMU_END;
