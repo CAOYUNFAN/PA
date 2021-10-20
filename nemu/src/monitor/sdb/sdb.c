@@ -33,13 +33,6 @@ static int cmd_c(char *args) {
   return 0;
 }
 
-void ftrace_init(char *args) {
-	ftrace_mode=true;
-	FILE *fp=fopen(args,"r");
-	Assert(fp,"Can not open '%s'",args);
-	fclose(fp);
-}
-
 static int cmd_q(char *args) {
   nemu_state.state=NEMU_END;
   return -1;
@@ -152,6 +145,14 @@ static int cmd_d(char *args){
 
 void sdb_set_batch_mode() {
   is_batch_mode = true;
+}
+
+void ftrace_init(char *args) {
+	ftrace_mode=true;
+	FILE *fp=fopen(args,"r");
+	Assert(fp,"Can not open '%s'",args);
+	Log("The elf is '%s'",args);
+	fclose(fp);
 }
 
 void sdb_mainloop() {
