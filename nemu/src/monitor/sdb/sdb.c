@@ -3,6 +3,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
+#include <elf.h>
 
 static int is_batch_mode = false;
 static int ftrace_mode = false;
