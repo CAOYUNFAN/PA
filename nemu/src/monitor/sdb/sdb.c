@@ -150,7 +150,7 @@ void sdb_set_batch_mode() {
 
 void ftrace_init(char *args) {
 	ftrace_mode=true;
-	FILE *fp=fopen(args,"r");
+	FILE *fp=fopen(args,"rb");
 	Assert(fp,"Can not open '%s'",args);
 	Log("The elf is '%s'",args);
 //	fclose(fp);
