@@ -153,7 +153,7 @@ void ftrace_init(char *args) {
 	FILE *fp=fopen(args,"r");
 	Assert(fp,"Can not open '%s'",args);
 	Log("The elf is '%s'",args);
-	fclose(fp);
+	
 }
 
 void sdb_mainloop() {
