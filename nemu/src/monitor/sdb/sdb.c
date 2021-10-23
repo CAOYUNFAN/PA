@@ -6,7 +6,6 @@
 #include <elf.h>
 
 static int is_batch_mode = false;
-static int ftrace_mode = false;
 
 void init_regex();
 void init_wp_pool();
@@ -148,12 +147,43 @@ void sdb_set_batch_mode() {
   is_batch_mode = true;
 }
 
+#ifdef CONFIG_FTRACE
+int ftrace_mode = false;
+int tot_sym;
+Elf32_Ehdr ehdr;
+Elf32_Shdr shdr[105];
+Elf32_Sym sym[10005];
+#endif
+
 void ftrace_init(char *args) {
+#ifdef CONFIG_FTRACE
 	ftrace_mode=true;
 	FILE *fp=fopen(args,"rb");
 	Assert(fp,"Can not open '%s'",args);
+  char str[100]; unsigned int temp;
+  temp=fread(str,1,5,fp);
+  if(str[0]!=0x7f||str[1]!='E'||str[2]!='L'||str[3]!='F'||str[4]!=1||temp!=5){
+    panic("This is not an elf file or the the type is not 32_byte!");
+  }
 	Log("The elf is '%s'",args);
-//	fclose(fp);
+  fseek(fp,0,SEEK_SET);
+  temp=fread(&ehdr,sizeof(Elf32_Ehdr),1,fp);
+  Assert(temp==1,"Error happens.");
+  fseek(fp,ehdr.e_shoff,SEEK_SET);
+  temp=fread(shdr,sizeof(Elf32_Shdr),ehdr.e_shnum,fp);
+  Assert(temp==ehdr.e_shnum,"Error happens.");
+  for(int i=0;i<ehdr.e_shnum;++i)
+  if(shdr[i].sh_type==SHT_SYMTAB){
+    fseek(fp,shdr[i].sh_offset,SEEK_SET);
+    tot_sym=shdr[i].sh_size/shdr[i].sh_entsize;
+    break;
+  }
+  temp=fread(sym,sizeof(Elf32_Sym),tot_sym,fp);
+  Assert(temp==tot_sym,"Error happens.");
+  fclose(fp);
+#else
+  panic("FTRACE is not available!");
+#endif
 }
 
 void sdb_mainloop() {
