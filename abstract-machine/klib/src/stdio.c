@@ -46,7 +46,28 @@ int sprintf(char *out, const char *fmt, ...) {
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
-  panic("Not implemented");
+	va_list ap; va_start(ap,fmt);
+	int d;char c;char *st=out;char* s;
+	while(*fmt){
+		if(*fmt=='%'){
+			switch(*(++fmt)){
+				case 's': s=va_arg(ap,char *);
+						for(char *ss=s;*ss;++ss,++st) *st=*ss;
+						break;
+				case 'd':d=va_arg(ap,int);
+						st=num_to_str(st,d);
+						break;
+				case 'c':c=(char)va_arg(ap,int);
+						*st++=c;
+						break;
+				default:panic("Not implemented or error happens");
+			}
+			++fmt;
+		}else *st++=*fmt++;
+	}
+	if(st-out<n) *st='\0';
+	else out[n-1]='\0';
+	return st-out;
 }
 
 int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
