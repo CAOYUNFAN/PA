@@ -7,7 +7,7 @@
 static bool keyboard_status[totnum_keyboard]={};
 void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
   uint32_t temp=inl(KBD_ADDR);
-  printf("testing!%u",temp);
+  if(temp)printf("testing!%u",temp);
   kbd->keydown = (keyboard_status[temp]=!keyboard_status[temp]);
   kbd->keycode = temp;
 }
