@@ -5,8 +5,14 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 static const char num_table[]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
-inline static char* num_to_str(char *st,int d){
+
+#define read_num(fmt,data) {\
+	while(*(fmt)>='0'&&*(fmt)<='9') data = (data) *10 +*(fmt) -'0',++fmt;\
+}
+
+inline static char* num_to_str(char *st,int d,bool positive){
 	if(d==0){*st++='0';return st;}
+	if(d>=0&&positive) {*st++='+';}
 	if(d<0){*st++='-';d=-d;}
 	char temp[30];
 	int top=0;
@@ -34,68 +40,99 @@ int printf(const char *fmt, ...) {
 	putstr(temp);
 	return len;
 }
-static char temp2[100];
 int vsprintf(char *out, const char *fmt, va_list ap) {
   	int d;char c;char *st=out;char* s;
 	while(*fmt){
-		if(*fmt=='%'){
-			switch(*(++fmt)){
-				case 's': s=va_arg(ap,char *);
-						for(char *ss=s;*ss;++ss,++st) *st=*ss;
-						break;
-				case 'd':d=va_arg(ap,int);
-						st=num_to_str(st,d);
-						break;
-				case 'c':c=(char)va_arg(ap,int);
-						*st++=c;
-						break;
-				case '%':*st++='%';
-						break;
-				case 'u':d=va_arg(ap,int);
-						st=unum_to_str(st,(unsigned)d,10);
-						break;
-				case 'o':d=va_arg(ap,int);
-						st=unum_to_str(st,(unsigned)d,8);
-						break;
-				case 'X': case 'x':d=va_arg(ap,int);
-						st=unum_to_str(st,(unsigned)d,16);
-						break;
-				case '0':{int len=0;
-						for(++fmt;(*fmt)>='0'&&(*fmt)<='9';++fmt) len=(len*10)+*fmt-'0';
-						char *stt=temp2;
-						switch (*(fmt)){
-						case 's': s=va_arg(ap,char *);
-								for(char *ss=s;*ss;++ss,++stt) *stt=*ss;
-								break;
-						case 'd':d=va_arg(ap,int);
-								stt=num_to_str(stt,d);
-								break;
-						case 'c':c=(char)va_arg(ap,int);
-								*stt++=c;
-								break;
-						case '%':*stt++='%';
-								break;
-						case 'u':d=va_arg(ap,int);
-								stt=unum_to_str(stt,(unsigned)d,10);
-								break;
-						case 'o':d=va_arg(ap,int);
-								stt=unum_to_str(stt,(unsigned)d,8);
-								break;
-						case 'X': case 'x':d=va_arg(ap,int);
-								stt=unum_to_str(stt,(unsigned)d,16);
-								break;
-						default:panic("Not implemented or error happens");
-							break;
-						}
-						*stt='\0';
-						for(int i=0;i+strlen(temp2)<len;++i) *(st++)='0';
-						strcpy(st,temp2);
-						st+=strlen(temp2);
-						break;}
-				default:panic("Not implemented or error happens");
+		if(*fmt!='%'){
+			*st++=*fmt++;
+			continue;
+		}
+		int tag;
+
+		enum flags_type{
+			notype,
+			zero=1,
+			left=2,
+			positive=4,
+			empty=8,
+			sharp=16
+		};
+		size_t flags=notype;
+		tag=0;
+		while(!tag){
+			switch (*(++fmt)){
+				case '-':flags|=left;break;
+				case '+':flags|=positive;break;
+				case ' ':flags|=empty;panic("Not Implemented or Error happens!");break;
+				case '#':flags|=sharp;panic("Not Implemented or Error happens!");break;
+				case '0':flags|=zero;break;
+				default:tag=1;break;
 			}
+		}
+
+		size_t width=0;
+		if(*fmt>='0'&&*fmt<='9') read_num(fmt,width)
+		else if(*fmt=='*'){
+			width=va_arg(ap,int);
+			if(width<0) flags|=left,width=-width;
 			++fmt;
-		}else *st++=*fmt++;
+		};
+
+
+		if(*fmt=='.') panic("Not Implemented or Error happens!");
+
+		int length;
+		if(*fmt=='h'||*fmt=='l'||*fmt=='L'||*fmt=='Z'||*fmt=='z'){
+			length=*(fmt++);
+			if(length=='l'&&*fmt=='l'){
+				length='L';
+				++fmt;
+			}
+			panic("Not implemented or Error hapens");
+		}
+
+		static char temp2[MAX_NUM_stdio];
+		char* stt=temp2;
+		switch (*(fmt++)){
+			case 's':
+				s=va_arg(ap,char *);
+				for(char *ss=s;*ss;++ss,++stt) *stt=*ss;
+				break;
+			case 'd':
+				d=va_arg(ap,int);
+				stt=num_to_str(stt,d,flags&positive);
+				break;
+			case 'c':
+				c=(char)va_arg(ap,int);
+				*stt++=c;
+				break;
+			case '%':
+				*stt++='%';
+				break;
+			case 'u':
+				d=va_arg(ap,int);
+				stt=unum_to_str(stt,(unsigned)d,10);
+				break;
+			case 'o':
+				d=va_arg(ap,int);
+				stt=unum_to_str(stt,(unsigned)d,8);
+				break;
+			case 'X': case 'x':
+				d=va_arg(ap,int);
+				stt=unum_to_str(stt,(unsigned)d,16);
+				break;
+			default:
+				panic("Not implemented or error happens");
+				break;
+		}
+		*stt='\0';
+
+		if(!(flags&left))
+			for(int i=0;i+strlen(temp2)<width;++i) *(st++)=(flags&zero?'0':' ');
+		strcpy(st,temp2);
+		st+=strlen(temp2);
+		if(flags&left)
+			for(int i=0;i+strlen(temp2)<width;++i) *(st++)=' ';
 	}
 	*st='\0';
 	return st-out;
