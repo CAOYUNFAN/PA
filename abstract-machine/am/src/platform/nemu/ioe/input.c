@@ -4,10 +4,10 @@
 
 #define KEYDOWN_MASK 0x8000
 #define totnum_keyboard 101
-static bool keyboard_status[totnum_keyboard]={};
+//static bool keyboard_status[totnum_keyboard]={};
 void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
   uint32_t temp=inl(KBD_ADDR);
   if(temp)printf("testing!%u",temp);
-  kbd->keydown = (keyboard_status[temp]=!keyboard_status[temp]);
-  kbd->keycode = temp;
+  kbd->keydown = (temp&KEYDOWN_MASK);//(keyboard_status[temp]=!keyboard_status[temp]);
+  kbd->keycode = temp&(KEYDOWN_MASK-1);
 }
