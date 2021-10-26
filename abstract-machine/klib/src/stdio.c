@@ -29,12 +29,12 @@ static char temp[MAX_NUM_stdio];
 
 int printf(const char *fmt, ...) {
 	va_list ap; va_start(ap,fmt);
-	int t=vsprintf(temp,fmt,ap);
+	int len=vsprintf(temp,fmt,ap);
 	va_end(ap);
 	putstr(temp);
-	return t;
+	return len;
 }
-
+static char temp2[100];
 int vsprintf(char *out, const char *fmt, va_list ap) {
   	int d;char c;char *st=out;char* s;
 	while(*fmt){
@@ -57,9 +57,41 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 				case 'o':d=va_arg(ap,int);
 						st=unum_to_str(st,(unsigned)d,8);
 						break;
-				case 'x':d=va_arg(ap,int);
+				case 'X': case 'x':d=va_arg(ap,int);
 						st=unum_to_str(st,(unsigned)d,16);
 						break;
+				case '0':{int len=0;
+						for(++fmt;(*fmt)>='0'&&(*fmt)<='9';++fmt) len=(len*10)+*fmt-'0';
+						char *stt=temp2;
+						switch (*(fmt)){
+						case 's': s=va_arg(ap,char *);
+								for(char *ss=s;*ss;++ss,++stt) *stt=*ss;
+								break;
+						case 'd':d=va_arg(ap,int);
+								stt=num_to_str(stt,d);
+								break;
+						case 'c':c=(char)va_arg(ap,int);
+								*stt++=c;
+								break;
+						case '%':*stt++='%';
+								break;
+						case 'u':d=va_arg(ap,int);
+								stt=unum_to_str(stt,(unsigned)d,10);
+								break;
+						case 'o':d=va_arg(ap,int);
+								stt=unum_to_str(stt,(unsigned)d,8);
+								break;
+						case 'X': case 'x':d=va_arg(ap,int);
+								stt=unum_to_str(stt,(unsigned)d,16);
+								break;
+						default:panic("Not implemented or error happens");
+							break;
+						}
+						*stt='\0';
+						for(int i=0;i+strlen(temp2)<len;++i) *(st++)='0';
+						strcpy(st,temp2);
+						st+=strlen(temp2);
+						break;}
 				default:panic("Not implemented or error happens");
 			}
 			++fmt;
@@ -71,22 +103,19 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 
 int sprintf(char *out, const char *fmt, ...) {
 	va_list ap; va_start(ap,fmt);
-	int temp=vsprintf(out,fmt,ap);
-	va_end(ap);
-	return temp;
+	return vsprintf(out,fmt,ap);
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
 	va_list ap; va_start(ap,fmt);
-	int temp=vsnprintf(out,n,fmt,ap);
-	va_end(ap);
-	return temp;
+	return vsnprintf(out,n,fmt,ap);
 }
 
 int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
-	int temp=vsprintf(out,fmt,ap);
-	if(temp>=n) out[n-1]='\0';
-	return temp;
+	int len=vsprintf(temp,fmt,ap);
+	strncpy(out,temp,n-1);
+	out[n-1]='\0';
+	return len;
 }
 
 #endif
