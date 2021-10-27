@@ -29,7 +29,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
 //  printf("x=%3u,y=%3u,h=%u,w=%u,width=%u,height=%u\n",ctl->x,ctl->y,ctl->h,ctl->w,wide,high);
   for(int i=0;i<ctl->h;++i)
   for(int j=0;j<ctl->w;++j)
-  outl((ctl->x+j)+wide*(ctl->y+i)+FB_ADDR,*(data++));
+  outl(((ctl->x+j)+wide*(ctl->y+i))*4+FB_ADDR,*(data++));
   if (ctl->sync) {
     outl(SYNC_ADDR, 1);
   }
