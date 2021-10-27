@@ -5,6 +5,7 @@
 #define SYNC_ADDR (VGACTL_ADDR + 4)
 
 void __am_gpu_init() {
+  printf("initial!\n");
   int i;
   int w = (int)inw(VGACTL_ADDR+2);  // TODO: get the correct width
   int h = (int)inw(VGACTL_ADDR);  // TODO: get the correct height
@@ -14,9 +15,8 @@ void __am_gpu_init() {
 }
 
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
-  printf("config!\n");
-//  uint32_t w=(uint32_t)inw(VGACTL_ADDR+2),h=(uint32_t)inw(VGACTL_ADDR);
-  __uint32_t w=0u,h=0u;
+//  printf("config!\n");
+  uint32_t w=(uint32_t)inw(VGACTL_ADDR+2),h=(uint32_t)inw(VGACTL_ADDR);
   *cfg = (AM_GPU_CONFIG_T) {
     .present = true, .has_accel = false,
     .width = w, .height = h,
