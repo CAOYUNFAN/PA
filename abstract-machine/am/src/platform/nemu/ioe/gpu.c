@@ -12,10 +12,10 @@ void __am_gpu_init() {
   for (i = 0; i < w * h; i ++) fb[i] = i;
   outl(SYNC_ADDR, 1);
 }
-#define VGACTL_ADDR__ 0xa1000000
+
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
   printf("config!\n");
-  uint32_t w=(uint32_t)inw(VGACTL_ADDR__+2),h=(uint32_t)inw(VGACTL_ADDR__);
+  uint32_t w=(uint32_t)inw(VGACTL_ADDR+2),h=(uint32_t)inw(VGACTL_ADDR);
   *cfg = (AM_GPU_CONFIG_T) {
     .present = true, .has_accel = false,
     .width = w, .height = h,
