@@ -1,5 +1,6 @@
 #include <am.h>
 #include <nemu.h>
+#include <stdio.h>
 
 #define SYNC_ADDR (VGACTL_ADDR + 4)
 #define wide (uint32_t)inw(VGACTL_ADDR+2)
@@ -25,6 +26,7 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
 
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   size_t *data=ctl->pixels;
+  printf("x=%u,y=%u,h=%u,w=%u",ctl->x,ctl->y,ctl->h,ctl->w);
   for(int i=0;i<ctl->h;++i)
   for(int j=0;j<ctl->w;++j)
   outl((ctl->x+j)+wide*(ctl->y+i)+FB_ADDR,*(data++));
