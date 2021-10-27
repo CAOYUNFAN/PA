@@ -58,9 +58,10 @@ static inline void update_screen() {
 void vga_update_screen() {
   // TODO: call `update_screen()` when the sync register is non-zero,
   // then zero out the sync register
-  if(vgactl_port_base[7]){
+  #define sync vgactl_port_base[5]
+  if(sync){
     update_screen();
-    vgactl_port_base[7]=0;
+    sync=0;
   }
 }
 
