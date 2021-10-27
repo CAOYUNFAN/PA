@@ -59,8 +59,10 @@ void assert_fail_msg() {
   statistic();
 }
 void trace_and_difftest(Decode *s, vaddr_t pc){
+  #ifndef CONFIG_TARGET_AM
   extern bool watchpoint_check();
   if(watchpoint_check()) nemu_state.state=NEMU_STOP;
+  #endif
 }
 void fetch_decode(Decode *s, vaddr_t pc) {
   s->pc = pc;
