@@ -63,6 +63,9 @@ void trace_and_difftest(Decode *s, vaddr_t pc){
   extern bool watchpoint_check();
   if(watchpoint_check()) nemu_state.state=NEMU_STOP;
   #endif
+  #ifdef CONFIG_DEBUG
+  debug_hook(pc,s->logbuf);
+  #endif
 }
 void fetch_decode(Decode *s, vaddr_t pc) {
   s->pc = pc;
