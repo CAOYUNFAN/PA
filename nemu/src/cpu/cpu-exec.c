@@ -21,10 +21,10 @@ rtlreg_t tmp_reg[4];
 void device_update();
 
 #ifdef CONFIG_DEBUG
-static void debug_hook(vaddr_t pc, const char *asmbuf) {
+/*static void debug_hook(vaddr_t pc, const char *asmbuf) {
   log_write("%s\n", asmbuf);
   if (g_print_step) { puts(asmbuf); }
-}
+}*/
 #endif
 
 #include <isa-exec.h>
@@ -62,9 +62,6 @@ void trace_and_difftest(Decode *s, vaddr_t pc){
   #ifndef CONFIG_TARGET_AM
   extern bool watchpoint_check();
   if(watchpoint_check()) nemu_state.state=NEMU_STOP;
-  #endif
-  #ifdef CONFIG_DEBUG
-  debug_hook(pc,s->logbuf);
   #endif
 }
 void fetch_decode(Decode *s, vaddr_t pc) {
