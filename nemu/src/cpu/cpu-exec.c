@@ -21,10 +21,10 @@ rtlreg_t tmp_reg[4];
 void device_update();
 
 #ifdef CONFIG_DEBUG
-static void debug_hook(vaddr_t pc, const char *asmbuf) {
+/*static void debug_hook(vaddr_t pc, const char *asmbuf) {
   log_write("%s\n", asmbuf);
   if (g_print_step) { puts(asmbuf); }
-}
+}*/
 #endif
 
 #include <isa-exec.h>
