@@ -41,7 +41,7 @@ int printf(const char *fmt, ...) {
 	return len;
 }
 int vsprintf(char *out, const char *fmt, va_list ap) {
-	putstr(fmt);
+//	putstr(fmt);
   	int d;char c;char *st=out;char* s;
 	while(*fmt){
 		if(*fmt!='%'){
@@ -118,7 +118,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 				d=va_arg(ap,int);
 				stt=unum_to_str(stt,(unsigned)d,8);
 				break;
-			case 'X': case 'x':
+			case 'X': case 'x':case 'p':
 				d=va_arg(ap,int);
 				stt=unum_to_str(stt,(unsigned)d,16);
 				break;
