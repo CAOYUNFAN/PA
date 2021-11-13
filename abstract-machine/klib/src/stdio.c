@@ -41,7 +41,7 @@ int printf(const char *fmt, ...) {
 	return len;
 }
 int vsprintf(char *out, const char *fmt, va_list ap) {
-	putstr(fmt);
+//	putstr(fmt);
   	int d;char c;char *st=out;char* s;
 	while(*fmt){
 		if(*fmt!='%'){
@@ -88,8 +88,8 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 			if(length=='l'&&*fmt=='l'){
 				length='L';
 				++fmt;
+				panic("Not implemented or Error hapens");
 			}
-			panic("Not implemented or Error hapens");
 		}
 
 		static char temp2[MAX_NUM_stdio];
