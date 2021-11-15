@@ -2,7 +2,6 @@
 
 void event_yield(Context *c){
   printf("EVENT_YIELD!\n");
-  c->mepc+=4;
   return;
 }
 
