@@ -7,7 +7,12 @@ typedef struct {
   struct {
     rtlreg_t _32;
   } gpr[32];
-
+  
+  struct 
+  {
+    rtlreg_t _32;
+  } sr[4096];
+  
   vaddr_t pc;
 } riscv32_CPU_state;
 
