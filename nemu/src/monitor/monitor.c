@@ -27,8 +27,8 @@ void ftrace_init(char * args);
 
 static char *log_file = NULL;
 static char *diff_so_file = NULL;
-//static char *img_file = "/home/cao/ics2021/am-kernels/tests/cpu-tests/build/hello-str-riscv32-nemu.bin";
-static char *img_file= NULL;
+static char *img_file = "/home/cao/ics2021/nanos-lite/build/nanos-lite-riscv32-nemu.bin";
+//static char *img_file= NULL;
 static int difftest_port = 1234;
 
 static long load_img() {
