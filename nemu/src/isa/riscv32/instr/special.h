@@ -25,6 +25,8 @@ def_EHelper(mret){
   rtl_mv(s,&s->dnpc,&MEPC);
 }
 
+#define def_e_call_from_M_mode 11
+
 def_EHelper(ecall) {
-  rtl_li(s,&s->dnpc,isa_raise_intr(1,s->pc));
+  rtl_li(s,&s->dnpc,isa_raise_intr(def_e_call_from_M_mode,s->pc));
 }
