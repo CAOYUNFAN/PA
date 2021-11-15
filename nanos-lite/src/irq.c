@@ -1,7 +1,8 @@
 #include <common.h>
 
-void event_yield(){
+void event_yield(Context *c){
   printf("EVENT_YIELD!\n");
+  c->mepc+=4;
   return;
 }
 
@@ -13,7 +14,7 @@ void event_yield(){
 
 static Context* do_event(Event e, Context* c) {
   switch (e.event) {
-    case EVENT_YIELD: event_yield();break;
+    case EVENT_YIELD: event_yield(c);break;
     default: panic("Unhandled event ID = %d", e.event);
   }
 
