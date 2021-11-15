@@ -14,7 +14,7 @@ void event_yield(Context *c){
 
 static Context* do_event(Event e, Context* c) {
   #ifdef CONFIG_ETRACE
-  Log("Event ID=%2d,mcause=%2d,from pc=%8x\n",e.event,c->mcause,c->mepc);
+  Log("Event ID=%2d,mcause=%2d,from pc=%8x",e.event,c->mcause,c->mepc);
   #endif
   switch (e.event) {
     case EVENT_YIELD: event_yield(c);break;
