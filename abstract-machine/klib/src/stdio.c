@@ -30,7 +30,7 @@ inline static char* unum_to_str(char *st,unsigned int d,int base){
 	return st;
 }
 
-#define MAX_NUM_stdio 1000
+#define MAX_NUM_stdio 1000000
 static char temp[MAX_NUM_stdio];
 
 int printf(const char *fmt, ...) {
