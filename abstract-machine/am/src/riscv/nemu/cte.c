@@ -9,9 +9,7 @@ Context* __am_irq_handle(Context *c) {
 //  printf("%x %d\n%x %d\n%x %d\n",c->mcause,c->mcause,c->mstatus,c->mstatus,c->mepc,c->mepc);
   if (user_handler) {
     Event ev = {0};
-    #ifdef CONFIG_ETRACE
-    Log("Error %2d,pc=%8x",c->mcause,c->mepc);
-    #endif
+    printf("Error %2d,pc=%8x",c->mcause,c->mepc);
     switch (c->mcause) {
       case 11: ev.event = EVENT_YIELD; break;
       default: ev.event = EVENT_ERROR; break;
