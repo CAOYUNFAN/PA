@@ -4,9 +4,11 @@
 #ifdef __LP64__
 # define Elf_Ehdr Elf64_Ehdr
 # define Elf_Phdr Elf64_Phdr
+# define Elf_Shdr Elf64_Shdr
 #else
 # define Elf_Ehdr Elf32_Ehdr
 # define Elf_Phdr Elf32_Phdr
+# define Elf_Shdr Elf32_Shdr
 #endif
 
 void check_elf(const Elf_Ehdr *ehdr){
@@ -36,12 +38,27 @@ void check_elf(const Elf_Ehdr *ehdr){
 }
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
-  Elf_Ehdr ehdr;
   extern size_t ramdisk_read(void *buf, size_t offset, size_t len);
   extern size_t ramdisk_write(const void *buf, size_t offset, size_t len);
+
+  static Elf_Ehdr ehdr;
   ramdisk_read(&ehdr,0,sizeof(ehdr));
   check_elf(&ehdr);
-  panic("Successfully read. Not Implemnted");
+  size_t total=ehdr.e_phnum;
+  if(total==PN_XNUM){
+    Elf_Shdr shdr;
+    ramdisk_read(&shdr,ehdr.e_shoff,sizeof(shdr));
+    total=shdr.sh_info;
+  }
+  static Elf_Phdr phdr;
+  for(size_t i=0,j=ehdr.e_phoff;i<total;++i,j+=ehdr.e_phentsize){
+    ramdisk_read(&phdr,j,sizeof(phdr));
+    if(phdr.p_type==PT_LOAD){
+      ramdisk_read((void *)phdr.p_vaddr,phdr.p_offset,phdr.p_filesz);
+      memset((void *)(phdr.p_vaddr+phdr.p_filesz),0,phdr.p_memsz-phdr.p_filesz);
+    }
+  }
+//  panic("Successfully read. Not Implemnted");
   return 0;
 }
 
