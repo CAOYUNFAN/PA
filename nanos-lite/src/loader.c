@@ -42,7 +42,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   ramdisk_read(&ehdr,0,sizeof(ehdr));
   check_elf(&ehdr);
   
-
   return 0;
 }
 
