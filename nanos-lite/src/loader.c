@@ -41,7 +41,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   extern size_t ramdisk_write(const void *buf, size_t offset, size_t len);
   ramdisk_read(&ehdr,0,sizeof(ehdr));
   check_elf(&ehdr);
-  
+  panic("Successfully read. Not Implemnted");
   return 0;
 }
 
