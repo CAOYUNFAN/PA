@@ -59,6 +59,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     }
   }
 //  panic("Successfully read. Not Implemnted");
+  Log("loading ready.");
   return 0;
 }
 
