@@ -35,7 +35,7 @@ void do_syscall(Context *c) {
   a[2] = c->GPR3;
   a[3] = c->GPR4;
   extern void event_yield(Context *c);
-  Log("System call %u from pc %u",a[0],c->mepc);
+  Log("System call %u from pc %x",a[0],c->mepc);
   switch (a[0]) {
     case SYS_yield: event_yield(c); break;
     case SYS_exit: sys_exit(c); break;
