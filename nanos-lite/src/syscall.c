@@ -3,8 +3,13 @@
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
+  a[1] = c->GPR2;
+  a[2] = c->GPR3;
+  a[3] = c->GPR4;
+  extern void event_yield(Context *c);
 
   switch (a[0]) {
+    case 1: event_yield(c);break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 }
