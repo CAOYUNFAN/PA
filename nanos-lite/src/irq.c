@@ -11,14 +11,12 @@ void event_yield(Context *c){
   EVENT_IRQ_TIMER, EVENT_IRQ_IODEV,
 };*/
 
-#define a7 c->gpr[17]
-
 static Context* do_event(Event e, Context* c) {
   #ifdef CONFIG_ETRACE
   Log("Event ID=%2d",e.event);
   #endif
   switch (e.event) {
-    case EVENT_YIELD: if(a7==-1) event_yield(c);break;
+    case EVENT_YIELD: event_yield(c);break;
     default: panic("Unhandled event ID = %d", e.event);
   }
 
