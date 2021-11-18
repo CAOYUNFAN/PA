@@ -5,8 +5,8 @@
 static Context* (*user_handler)(Event, Context*) = NULL;
 
 Context* __am_irq_handle(Context *c) {
-//  for(int i=0;i<32;++i) printf("%x %d\n",c->gpr[i],c->gpr[i]);
-//  printf("%x %d\n%x %d\n%x %d\n",c->mcause,c->mcause,c->mstatus,c->mstatus,c->mepc,c->mepc);
+  for(int i=0;i<32;++i) printf("%x %d\n",c->gpr[i],c->gpr[i]);
+  printf("%x %d\n%x %d\n%x %d\n",c->mcause,c->mcause,c->mstatus,c->mstatus,c->mepc,c->mepc);
   if (user_handler) {
     Event ev = {0};
 //    printf("Error %2d,pc=%8x",c->mcause,c->mepc);
