@@ -12,7 +12,8 @@ Context* __am_irq_handle(Context *c) {
     Event ev = {0};
 //    printf("Error %2d,pc=%8x",c->mcause,c->mepc);
     switch (c->mcause) {
-      case 11: ev.event = EVENT_YIELD; break;
+      case 11: 
+        if(a7==-1) {ev.event = EVENT_YIELD; break;}
       default: ev.event = EVENT_ERROR; break;
     }
 
