@@ -35,7 +35,7 @@ void do_syscall(Context *c) {
   a[2] = c->GPR3;
   a[3] = c->GPR4;
   extern void event_yield(Context *c);
-  printf("%u\n",a[0]);
+  Log("System call %u",a[0]);
   switch (a[0]) {
     case SYS_yield: event_yield(c); break;
     case SYS_exit: sys_exit(c); break;
