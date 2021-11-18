@@ -13,7 +13,7 @@ Context* __am_irq_handle(Context *c) {
 //    printf("Error %2d,pc=%8x",c->mcause,c->mepc);
     switch (c->mcause) {
       case 11: 
-        if(a7==-1) {ev.event = EVENT_YIELD; break;}
+        if(a7==-1) ev.event = EVENT_YIELD; else ev.event=EVENT_SYSCALL; break;
       default: ev.event = EVENT_ERROR; break;
     }
 
