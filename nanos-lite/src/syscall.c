@@ -36,7 +36,7 @@ void do_syscall(Context *c) {
   a[3] = c->GPR4;
   extern void event_yield(Context *c);
   #ifdef CONFIG_STRACE
-  Log("System call %u from pc %x,with %12d:%8x,%12d:%8x,%12d:%8x",a[0],c->mepc,a[1],a[1],a[2],a[2],a[3],a[3]);
+  Log("System call %u with %12d:%8x,%12d:%8x,%12d:%8x",a[0],a[1],a[1],a[2],a[2],a[3],a[3]);
   #endif
   switch (a[0]) {
     case SYS_yield: event_yield(c); break;
