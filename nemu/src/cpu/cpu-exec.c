@@ -68,7 +68,7 @@ void fetch_decode(Decode *s, vaddr_t pc) {
   s->pc = pc;
   s->snpc = pc;
   int idx = isa_fetch_decode(s);
-  assert(s->pc==pc&&s->snpc==pc+4);
+//  assert(s->pc==pc&&s->snpc==pc+4);
   s->dnpc = s->snpc;
   s->EHelper = g_exec_table[idx];
 #ifdef CONFIG_ITRACE
