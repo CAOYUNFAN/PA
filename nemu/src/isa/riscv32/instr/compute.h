@@ -11,9 +11,10 @@ def_EHelper(jal){
 	rtl_j(s,id_src1->imm+s->pc);
 }
 def_EHelper(jalr){
-	rtl_mv(s,id_dest->preg,&s->snpc);
+	rtl_mv(s,t0,&s->snpc);
 	rtl_addi(s,&s->dnpc,id_src1->preg,id_src2->imm);
-//	rtl_andi(s,&s->dnpc,&s->dnpc,0xFFFFFFFE);
+	rtl_andi(s,&s->dnpc,&s->dnpc,0xFFFFFFFE);
+	rtl_mv(s,id_dest->preg,t0);
 	assert(s->dnpc==(*id_src1->preg+id_src2->imm)&&(~1));
 }
 

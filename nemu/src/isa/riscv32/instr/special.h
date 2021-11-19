@@ -11,14 +11,16 @@ def_EHelper(nemu_trap) {
 
 def_EHelper(csrrw) {
   rtlreg_t *now=Cao_get_reg(id_src2->imm);
+  rtl_mv(s,t0,id_src1->preg);
   rtl_mv(s,id_dest->preg,now);
-  rtl_mv(s,now,id_src1->preg);
+  rtl_mv(s,now,t0);
 }
 
 def_EHelper(csrrs) {
   rtlreg_t *now=Cao_get_reg(id_src2->imm);
+  rtl_mv(s,t0,id_src1->preg);
   rtl_mv(s,id_dest->preg,now);
-  rtl_or(s,now,now,id_src1->preg);
+  rtl_or(s,now,now,t0);
 }
 
 def_EHelper(mret){
