@@ -13,7 +13,7 @@ def_EHelper(jal){
 def_EHelper(jalr){
 	rtl_mv(s,id_dest->preg,&s->snpc);
 	rtl_addi(s,&s->dnpc,id_src1->preg,id_src2->imm);
-	rtl_andi(s,&s->dnpc,&s->dnpc,0xFFFFFFFE);
+//	rtl_andi(s,&s->dnpc,&s->dnpc,0xFFFFFFFE);
 	assert(s->dnpc==(*id_src1->preg+id_src2->imm)&&(~1));
 }
 
