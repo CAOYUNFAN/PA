@@ -24,16 +24,20 @@ enum SYS_type{
   SYS_gettimeofday
 };
 
-void sys_exit(Context *c){
+void sys_exit(){
   halt(0);
 }
 
-void sys_write(Context *c){
-  unsigned char * ch=(unsigned char *)c->GPR3;
+int sys_write(int fd,const void *buf,size_t count){
   int i=0;
-  if(c->GPR2==1||c->GPR2==2)
-  for(;i<c->GPR4;++i,++ch) putch(*ch);
-  c->GPRx=i;
+  const unsigned char * ch=buf;
+  if(fd==1||fd==2)
+  for(;i<count;++i,++ch) putch(*ch);
+  return i;
+}
+
+int sys_brk(void *addr){
+  return 0;
 }
 
 void do_syscall(Context *c) {
@@ -48,8 +52,9 @@ void do_syscall(Context *c) {
   #endif
   switch (a[0]) {
     case SYS_yield: event_yield(c); break;
-    case SYS_exit: sys_exit(c); break;
-    case SYS_write: sys_write(c); break;
+    case SYS_exit: sys_exit(); break;
+    case SYS_write: c->GPRx=sys_write(a[1],(unsigned char *)a[2],a[3]); break;
+    case SYS_brk: c->GPRx=sys_brk((void *)a[1]); break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 }
