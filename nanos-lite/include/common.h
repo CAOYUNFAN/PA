@@ -7,8 +7,8 @@
 //#define MULTIPROGRAM
 //#define TIME_SHARING
 
-#define CONFIG_ETRACE
-#define CONFIG_STRACE
+//#define CONFIG_ETRACE
+//#define CONFIG_STRACE
 
 #include <am.h>
 #include <klib.h>
