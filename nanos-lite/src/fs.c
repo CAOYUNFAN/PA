@@ -84,14 +84,22 @@ size_t fs_read(int fd, void *buf, size_t len){
   check_files(fd);
   check_filerange(fd,&len);
   assert(file_table[fd].read!=NULL);
-  return file_table[fd].read(buf,file_table[fd].disk_offset+file_table[fd].open_offset,len);
+  Log("Read from file %s,with len %u",file_table[fd].name,len);
+  file_table[fd].read(buf,file_table[fd].disk_offset+file_table[fd].open_offset,len);
+  file_table[fd].open_offset+=len;
+  return len;
 }
 
 size_t fs_write(int fd, const void *buf, size_t len){
   check_files(fd);
   check_filerange(fd,&len);
+  static char temp[100000];
+  memcpy(temp,buf,len);
+  Log("Print to file %s,len %d,string:\n%s",file_table[fd].name,len,temp);
   assert(file_table[fd].write!=NULL);
-  return file_table[fd].write(buf,file_table[fd].disk_offset+file_table[fd].open_offset,len);
+  file_table[fd].write(buf,file_table[fd].disk_offset+file_table[fd].open_offset,len);
+  file_table[fd].open_offset+=len;
+  return len;
 }
 
 size_t fs_lseek(int fd, size_t offset, int whence){
