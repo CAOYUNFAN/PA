@@ -79,7 +79,7 @@ int fs_close(int fd){
 size_t fs_read(int fd, void *buf, size_t len){
   check_files(fd);
   if(file_table[fd].size) check_filerange(fd,&len);
-//  Log("Read from file %s,with len %u",file_table[fd].name,len);
+  Log("Read from file %s,with len %u",file_table[fd].name,len);
   if(file_table[fd].read!=NULL){
     size_t temp=file_table[fd].read(buf,file_table[fd].open_offset,len);
     file_table[fd].open_offset+=temp;
@@ -94,9 +94,9 @@ size_t fs_read(int fd, void *buf, size_t len){
 size_t fs_write(int fd, const void *buf, size_t len){
   check_files(fd);
   if(file_table[fd].size) check_filerange(fd,&len);
-//  static char temp[100000];
-//  memcpy(temp,buf,len);
-//  Log("Print to file %s,len %d,string:\n%s",file_table[fd].name,len,temp);
+  static char temp[100000];
+  memcpy(temp,buf,len);
+  Log("Print to file %s,len %d,string:\n%s",file_table[fd].name,len,temp);
   if(file_table[fd].write!=NULL){
     size_t temp=file_table[fd].write(buf,file_table[fd].open_offset,len);
     file_table[fd].open_offset+=temp;
