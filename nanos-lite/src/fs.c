@@ -8,7 +8,6 @@ typedef struct {
   size_t size;
   size_t disk_offset;
   size_t open_offset;
-  size_t is_open;
   ReadFn read;
   WriteFn write;
 } Finfo;
@@ -27,9 +26,9 @@ size_t invalid_write(const void *buf, size_t offset, size_t len) {
 
 /* This is the information about all files in disk. */
 static Finfo file_table[] __attribute__((used)) = {
-  [FD_STDIN]  = {"stdin", 0, 0, 0, 0, invalid_read, invalid_write},
-  [FD_STDOUT] = {"stdout", 0, 0, 0, 0, invalid_read, invalid_write},
-  [FD_STDERR] = {"stderr", 0, 0, 0, 0, invalid_read, invalid_write},
+  [FD_STDIN]  = {"stdin", 0, 0, 0, invalid_read, invalid_write},
+  [FD_STDOUT] = {"stdout", 0, 0, 0, invalid_read, invalid_write},
+  [FD_STDERR] = {"stderr", 0, 0, 0, invalid_read, invalid_write},
 #include "files.h"
 };
 
@@ -42,15 +41,14 @@ int fs_close(int fd);
 
 static inline void check_files(int fd){
   if(fd>=total_size) panic("No such file!");
-  if(!file_table[fd].is_open) panic("File %d is not open!",fd);
   return;
 }
 
-static inline size_t min(size_t a,size_t b) {return a<b?a:b;}
+static inline size_t Min(size_t a,size_t b) {return a<b?a:b;}
 
 static inline void check_filerange(int fd,size_t * len){
   assert(file_table[fd].open_offset>=0&&file_table[fd].open_offset<=file_table[fd].size);
-  *len=min(*len,file_table[fd].size-file_table[fd].open_offset);
+  *len=Min(*len,file_table[fd].size-file_table[fd].open_offset);
   return;
 }
 
@@ -65,10 +63,7 @@ int fs_open(const char *pathname, int flags, int mode){
   Log("open file %s",pathname);
   for(int i=0;i<total_size;++i)
   if(strcmp(file_table[i].name,pathname)==0){
-    file_table[i].is_open=1;
     file_table[i].open_offset=0;
-    file_table[i].read=ramdisk_read;
-    file_table[i].write=ramdisk_write;
     return i;
   }
   panic("File %s not found!",pathname);
@@ -78,30 +73,39 @@ int fs_open(const char *pathname, int flags, int mode){
 int fs_close(int fd){
   check_files(fd);
   Log("Close file %s",file_table[fd].name);
-  file_table[fd].is_open=0;
   return 0;
 }
 
 size_t fs_read(int fd, void *buf, size_t len){
   check_files(fd);
-  check_filerange(fd,&len);
-  assert(file_table[fd].read!=NULL);
-  Log("Read from file %s,with len %u",file_table[fd].name,len);
-  file_table[fd].read(buf,file_table[fd].disk_offset+file_table[fd].open_offset,len);
-  file_table[fd].open_offset+=len;
-  return len;
+  if(file_table[fd].size) check_filerange(fd,&len);
+//  Log("Read from file %s,with len %u",file_table[fd].name,len);
+  if(file_table[fd].read!=NULL){
+    size_t temp=file_table[fd].read(buf,file_table[fd].open_offset,len);
+    file_table[fd].open_offset+=temp;
+    return temp;
+  }else{
+    ramdisk_read(buf,file_table[fd].disk_offset+file_table[fd].open_offset,len);
+    file_table[fd].open_offset+=len;
+    return len;
+  }
 }
 
 size_t fs_write(int fd, const void *buf, size_t len){
   check_files(fd);
-  check_filerange(fd,&len);
-  static char temp[100000];
-  memcpy(temp,buf,len);
-  Log("Print to file %s,len %d,string:\n%s",file_table[fd].name,len,temp);
-  assert(file_table[fd].write!=NULL);
-  file_table[fd].write(buf,file_table[fd].disk_offset+file_table[fd].open_offset,len);
-  file_table[fd].open_offset+=len;
-  return len;
+  if(file_table[fd].size) check_filerange(fd,&len);
+//  static char temp[100000];
+//  memcpy(temp,buf,len);
+//  Log("Print to file %s,len %d,string:\n%s",file_table[fd].name,len,temp);
+  if(file_table[fd].write!=NULL){
+    size_t temp=file_table[fd].write(buf,file_table[fd].open_offset,len);
+    file_table[fd].open_offset+=temp;
+    return temp;
+  }else{
+    ramdisk_write(buf,file_table[fd].disk_offset+file_table[fd].open_offset,len);
+    file_table[fd].open_offset+=len;
+    return len;
+  }
 }
 
 size_t fs_lseek(int fd, size_t offset, int whence){
