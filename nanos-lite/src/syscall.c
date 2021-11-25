@@ -1,7 +1,7 @@
 #include <common.h>
 #include "syscall.h"
 
-enum SYS_type{
+/*enum SYS_type{
   SYS_exit,
   SYS_yield,
   SYS_open,
@@ -22,7 +22,13 @@ enum SYS_type{
   SYS_wait,
   SYS_times,
   SYS_gettimeofday
-};
+};*/
+
+extern int fs_open(const char *pathname, int flags, int mode);
+extern size_t fs_read(int fd, void *buf, size_t len);
+extern size_t fs_write(int fd, const void *buf, size_t len);
+extern size_t fs_lseek(int fd, size_t offset, int whence);
+extern int fs_close(int fd);
 
 void sys_exit(){
   halt(0);
@@ -33,11 +39,18 @@ int sys_write(int fd,const void *buf,size_t count){
   const unsigned char * ch=buf;
   if(fd==1||fd==2)
   for(;i<count;++i,++ch) putch(*ch);
+  else return fs_write(fd,buf,count);
   return i;
 }
 
 int sys_brk(void *addr){
   return 0;
+}
+
+int sys_read(int fd,void *buf,size_t count){
+  if(fd) return fs_read(fd,buf,count);
+  else panic("STDIN not implemented!");
+  return -1;
 }
 
 void do_syscall(Context *c) {
@@ -48,13 +61,16 @@ void do_syscall(Context *c) {
   a[3] = c->GPR4;
   extern void event_yield(Context *c);
   #ifdef CONFIG_STRACE
-  Log("System call %u with %12d:%8x,%12d:%8x,%12d:%8x",a[0],a[1],a[1],a[2],a[2],a[3],a[3]);
+  Log("Program %s System call %u with %12d:%8x,%12d:%8x,%12d:%8x",a[0],a[1],a[1],a[2],a[2],a[3],a[3]);
   #endif
   switch (a[0]) {
     case SYS_yield: event_yield(c); break;
     case SYS_exit: sys_exit(); break;
     case SYS_write: c->GPRx=sys_write(a[1],(unsigned char *)a[2],a[3]); break;
     case SYS_brk: c->GPRx=sys_brk((void *)a[1]); break;
+    case SYS_open: c->GPRx=fs_open((void *)a[1],a[2],a[3]); break;
+    case SYS_close: c->GPRx=fs_close(a[1]); break;
+    case SYS_read: c->GPRx=sys_read(a[1],(void *)a[2],a[3]);
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 }
