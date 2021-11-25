@@ -60,7 +60,7 @@ extern size_t ramdisk_read(void *buf, size_t offset, size_t len);
 extern size_t ramdisk_write(const void *buf, size_t offset, size_t len);
 
 int fs_open(const char *pathname, int flags, int mode){
-  Log("open file %s",pathname);
+//  Log("open file %s",pathname);
   for(int i=0;i<total_size;++i)
   if(strcmp(file_table[i].name,pathname)==0){
     file_table[i].open_offset=0;
@@ -72,14 +72,14 @@ int fs_open(const char *pathname, int flags, int mode){
 
 int fs_close(int fd){
   check_files(fd);
-  Log("Close file %s",file_table[fd].name);
+//  Log("Close file %s",file_table[fd].name);
   return 0;
 }
 
 size_t fs_read(int fd, void *buf, size_t len){
   check_files(fd);
   if(file_table[fd].size) check_filerange(fd,&len);
-  Log("Read from file %s,with len %u",file_table[fd].name,len);
+//  Log("Read from file %s,with len %u",file_table[fd].name,len);
   if(file_table[fd].read!=NULL){
     size_t temp=file_table[fd].read(buf,file_table[fd].open_offset,len);
     file_table[fd].open_offset+=temp;
@@ -96,7 +96,7 @@ size_t fs_write(int fd, const void *buf, size_t len){
   if(file_table[fd].size) check_filerange(fd,&len);
   static char temp[100000];
   memcpy(temp,buf,len);
-  Log("Print to file %s,len %d,string:\n%s",file_table[fd].name,len,temp);
+//  Log("Print to file %s,len %d,string:\n%s",file_table[fd].name,len,temp);
   if(file_table[fd].write!=NULL){
     size_t temp=file_table[fd].write(buf,file_table[fd].open_offset,len);
     file_table[fd].open_offset+=temp;
