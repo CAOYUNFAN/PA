@@ -7,6 +7,8 @@ typedef struct {
   char *name;
   size_t size;
   size_t disk_offset;
+  size_t open_offset;
+  size_t is_open;
   ReadFn read;
   WriteFn write;
 } Finfo;
@@ -25,20 +27,80 @@ size_t invalid_write(const void *buf, size_t offset, size_t len) {
 
 /* This is the information about all files in disk. */
 static Finfo file_table[] __attribute__((used)) = {
-  [FD_STDIN]  = {"stdin", 0, 0, invalid_read, invalid_write},
-  [FD_STDOUT] = {"stdout", 0, 0, invalid_read, invalid_write},
-  [FD_STDERR] = {"stderr", 0, 0, invalid_read, invalid_write},
+  [FD_STDIN]  = {"stdin", 0, 0, 0, 0, invalid_read, invalid_write},
+  [FD_STDOUT] = {"stdout", 0, 0, 0, 0, invalid_read, invalid_write},
+  [FD_STDERR] = {"stderr", 0, 0, 0, 0, invalid_read, invalid_write},
 #include "files.h"
 };
+
+static int total_size=sizeof(file_table)/sizeof(Finfo);
+int fs_open(const char *pathname, int flags, int mode);
+size_t fs_read(int fd, void *buf, size_t len);
+size_t fs_write(int fd, const void *buf, size_t len);
+size_t fs_lseek(int fd, size_t offset, int whence);
+int fs_close(int fd);
+
+static inline void check_files(int fd){
+  if(fd>=total_size) panic("No such file!");
+  if(!file_table[fd].is_open) panic("File %d is not open!",fd);
+  return;
+}
+
+static inline size_t min(size_t a,size_t b) {return a<b?a:b;}
+
+static inline void check_filerange(int fd,size_t * len){
+  assert(file_table[fd].open_offset>=0&&file_table[fd].open_offset<=file_table[fd].size);
+  *len=min(*len,file_table[fd].size-file_table[fd].open_offset);
+  return;
+}
 
 void init_fs() {
   // TODO: initialize the size of /dev/fb
 }
 
-/*int fs_open(const char *pathname, int flags, int mode){
-  open();
-}*/
+extern size_t ramdisk_read(void *buf, size_t offset, size_t len);
+extern size_t ramdisk_write(const void *buf, size_t offset, size_t len);
+
+int fs_open(const char *pathname, int flags, int mode){
+  for(int i=0;i<total_size;++i)
+  if(strcmp(file_table[i].name,pathname)==0){
+    file_table[i].is_open=1;
+    file_table[i].open_offset=0;
+    file_table[i].read=ramdisk_read;
+    file_table[i].write=ramdisk_write;
+    return i;
+  }
+  panic("File %s not found!",pathname);
+  return -1;
+}
 
 int fs_close(int fd){
+  check_files(fd);
+  file_table[fd].is_open=0;
   return 0;
+}
+
+size_t fs_read(int fd, void *buf, size_t len){
+  check_files(fd);
+  check_filerange(fd,&len);
+  assert(file_table[fd].read!=NULL);
+  return file_table[fd].read(buf,file_table[fd].disk_offset+file_table[fd].open_offset,len);
+}
+
+size_t fs_write(int fd, const void *buf, size_t len){
+  check_files(fd);
+  check_filerange(fd,&len);
+  assert(file_table[fd].write!=NULL);
+  return file_table[fd].write(buf,file_table[fd].disk_offset+file_table[fd].open_offset,len);
+}
+
+size_t fs_lseek(int fd, size_t offset, int whence){
+  check_files(fd);
+  switch (whence){
+    case SEEK_SET: file_table[fd].open_offset=offset; break;
+    case SEEK_CUR: file_table[fd].open_offset+=offset; break;
+    case SEEK_END: file_table[fd].open_offset=file_table[fd].size+offset; break;
+    default: panic("Unexpected whence=%d",whence); break;
+  }
+  return file_table[fd].open_offset;
 }

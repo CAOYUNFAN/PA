@@ -37,24 +37,36 @@ void check_elf(const Elf_Ehdr *ehdr){
   return;
 }
 
-static uintptr_t loader(PCB *pcb, const char *filename) {
-  extern size_t ramdisk_read(void *buf, size_t offset, size_t len);
-  extern size_t ramdisk_write(const void *buf, size_t offset, size_t len);
+enum file_lseek_related {SEEK_SET,SEEK_CUR,SEEK_END};
 
+static uintptr_t loader(PCB *pcb, const char *filename) {
+  extern int fs_open(const char *pathname, int flags, int mode);
+  extern size_t fs_read(int fd, void *buf, size_t len);
+  extern size_t fs_lseek(int fd, size_t offset, int whence);
+//  extern size_t ramdisk_read(void *buf, size_t offset, size_t len);
+//  extern size_t ramdisk_write(const void *buf, size_t offset, size_t len);
+
+#define CAO_set_and_read(name,offset) ({\
+  fs_lseek(fd,offset,SEEK_SET);\
+  assert(fs_read(fd,&name,sizeof(name))==sizeof(name));\
+  })
+
+  int fd=fs_open(filename,0,0);
   static Elf_Ehdr ehdr;
-  ramdisk_read(&ehdr,0,sizeof(ehdr));
+  fs_read(fd,&ehdr,sizeof(ehdr));
   check_elf(&ehdr);
   size_t total=ehdr.e_phnum;
   if(total==PN_XNUM){
     Elf_Shdr shdr;
-    ramdisk_read(&shdr,ehdr.e_shoff,sizeof(shdr));
+    CAO_set_and_read(shdr,ehdr.e_shoff);
     total=shdr.sh_info;
   }
   static Elf_Phdr phdr;
   for(size_t i=0,j=ehdr.e_phoff;i<total;++i,j+=ehdr.e_phentsize){
-    ramdisk_read(&phdr,j,sizeof(phdr));
+    CAO_set_and_read(phdr,j);
     if(phdr.p_type==PT_LOAD){
-      ramdisk_read((void *)phdr.p_vaddr,phdr.p_offset,phdr.p_filesz);
+      fs_lseek(fd,phdr.p_offset,SEEK_SET);
+      assert(fs_read(fd,(void *)phdr.p_vaddr,phdr.p_filesz)==phdr.p_filesz);
       memset((void *)(phdr.p_vaddr+phdr.p_filesz),0,phdr.p_memsz-phdr.p_filesz);
     }
   }
