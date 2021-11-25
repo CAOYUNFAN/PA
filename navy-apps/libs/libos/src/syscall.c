@@ -56,7 +56,7 @@ void _exit(int status) {
 }
 
 int _open(const char *path, int flags, mode_t mode) {
-  printf("open file %s\n",path);
+//  printf("open file %s\n",path);
   return _syscall_(SYS_open,path,flags,mode);
 }
 
