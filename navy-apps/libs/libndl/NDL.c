@@ -64,7 +64,7 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
   lseek(fd,offset,SEEK_SET);
   for(int i=0;i<h;++i,offset+=screen_w*sizeof(uint32_t),pixels+=w){
     lseek(fd,offset,SEEK_SET);
-    printf("%u\n",offset);
+//    printf("%u\n",offset);
     write(fd,pixels,w*sizeof(uint32_t));
   }
 }
