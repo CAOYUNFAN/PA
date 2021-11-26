@@ -35,7 +35,7 @@ static Finfo file_table[] __attribute__((used)) = {
   [FD_STDERR] = {"stderr", 0, 0, 0, invalid_read, serial_write},
   [FD_FB] = {"/dev/fb", 0, 0, 0, invalid_read, fb_write},
   [FD_EVENTS] ={"/dev/events", 0, 0, 0, events_read, invalid_write},
-  [FD_DISPINFO]= {"dev/dispinfo",0,0,0,dispinfo_read,invalid_write},
+  [FD_DISPINFO]= {"/dev/dispinfo",0,0,0,dispinfo_read,invalid_write},
 #include "files.h"
 };
 
@@ -61,6 +61,7 @@ static inline void check_filerange(int fd,size_t * len){
 
 void init_fs() {
   // TODO: initialize the size of /dev/fb
+
 }
 
 extern size_t ramdisk_read(void *buf, size_t offset, size_t len);
