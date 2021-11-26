@@ -38,10 +38,22 @@ int sys_brk(void *addr){
   return 0;
 }
 
-/*int sys_gettimeofday(timeval * tv,timezone * tz){
+//typedef long __time_t;
+//typedef long __suseconds_t;
+struct timeval {
+  __time_t tv_sec;		/* Seconds.  */
+  __suseconds_t tv_usec;	/* Microseconds.  */
+};
+struct timezone {
+  int tz_minuteswest;		/* Minutes west of GMT.  */
+  int tz_dsttime;		/* Nonzero if DST is ever in effect.  */
+};
+ 
+
+int sys_gettimeofday(struct timeval * tv,struct timezone * tz){
   panic("Not implemented!");
   return 0;
-}*/
+}
 
 void do_syscall(Context *c) {
   uintptr_t a[4];
@@ -62,7 +74,7 @@ void do_syscall(Context *c) {
     case SYS_close: c->GPRx=fs_close(a[1]); break;
     case SYS_read: c->GPRx=fs_read(a[1],(void *)a[2],a[3]); break;
     case SYS_lseek: c->GPRx=fs_lseek(a[1],a[2],a[3]); break;
-  //  case SYS_gettimeofday: c->GPRx=sys_gettimeofday((timeval *)a[1],(timezone *)a[2]);
+    case SYS_gettimeofday: c->GPRx=sys_gettimeofday((struct timeval *)a[1],(struct timezone *)a[2]);
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 }
