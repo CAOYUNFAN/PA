@@ -10,7 +10,7 @@
 
 static int evtdev = -1;
 static int fbdev = -1;
-static int screen_w = 0, screen_h = 0;
+static int screen_w = 0, screen_h = 0, canvas_w = 0, canvas_h = 0, posw = 0, posh = 0 ;
 
 uint32_t NDL_GetTicks() {
   struct timeval tv;
@@ -22,6 +22,12 @@ uint32_t NDL_GetTicks() {
 int NDL_PollEvent(char *buf, int len) {
   if(read(open("/dev/events",0,0),buf,len)) return 1;
   else return 0;
+}
+
+void prepare_screen(){
+  FILE * fd=fopen("dev/dispinfo",0);
+  fscanf(fd,"WIDTH:%d\nHEIGHT:%d",&screen_w,&screen_h);
+  fclose(fd);
 }
 
 void NDL_OpenCanvas(int *w, int *h) {
@@ -41,6 +47,14 @@ void NDL_OpenCanvas(int *w, int *h) {
       if (strcmp(buf, "mmap ok") == 0) break;
     }
     close(fbctl);
+  }else{
+    prepare_screen();
+    canvas_w=*w;canvas_h=*h;
+    if(canvas_w==0&&canvas_h==0) canvas_w=screen_w,canvas_h=screen_h;
+    posw=(screen_w-canvas_w)/2;
+    posh=(screen_h-canvas_h)/2;
+    printf("WIDTH=%d,HEIGHT=%d\n",screen_w,screen_h);
+    return;
   }
 }
 

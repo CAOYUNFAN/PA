@@ -39,7 +39,13 @@ size_t events_read(void *buf, size_t offset, size_t len) {
 }
 
 size_t dispinfo_read(void *buf, size_t offset, size_t len) {
-  return 0;
+  struct AM_GPU_CONFIG_T{
+    bool present, has_accel; int width, height, vmemsz;
+  } cfg;
+  extern void __am_gpu_config(struct AM_GPU_CONFIG_T *cfg);
+  __am_gpu_config(&cfg);
+  sprintf(buf,"WIDTH:%d\nHEIGHT:%d",cfg.width,cfg.height);
+  return min(len,strlen(buf));
 }
 
 size_t fb_write(const void *buf, size_t offset, size_t len) {
