@@ -61,7 +61,13 @@ static inline void check_filerange(int fd,size_t * len){
 
 void init_fs() {
   // TODO: initialize the size of /dev/fb
-
+  struct AM_GPU_CONFIG_T{
+    bool present, has_accel; int width, height, vmemsz;
+  } cfg;
+  extern void __am_gpu_config(struct AM_GPU_CONFIG_T *cfg);
+  __am_gpu_config(&cfg);
+  file_table[FD_FB].size=cfg.width*cfg.height*sizeof(uint32_t);
+  return;
 }
 
 extern size_t ramdisk_read(void *buf, size_t offset, size_t len);

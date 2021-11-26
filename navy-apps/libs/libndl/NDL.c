@@ -53,12 +53,19 @@ void NDL_OpenCanvas(int *w, int *h) {
     if(canvas_w==0&&canvas_h==0) canvas_w=screen_w,canvas_h=screen_h;
     posw=(screen_w-canvas_w)/2;
     posh=(screen_h-canvas_h)/2;
-    printf("WIDTH=%d,HEIGHT=%d\n",screen_w,screen_h);
+//    printf("WIDTH=%d,HEIGHT=%d\n",screen_w,screen_h);
     return;
   }
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
+  int offset=((posh+y)*screen_w+(x+posw))*sizeof(uint32_t);
+  FILE *fd=fopen("/dev/fb","r+");
+  fseek(fd,offset,SEEK_SET);
+  for(int i=0;i<h;++i,offset+=screen_w*sizeof(uint32_t),pixels+=w){
+    fseek(fd,offset,SEEK_SET);
+    fwrite(pixels,sizeof(uint32_t),w,fd);
+  }
 }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
