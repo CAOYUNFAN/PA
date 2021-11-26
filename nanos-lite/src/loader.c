@@ -40,9 +40,9 @@ void check_elf(const Elf_Ehdr *ehdr){
 enum file_lseek_related {SEEK_SET,SEEK_CUR,SEEK_END};
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
-  extern int fs_open(const char *pathname, int flags, int mode);
-  extern size_t fs_read(int fd, void *buf, size_t len);
-  extern size_t fs_lseek(int fd, size_t offset, int whence);
+extern int fs_open(const char *pathname, int flags, int mode);
+extern size_t fs_read(int fd, void *buf, size_t len);
+extern size_t fs_lseek(int fd, size_t offset, int whence);
 //  extern size_t ramdisk_read(void *buf, size_t offset, size_t len);
 //  extern size_t ramdisk_write(const void *buf, size_t offset, size_t len);
 
