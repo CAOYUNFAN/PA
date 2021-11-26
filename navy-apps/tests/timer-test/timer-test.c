@@ -6,9 +6,9 @@ int main(){
   struct timeval tv;
   struct timezone tz;
   gettimeofday(&tv,&tz);
-  time_t temp=tv.tv_sec;
+  __suseconds_t temp=500;
   while (1)  {
     gettimeofday(&tv,&tz);
-    if(temp!=tv.tv_sec) {printf("%ld seconds, %ld microseconds passed!\n",tv.tv_sec,tv.tv_usec);temp=tv.tv_sec;}
+    if(tv.tv_usec==500-temp) printf("%ld seconds, %ld microseconds passed!\n",tv.tv_sec,tv.tv_usec),temp=500-temp;
   }
 }
