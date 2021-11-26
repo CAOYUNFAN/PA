@@ -60,12 +60,12 @@ void NDL_OpenCanvas(int *w, int *h) {
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
   int offset=((posh+y)*screen_w+(x+posw))*sizeof(uint32_t);
-  FILE *fd=fopen("/dev/fb","r+");
-  fseek(fd,offset,SEEK_SET);
+  int fd=open("/dev/fb",0,0);
+  lseek(fd,offset,SEEK_SET);
   for(int i=0;i<h;++i,offset+=screen_w*sizeof(uint32_t),pixels+=w){
-    fseek(fd,offset,SEEK_SET);
+    lseek(fd,offset,SEEK_SET);
     printf("%u\n",offset);
-    fwrite(pixels,sizeof(uint32_t),w,fd);
+    write(fd,pixels,w*sizeof(uint32_t));
   }
 }
 
