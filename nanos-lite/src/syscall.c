@@ -54,7 +54,9 @@ int sys_gettimeofday(struct timeval * tv,struct timezone * tz){
   assert(tv!=NULL);
   extern void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime);
   __am_timer_uptime((AM_TIMER_UPTIME_T *)&tv->tv_usec);
+  tv->tv_usec/=1000;
   tv->tv_sec=tv->tv_usec/1000;
+  tv->tv_usec%=1000;
   return 0;
 }
 
