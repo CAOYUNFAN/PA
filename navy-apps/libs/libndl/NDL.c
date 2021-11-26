@@ -25,7 +25,7 @@ int NDL_PollEvent(char *buf, int len) {
 }
 
 void prepare_screen(){
-  FILE * fd=fopen("dev/dispinfo","w");
+  FILE * fd=fopen("dev/dispinfo","r");
   fscanf(fd,"WIDTH:%d\nHEIGHT:%d",&screen_w,&screen_h);
   fclose(fd);
 }
