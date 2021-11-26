@@ -9,6 +9,6 @@ int main(){
   volatile int temp=tv.tv_sec;
   while (1)  {
     gettimeofday(&tv,&tz);
-    if(temp!=tv.tv_sec) {puts("One seconds passed!");temp=tv.tv_sec}
+    if(temp!=tv.tv_sec) {puts("One seconds passed!");temp=tv.tv_sec;}
   }
 }
