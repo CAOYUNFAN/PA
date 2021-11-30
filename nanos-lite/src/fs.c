@@ -66,6 +66,7 @@ void init_fs() {
   } cfg;
   extern void __am_gpu_config(struct AM_GPU_CONFIG_T *cfg);
   __am_gpu_config(&cfg);
+//  Log("width=%d,height=%d",cfg.width,cfg.height);
   file_table[FD_FB].size=cfg.width*cfg.height*sizeof(uint32_t);
   return;
 }
@@ -74,7 +75,6 @@ extern size_t ramdisk_read(void *buf, size_t offset, size_t len);
 extern size_t ramdisk_write(const void *buf, size_t offset, size_t len);
 
 int fs_open(const char *pathname, int flags, int mode){
-//  Log("open file %s",pathname);
   for(int i=0;i<total_size;++i)
   if(strcmp(file_table[i].name,pathname)==0){
     file_table[i].open_offset=0;
