@@ -17,6 +17,9 @@ int SDL_PollEvent(SDL_Event *ev) {
 }
 
 int SDL_WaitEvent(SDL_Event *event) {
+  static char temp[100];int len=NDL_PollEvent(temp,100);
+  while (len==0) len=NDL_PollEvent(temp,100);
+  
   return 1;
 }
 
