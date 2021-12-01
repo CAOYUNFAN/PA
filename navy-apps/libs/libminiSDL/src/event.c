@@ -18,14 +18,14 @@ int SDL_PollEvent(SDL_Event *ev) {
 }
 
 int SDL_WaitEvent(SDL_Event *event) {
-  static char temp[100];int len=NDL_PollEvent(temp,100);
+/*  static char temp[100];int len=NDL_PollEvent(temp,100);
   while (len==0) len=NDL_PollEvent(temp,100);
   if(temp[1]=='d') event->type=SDL_KEYDOWN;else event->type=SDL_KEYUP;
   for(int i=1;i<sizeof(keyname)/sizeof(char *);++i) 
   if(strcmp(temp+3,keyname[i])==0){
     event->key.keysym.sym=i;
     break;
-  }
+  }*/
   return 1;
 }
 
