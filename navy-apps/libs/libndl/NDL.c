@@ -20,6 +20,7 @@ uint32_t NDL_GetTicks() {
 }
 
 int NDL_PollEvent(char *buf, int len) {
+  printf("PollEvent!\n");
   if(read(open("/dev/events",0,0),buf,len)) return 1;
   else return 0;
 }
