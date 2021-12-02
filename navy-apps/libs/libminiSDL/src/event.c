@@ -11,7 +11,7 @@ static const char *keyname[] = {
   _KEYS(keyname)
 };
 
-static inline void deal_event(SDL_Event *ev){
+static inline void deal_event(SDL_Event *event){
   if(temp[1]=='d') event->type=SDL_KEYDOWN;else event->type=SDL_KEYUP;
   for(int i=1;i<sizeof(keyname)/sizeof(char *);++i) 
   if(strcmp(temp+3,keyname[i])==0){
