@@ -36,6 +36,7 @@ static struct {
 #define NR_CMD sizeof(cmd_table)/sizeof(cmd_table[0])
 
 static void sh_handle_cmd(const char *cmd) {
+  sh_printf("%s\n",cmd);
 /*  int i;
   char * cmd_=strtok(cmd," ");
   for(i=0;i<NR_CMD;++i)
