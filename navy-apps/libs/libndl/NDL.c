@@ -21,7 +21,7 @@ uint32_t NDL_GetTicks() {
 
 int NDL_PollEvent(char *buf, int len) {
   if(read(open("/dev/events",0,0),buf,len)) {
-//    printf("%s\n",buf);
+    printf("%s\n",buf);
     return 1;
   }
   else return 0;
@@ -68,7 +68,7 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
   lseek(fd,offset,SEEK_SET);
   for(int i=0;i<h;++i,offset+=screen_w*sizeof(uint32_t),pixels+=w){
     lseek(fd,offset,SEEK_SET);
-    printf("%u\n",offset);
+//    printf("%u\n",offset);
     write(fd,pixels,w*sizeof(uint32_t));
   }
 }
