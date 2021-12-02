@@ -22,8 +22,29 @@ static void sh_prompt() {
   sh_printf("sh> ");
 }
 
+static int cmd_echo(char * args){
+  sh_printf("%s\n",args);
+  return 0;
+}
+
+static struct {
+  const char * name;
+  int (*handler) (char *);
+} cmd_table [] ={
+  {"echo",cmd_echo}
+}
+#define NR_CMD sizeof(cmd_table)/sizeof(cmd_table[0])
+
 static void sh_handle_cmd(const char *cmd) {
-  sh_printf("%s\n",cmd);
+  int i;
+  char * cmd_=strtok(cmd," ");
+  for(i=0;i<NR_CMD;++i)
+  if(strcmp(cmd_,cmd_table[i].name)==0){
+    if(cmd_table[i].handler(cmd+strlen(cmd_)+1)<0) sh_printf("Something Wrong Seems to happen :-(\n");
+    return;
+  }
+  sh_printf("Unkown or Not Handled Command '%s' :-(\n",cmd_);
+  return;
 }
 
 void builtin_sh_run() {
