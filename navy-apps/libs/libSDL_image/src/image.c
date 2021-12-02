@@ -22,7 +22,7 @@ SDL_Surface* IMG_Load(const char *filename) {
 //  for(int i=0;i<size;++i) putchar(buf[i]);putchar('\n');
   SDL_Surface * ans=STBIMG_LoadFromMemory(buf,size);
 //  printf("About to Complete!\n");
-  for(int i=0;i<size;++i) assert(ans->pixels[i]==buf[i]);
+  assert(ans==NULL);
   fclose(fd);
   free(buf);
 //  printf("Complete!\n");
