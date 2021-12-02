@@ -22,7 +22,7 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
   uint32_t * d=(uint32_t *)dst->pixels;
   uint32_t * s=(uint32_t *)src->pixels;
   for(;sh;sh--,++dy,++sy){
-    printf("Copy %d:%d-%d to %d:%d-%d\n",dy,dx,dx+sw,sy,sx,sx+sw);
+//    printf("Copy %d:%d-%d to %d:%d-%d\n",dy,dx,dx+sw,sy,sx,sx+sw);
     memcpy(d+dy*dst->w+dx,s+sy*src->w+sx,sw*sizeof(uint32_t));
   }
   return;
