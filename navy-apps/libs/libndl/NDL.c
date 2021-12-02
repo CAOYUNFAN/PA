@@ -21,7 +21,7 @@ uint32_t NDL_GetTicks() {
 
 int NDL_PollEvent(char *buf, int len) {
   if(read(open("/dev/events",0,0),buf,len)) {
-    printf("%s\n",buf);
+//    printf("%s\n",buf);
     return 1;
   }
   else return 0;
@@ -56,13 +56,13 @@ void NDL_OpenCanvas(int *w, int *h) {
     if(canvas_w==0&&canvas_h==0) canvas_w=screen_w,canvas_h=screen_h;
     posw=(screen_w-canvas_w)/2;
     posh=(screen_h-canvas_h)/2;
-    printf("WIDTH=%d,HEIGHT=%d\n",screen_w,screen_h);
+//    printf("WIDTH=%d,HEIGHT=%d\n",screen_w,screen_h);
     return;
   }
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
-  printf("draw %d %d %d %d\n",x,y,w,h);
+//  printf("draw %d %d %d %d\n",x,y,w,h);
   int offset=((posh+y)*screen_w+(x+posw))*sizeof(uint32_t);
   int fd=open("/dev/fb",O_WRONLY,0);
   lseek(fd,offset,SEEK_SET);
