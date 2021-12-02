@@ -27,7 +27,7 @@ int NDL_PollEvent(char *buf, int len) {
   else return 0;
 }
 
-void prepare_screen(){
+inline void prepare_screen(){
   FILE * fd=fopen("/dev/dispinfo","r");
   fscanf(fd,"WIDTH:%d\nHEIGHT:%d",&screen_w,&screen_h);
   fclose(fd);
@@ -56,7 +56,7 @@ void NDL_OpenCanvas(int *w, int *h) {
     if(canvas_w==0&&canvas_h==0) canvas_w=*w=screen_w,canvas_h=*h=screen_h;
     posw=(screen_w-canvas_w)/2;
     posh=(screen_h-canvas_h)/2;
-    printf("WIDTH=%d,HEIGHT=%d\n",screen_w,screen_h);
+//    printf("WIDTH=%d,HEIGHT=%d\n",screen_w,screen_h);
     return;
   }
 }
