@@ -24,6 +24,7 @@ SDL_Surface* IMG_Load(const char *filename) {
   printf("About to Complete!\n");
   fclose(fd);
   free(buf);
+  printf("Complete!\n");
   return ans;
 }
 
