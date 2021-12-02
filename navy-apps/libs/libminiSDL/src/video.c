@@ -17,10 +17,14 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
   if(dstrect==NULL) dx=dy=0;
   else dx=dstrect->x,dy=dstrect->y;
   
+  printf("%d %d %d %d %d %d\n",sx,sy,sw,sh,dx,dy);
+  printf("%d %d %d %d\n",src->w,src->h,dst->w,dst->h);
   uint32_t * d=(uint32_t *)dst->pixels;
   uint32_t * s=(uint32_t *)src->pixels;
-  for(;sh;sh--,++dy,++sy)
-  memcpy(d+dy*dst->w+dx,s+sy*src->w+sx,sw*sizeof(uint32_t));
+  for(;sh;sh--,++dy,++sy){
+    printf("Copy %d:%d-%d to %d:%d-%d\n",dy,dx,dx+sw,sy,sx,sx+sw);
+    memcpy(d+dy*dst->w+dx,s+sy*src->w+sx,sw*sizeof(uint32_t));
+  }
   return;
 }
 
