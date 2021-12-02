@@ -35,9 +35,9 @@ static struct {
 };
 #define NR_CMD sizeof(cmd_table)/sizeof(cmd_table[0])
 
-static void sh_handle_cmd(const char *cmd) {
-  sh_printf("%s\n",cmd);
-/*  int i;
+static void sh_handle_cmd(char *cmd) {
+//  sh_printf("%s\n",cmd);
+  int i;
   char * cmd_=strtok(cmd," ");
   for(i=0;i<NR_CMD;++i)
   if(strcmp(cmd_,cmd_table[i].name)==0){
@@ -45,7 +45,7 @@ static void sh_handle_cmd(const char *cmd) {
     return;
   }
   sh_printf("Unkown or Not Handled Command '%s' :-(\n",cmd_);
-  return;*/
+  return;
 }
 
 void builtin_sh_run() {
