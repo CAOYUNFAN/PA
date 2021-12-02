@@ -24,7 +24,7 @@ static void sh_prompt() {
 
 static int cmd_echo(char * args){
   sh_printf("%s",args);
-  return 0;
+  return -1;
 }
 
 static struct {
@@ -43,10 +43,10 @@ static void sh_handle_cmd(const char *cmd) {
   char * cmd_=strtok(temp," ");
   for(i=0;i<NR_CMD;++i)
   if(strcmp(cmd_,cmd_table[i].name)==0){
-    if(cmd_table[i].handler(temp+strlen(cmd_)+1)<0) sh_printf("Something Wrong Seems to happen :-(");
+    if(cmd_table[i].handler(temp+strlen(cmd_)+1)<0) sh_printf("Something Wrong Seems to happen :-(\n");
     return;
   }
-  sh_printf("Unkown or Not Handled Command '%s' :-(",cmd_);
+  sh_printf("Unkown or Not Handled Command '%s' :-(\n",cmd_);
   return;
 }
 
