@@ -11,28 +11,35 @@ static inline int Min(int a,int b){return a<b?a:b;}
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
+  int sx,sy,sw,sh,dx,dy;
+  if(srcrect==NULL) sx=sy=0,sw=src->w,sh=src->h;
+  else sx=srcrect->x,sy=srcrect->y;
+  if(dstrect==NULL) dx=dy=0;
+  else dx=dstrect->x,dy=dstrect->y;
+  
+  uint32_t * d=(uint32_t *)dst->pixels;
+  uint32_t * s=(uint32_t *)src->pixels;
+  for(;sh;sh--,++dy,++sy)
+  memcpy(d+dy*dst->w+dx,s+sy*src->w+sx,sw*sizeof(uint32_t));
+  return;
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
+  int x0,y0,w0,h0;
+  if(dstrect==NULL) x0=y0=0,w0=dst->w,h0=dst->h;
+  else x0=dstrect->x,y0=dstrect->y,w0=dstrect->w,h0=dstrect->h;
+
+  uint32_t * pos=(uint32_t * )dst->pixels;
+  for(int i=0,y=y0;i<h0;++i,++y)
+  for(int j=0,x=x0;j<w0;++j,++x)
+  *(pos+y*dst->w+x)=color;
+  return;
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
-//  printf("puts!\n");
   NDL_OpenCanvas(&w,&h);
   NDL_DrawRect((uint32_t *)s->pixels,x,y,s->w,s->h);
-  /*int screen_w,screen_h;
-  FILE * fdd=fopen("/dev/dispinfo","r");
-  fscanf(fdd,"WIDTH:%d\nHEIGHT:%d",&screen_w,&screen_h);
-  fclose(fdd);
-  assert(x>=0&&x+w<=screen_w&&y>=0&&y+h<=screen_h);
-  if(x==0&&y==0&&w==0&&h==0) w=screen_w,h=screen_h;
-  int fd=open("/dev/fb",O_WRONLY,0);
-  const char * pixels=s->pixels;
-  for(int i=y;i<y+Min(h,s->h);++i,pixels+=s->w*sizeof(uint32_t)){
-    lseek(fd,(i*screen_w+x)*sizeof(uint32_t),SEEK_SET);
-    write(fd,pixels,Min(s->w,w)*sizeof(uint32_t));
-  }
-  return;*/
+  return;
 }
 
 // APIs below are already implemented.
