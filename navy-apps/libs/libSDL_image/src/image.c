@@ -17,14 +17,14 @@ SDL_Surface* IMG_Load(const char *filename) {
   int size=ftell(fd);
   unsigned char * buf=malloc(size);
   fseek(fd,0,SEEK_SET);
-  printf("File %s,IMG_SIZE:%d\n",filename,size);
+//  printf("File %s,IMG_SIZE:%d\n",filename,size);
   assert(fread(buf,1,size,fd)==size);
 //  for(int i=0;i<size;++i) putchar(buf[i]);putchar('\n');
   SDL_Surface * ans=STBIMG_LoadFromMemory(buf,size);
-  printf("About to Complete!\n");
+//  printf("About to Complete!\n");
   fclose(fd);
   free(buf);
-  printf("Complete!\n");
+//  printf("Complete!\n");
   return ans;
 }
 
