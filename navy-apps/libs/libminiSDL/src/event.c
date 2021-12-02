@@ -1,31 +1,42 @@
 #include <NDL.h>
 #include <SDL.h>
 #include <string.h>
+#include <assert.h>
 
 #define keyname(k) #k,
 
+static char temp[100];
 static const char *keyname[] = {
   "NONE",
   _KEYS(keyname)
 };
 
-int SDL_PushEvent(SDL_Event *ev) {
-  return 0;
-}
-
-int SDL_PollEvent(SDL_Event *ev) {
-  return 0;
-}
-
-int SDL_WaitEvent(SDL_Event *event) {
-  static char temp[100];int len=NDL_PollEvent(temp,100);
-  while (len==0) len=NDL_PollEvent(temp,100);
+static inline void deal_event(SDL_Event *ev){
   if(temp[1]=='d') event->type=SDL_KEYDOWN;else event->type=SDL_KEYUP;
   for(int i=1;i<sizeof(keyname)/sizeof(char *);++i) 
   if(strcmp(temp+3,keyname[i])==0){
     event->key.keysym.sym=i;
     break;
   }
+  return;
+}
+
+int SDL_PushEvent(SDL_Event *ev) {
+  return 0;
+}
+
+int SDL_PollEvent(SDL_Event *ev) {
+  if(ev==NULL) return 1;
+  if(!NDL_PollEvent(temp,100)) return 0;
+  deal_event(ev);
+  return 1;
+}
+
+int SDL_WaitEvent(SDL_Event *event) {
+  assert(event!=NULL);
+  int len=NDL_PollEvent(temp,100);
+  while (len==0) len=NDL_PollEvent(temp,100);
+  deal_event(event);
   return 1;
 }
 
