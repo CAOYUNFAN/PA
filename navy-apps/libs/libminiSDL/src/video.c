@@ -19,7 +19,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 //  printf("puts!\n");
   NDL_OpenCanvas(&w,&h);
-  NDL_DrawRect((uint32_t *)s->pixels,x,y,w,h);
+  NDL_DrawRect((uint32_t *)s->pixels,x,y,s->w,s->h);
   /*int screen_w,screen_h;
   FILE * fdd=fopen("/dev/dispinfo","r");
   fscanf(fdd,"WIDTH:%d\nHEIGHT:%d",&screen_w,&screen_h);
