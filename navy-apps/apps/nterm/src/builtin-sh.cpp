@@ -24,7 +24,7 @@ static void sh_prompt() {
 
 static int cmd_echo(char * args){
   sh_printf("%s",args);
-  return -1;
+  return 0;
 }
 
 static struct {
