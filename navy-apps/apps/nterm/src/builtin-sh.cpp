@@ -32,7 +32,7 @@ static struct {
   int (*handler) (char *);
 } cmd_table [] ={
   {"echo",cmd_echo}
-}
+};
 #define NR_CMD sizeof(cmd_table)/sizeof(cmd_table[0])
 
 static void sh_handle_cmd(const char *cmd) {
