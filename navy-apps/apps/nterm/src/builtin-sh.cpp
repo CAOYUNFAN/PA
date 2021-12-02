@@ -35,10 +35,12 @@ static struct {
 };
 #define NR_CMD sizeof(cmd_table)/sizeof(cmd_table[0])
 
-static void sh_handle_cmd(char *cmd) {
+static char temp[1000];
+static void sh_handle_cmd(const char *cmd) {
 //  sh_printf("%s\n",cmd);
+  strcpy(temp,cmd);
   int i;
-  char * cmd_=strtok(cmd," ");
+  char * cmd_=strtok(temp," ");
   for(i=0;i<NR_CMD;++i)
   if(strcmp(cmd_,cmd_table[i].name)==0){
     if(cmd_table[i].handler(cmd+strlen(cmd_)+1)<0) sh_printf("Something Wrong Seems to happen :-(\n");
