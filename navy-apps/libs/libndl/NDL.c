@@ -56,7 +56,7 @@ void NDL_OpenCanvas(int *w, int *h) {
     if(canvas_w==0&&canvas_h==0) canvas_w=screen_w,canvas_h=screen_h;
     posw=(screen_w-canvas_w)/2;
     posh=(screen_h-canvas_h)/2;
-//    printf("WIDTH=%d,HEIGHT=%d\n",screen_w,screen_h);
+    printf("WIDTH=%d,HEIGHT=%d\n",screen_w,screen_h);
     return;
   }
 }
