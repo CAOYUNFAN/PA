@@ -1,6 +1,5 @@
 HAS_NAVY = 1
 RAMDISK_FILE = build/ramdisk.img
-INC_PATH += include $(NAVY_HOME)/libs/libc/include
 
 NAME = nanos-lite
 SRCS = $(shell find -L ./src/ -name "*.c" -o -name "*.cpp" -o -name "*.S")
@@ -8,6 +7,8 @@ include $(AM_HOME)/Makefile
 
 ifeq ($(ARCH),native)
 ISA = am_native
+else
+INC_PATH += include $(NAVY_HOME)/libs/libc/include
 endif
 
 ./src/resources.S: $(RAMDISK_FILE)
