@@ -55,7 +55,7 @@ static inline size_t Min(size_t a,size_t b) {return a<b?a:b;}
 
 static inline void check_filerange(int fd,size_t * len){
   if(!(file_table[fd].open_offset>=0&&file_table[fd].open_offset<=file_table[fd].size)){
-    printf("%d %d\n",file_table[fd].open_offset,file_table[fd].size);
+    Log("open_offset=%d,size=%d",file_table[fd].open_offset,file_table[fd].size);
     assert(false);
   };
   *len=Min(*len,file_table[fd].size-file_table[fd].open_offset);
@@ -112,7 +112,7 @@ size_t fs_read(int fd, void *buf, size_t len){
 
 size_t fs_write(int fd, const void *buf, size_t len){
   check_files(fd);
-  Log("Print to file %s,len %d",file_table[fd].name,len);
+//  Log("Print to file %s,len %d",file_table[fd].name,len);
   if(file_table[fd].size) check_filerange(fd,&len);
 //  static char temp[100000];
 //  memcpy(temp,buf,len);
