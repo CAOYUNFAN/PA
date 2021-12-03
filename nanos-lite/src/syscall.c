@@ -30,9 +30,9 @@ extern size_t fs_read(int fd, void *buf, size_t len);
 extern size_t fs_write(int fd, const void *buf, size_t len);
 extern size_t fs_lseek(int fd, size_t offset, int whence);
 extern int fs_close(int fd);
-
+extern void naive_uload(PCB *pcb, const char *filename);
 void sys_exit(){
-  halt(0);
+  naive_uload(NULL,"/bin/menu");
 }
 
 int sys_brk(void *addr){
@@ -67,7 +67,6 @@ void do_syscall(Context *c) {
   a[2] = c->GPR3;
   a[3] = c->GPR4;
   extern void event_yield(Context *c);
-  extern void naive_uload(PCB *pcb, const char *filename);
   #ifdef CONFIG_STRACE
   Log("System call %u with %12d:%8x,%12d:%8x,%12d:%8x",a[0],a[1],a[1],a[2],a[2],a[3],a[3]);
   #endif
