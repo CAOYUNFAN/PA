@@ -38,13 +38,14 @@ static struct {
 static char temp[1000];
 static void sh_handle_cmd(const char *cmd) {
 //  sh_printf("%s\n",cmd);
-  if(cmd[0]=='/'){
-    execv(cmd,NULL);
-    return;
-  }
   strcpy(temp,cmd);
   int i;
   char * cmd_=strtok(temp," ");
+  if(cmd[0]=='/'){
+    printf("%s1\n",cmd_);
+    execv(cmd_,NULL);
+    return;
+  }
   for(i=0;i<NR_CMD;++i)
   if(strcmp(cmd_,cmd_table[i].name)==0){
     if(cmd_table[i].handler(temp+strlen(cmd_)+1)<0) sh_printf("Something Wrong Seems to happen :-(\n");
