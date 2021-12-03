@@ -53,6 +53,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 //  printf("Update Rect %d %d %d %d\n",x,y,w,h);
   NDL_OpenCanvas(&w,&h);
+  w=Min(w,s->w);h=Min(h,s->h);
   uint32_t * buf=malloc(w*h*sizeof(uint32_t));
   if(s->format->BytesPerPixel==4){
     uint32_t * temp=s->pixels;
