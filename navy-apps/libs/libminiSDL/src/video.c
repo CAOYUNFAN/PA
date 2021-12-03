@@ -37,7 +37,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   unsigned char * pos=(unsigned char * )dst->pixels;
   if(dst->format->BytesPerPixel!=4){
     for(int i=0;i<dst->format->palette->ncolors;++i)
-    if(dst->format->palette->colors[i]==color){
+    if((dst->format->palette->colors+i)->val==color){
       color=i;
       break;
     }
@@ -57,7 +57,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     uint8_t * temp=s->pixels;
     for(int i=0;i<s->h;++i)
     for(int j=0;j<s->w;++j)
-    *(buf+i*s->w+j)=s->format->palette->colors[*(temp+i*s->w+j)];
+    *(buf+i*s->w+j)=(s->format->palette->colors+(*(temp+i*s->w+j)))->val;
   }
   NDL_DrawRect(buf,x,y,s->w,s->h);
   if(s->format->BytesPerPixel==1) free(buf);
