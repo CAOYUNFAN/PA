@@ -42,7 +42,7 @@ static void sh_handle_cmd(const char *cmd) {
   int i;
   char * cmd_=strtok(temp," ");
   if(cmd[0]=='/'){
-    printf("%s1\n",cmd_);
+    printf("%scc\n",cmd_);
     execv(cmd_,NULL);
     return;
   }
