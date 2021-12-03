@@ -61,7 +61,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   NDL_OpenCanvas(&w,&h);
   w=Min(w,s->w);h=Min(h,s->h);
   if(s->format->BytesPerPixel==4){
-    NDL_DrawRect(s->pixels,x,y,w,h);
+    NDL_DrawRect((uint32_t *)s->pixels,x,y,w,h);
   }else{
     assert(s->format->BytesPerPixel==1);
     uint8_t * temp=s->pixels;
