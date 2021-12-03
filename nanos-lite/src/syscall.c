@@ -1,5 +1,6 @@
 #include <common.h>
 #include "syscall.h"
+#include "proc.h"
 
 /*enum SYS_type{
   SYS_exit,
@@ -66,6 +67,7 @@ void do_syscall(Context *c) {
   a[2] = c->GPR3;
   a[3] = c->GPR4;
   extern void event_yield(Context *c);
+  extern void naive_uload(PCB *pcb, const char *filename);
   #ifdef CONFIG_STRACE
   Log("System call %u with %12d:%8x,%12d:%8x,%12d:%8x",a[0],a[1],a[1],a[2],a[2],a[3],a[3]);
   #endif
@@ -79,6 +81,7 @@ void do_syscall(Context *c) {
     case SYS_read: c->GPRx=fs_read(a[1],(void *)a[2],a[3]); break;
     case SYS_lseek: c->GPRx=fs_lseek(a[1],a[2],a[3]); break;
     case SYS_gettimeofday: c->GPRx=sys_gettimeofday((struct timeval *)a[1],(struct timezone *)a[2]); break;
+    case SYS_execve: naive_uload(NULL,(const char *)a[1]); c->GPRx=-1;break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 }
