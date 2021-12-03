@@ -17,13 +17,13 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
   if(dstrect==NULL) dx=dy=0;
   else dx=dstrect->x,dy=dstrect->y;
   
-   printf("%d %d %d %d %d %d\n",sx,sy,sw,sh,dx,dy);
-  printf("%d %d %d %d\n",src->w,src->h,dst->w,dst->h);
+//   printf("%d %d %d %d %d %d\n",sx,sy,sw,sh,dx,dy);
+//  printf("%d %d %d %d\n",src->w,src->h,dst->w,dst->h);
   unsigned char * d=(unsigned char *)dst->pixels;
   unsigned char * s=(unsigned char *)src->pixels;
   int pp=dst->format->BitsPerPixel;
   for(;sh;sh--,++dy,++sy){
-    printf("Copy %d:%d-%d to %d:%d-%d\n",dy,dx,dx+sw,sy,sx,sx+sw);
+//    printf("Copy %d:%d-%d to %d:%d-%d\n",dy,dx,dx+sw,sy,sx,sx+sw);
     memcpy(d+dy*dst->pitch+dx*pp,s+sy*src->pitch+sx*pp,sw*pp);
   }
   return;
@@ -51,7 +51,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
-  printf("Update Rect %d %d %d %d\n",x,y,w,h);
+//  printf("Update Rect %d %d %d %d\n",x,y,w,h);
   NDL_OpenCanvas(&w,&h);
   uint32_t * buf;
   if(s->format->BytesPerPixel==4) buf=(uint32_t *)s->pixels;
