@@ -27,17 +27,17 @@ static int cmd_echo(char * args){
   return 0;
 }
 
-inline static pp(char * arg1){
+inline static void pp(char * arg1){
   for(int i=strlen(arg1)-1;i>=0;--i){
     if(arg1[i]==' '||arg1[i]=='\n'||arg1[i]=='\r') arg1[i]='\0';
     else return;
   }
 }
 
-static int cmd_export(const char *args){
-  char * arg=strtok(args,' ')
-  char * arg1=strtok(arg,'=');
-  char * arg2=strtok(NULL,'=');
+static int cmd_export(char *args){
+  char * arg=strtok(args," ");
+  char * arg1=strtok(arg,"=");
+  char * arg2=strtok(NULL,"=");
   pp(arg1);pp(arg2);
   setenv(arg1,arg2,0);
   return 0;
