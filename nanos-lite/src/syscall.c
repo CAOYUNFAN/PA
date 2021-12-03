@@ -32,7 +32,7 @@ extern size_t fs_lseek(int fd, size_t offset, int whence);
 extern int fs_close(int fd);
 extern void naive_uload(PCB *pcb, const char *filename);
 void sys_exit(){
-  naive_uload(NULL,"/bin/mterm");
+  naive_uload(NULL,"/bin/nterm");
 }
 
 int sys_brk(void *addr){
