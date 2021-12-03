@@ -28,8 +28,9 @@ int SDL_PushEvent(SDL_Event *ev) {
 }
 
 int SDL_PollEvent(SDL_Event *ev) {
+  printf("EVENT==NULL:%d\n",ev==NULL?1:0);
   if(ev==NULL) return 1;
-  if(!NDL_PollEvent(temp,100)) return 0;
+  if(!NDL_PollEvent(temp,100)) return printf("Nothing!\n"),0;
   deal_event(ev);
   return 1;
 }
