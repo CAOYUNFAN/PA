@@ -38,8 +38,8 @@ int sys_brk(void *addr){
   return 0;
 }
 
-//typedef long __time_t;
-//typedef long __suseconds_t;
+typedef long __time_t;
+typedef long __suseconds_t;
 struct timeval {
   __time_t tv_sec;		/* Seconds.  */
   __suseconds_t tv_usec;	/* Microseconds.  */
@@ -54,9 +54,8 @@ int sys_gettimeofday(struct timeval * tv,struct timezone * tz){
   assert(tv!=NULL);
   extern void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime);
   __am_timer_uptime((AM_TIMER_UPTIME_T *)&tv->tv_usec);
-  tv->tv_usec/=1000;
-  tv->tv_sec=tv->tv_usec/1000;
-  tv->tv_usec%=1000;
+  tv->tv_sec=tv->tv_usec/1000000;
+  tv->tv_usec%=1000000;
   return 0;
 }
 
