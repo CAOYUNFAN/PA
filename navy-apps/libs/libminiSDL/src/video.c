@@ -19,11 +19,12 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
   
 //  printf("%d %d %d %d %d %d\n",sx,sy,sw,sh,dx,dy);
 //  printf("%d %d %d %d\n",src->w,src->h,dst->w,dst->h);
-  uint32_t * d=(uint32_t *)dst->pixels;
-  uint32_t * s=(uint32_t *)src->pixels;
+  unsigned char * d=(unsigned char *)dst->pixels;
+  unsigned char * s=(unsigned char *)src->pixels;
+  int pp=dst->format->BitsPerPixel;
   for(;sh;sh--,++dy,++sy){
 //    printf("Copy %d:%d-%d to %d:%d-%d\n",dy,dx,dx+sw,sy,sx,sx+sw);
-    memcpy(d+dy*dst->w+dx,s+sy*src->w+sx,sw*sizeof(uint32_t));
+    memcpy(d+dy*dst->pitch+dx*pp,s+sy*src->pitch+sx*pp,sw*pp);
   }
   return;
 }
@@ -33,16 +34,33 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   if(dstrect==NULL) x0=y0=0,w0=dst->w,h0=dst->h;
   else x0=dstrect->x,y0=dstrect->y,w0=dstrect->w,h0=dstrect->h;
 
-  uint32_t * pos=(uint32_t * )dst->pixels;
+  unsigned char * pos=(unsigned char * )dst->pixels;
+  if(dst->format->BytesPerPixel!=4){
+    for(int i=0;i<dst->format->palette->ncolors;++i)
+    if(dst->format->palette->colors[i]==color){
+      color=i;
+      break;
+    }
+  }
   for(int i=0,y=y0;i<h0;++i,++y)
   for(int j=0,x=x0;j<w0;++j,++x)
-  *(pos+y*dst->w+x)=color;
+  *(pos+y*dst->pitch+x*dst->format->BytesPerPixel)=color;
   return;
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   NDL_OpenCanvas(&w,&h);
-  NDL_DrawRect((uint32_t *)s->pixels,x,y,s->w,s->h);
+  uint32_t * buf;
+  if(s->format->BytesPerPixel==4) buf=(uint32_t *)s->pixels;
+  else{
+    buf=malloc(s->w*s->h*sizeof(uint32_t));
+    uint8_t * temp=s->pixels;
+    for(int i=0;i<s->h;++i)
+    for(int j=0;j<s->w;++j)
+    *(buf+i*s->w+j)=s->format->palette->colors[*(temp+i*s->w+j)];
+  }
+  NDL_DrawRect(buf,x,y,s->w,s->h);
+  if(s->format->BytesPerPixel==1) free(buf);
   return;
 }
 
