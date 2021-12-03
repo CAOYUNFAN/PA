@@ -41,6 +41,7 @@ static void sh_handle_cmd(const char *cmd) {
   if(cmd[0]=='/'){
     strcpy(temp,cmd);int n=strlen(temp);
     while(temp[n-1]==' '||temp[n-1]=='\n') temp[--n]='\0';
+    printf("111%s111\n",temp);
     execv(cmd,NULL);
     return;
   }
