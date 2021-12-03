@@ -55,26 +55,25 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   return;
 }
 
+static uint32_t buf[1000000];
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   printf("Update Rect %d %d %d %d\n",x,y,w,h);
   NDL_OpenCanvas(&w,&h);
   w=Min(w,s->w);h=Min(h,s->h);
-  uint32_t * buf=malloc(w*h*sizeof(uint32_t));
   if(s->format->BytesPerPixel==4){
     uint32_t * temp=s->pixels;
     for(int i=0;i<h;++i)
     for(int j=0;j<w;++j)
-    *(buf+i*w+j)=*(temp+i*s->w+j);
+    buf[i*w+j]=*(temp+i*s->w+j);
   }else{
     assert(s->format->BytesPerPixel==1);
     uint8_t * temp=s->pixels;
     uint32_t * my=(uint32_t * )s->format->palette->colors;
     for(int i=0;i<h;++i)
     for(int j=0;j<w;++j)
-    *(buf+i*w+j)=*(my+(*(temp+i*s->w+j)));
+    buf[i*w+j]=*(my+(*(temp+i*s->w+j)));
   }
   NDL_DrawRect(buf,x,y,w,h);
-  free(buf);
   return;
 }
 
