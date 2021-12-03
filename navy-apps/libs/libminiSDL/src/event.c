@@ -11,12 +11,15 @@ static const char *keyname[] = {
   _KEYS(keyname)
 };
 
+static uint8_t my[1005];
+
 static inline void deal_event(SDL_Event *event){
 //  printf("%s %s ",temp,temp+3);
   if(temp[1]=='d') event->type=SDL_KEYDOWN;else event->type=SDL_KEYUP;
   for(int i=1;i<sizeof(keyname)/sizeof(char *);++i) 
   if(strcmp(temp+3,keyname[i])==0){
     event->key.keysym.sym=i;
+    my[i]=event->type;
 //    printf("%d\n",i);
     break;
   }
@@ -47,8 +50,6 @@ int SDL_PeepEvents(SDL_Event *ev, int numevents, int action, uint32_t mask) {
   return 0;
 }
 
-//static uint8_t my[1005];
-
 uint8_t* SDL_GetKeyState(int *numkeys) {
-  return NULL;
+  return &my[0];
 }
