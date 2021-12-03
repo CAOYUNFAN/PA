@@ -40,9 +40,9 @@ void check_elf(const Elf_Ehdr *ehdr){
 enum file_lseek_related {SEEK_SET,SEEK_CUR,SEEK_END};
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
-extern int fs_open(const char *pathname, int flags, int mode);
-extern size_t fs_read(int fd, void *buf, size_t len);
-extern size_t fs_lseek(int fd, size_t offset, int whence);
+  extern int fs_open(const char *pathname, int flags, int mode);
+  extern size_t fs_read(int fd, void *buf, size_t len);
+  extern size_t fs_lseek(int fd, size_t offset, int whence);
 //  extern size_t ramdisk_read(void *buf, size_t offset, size_t len);
 //  extern size_t ramdisk_write(const void *buf, size_t offset, size_t len);
 
@@ -52,6 +52,7 @@ extern size_t fs_lseek(int fd, size_t offset, int whence);
   })
 
   int fd=fs_open(filename,0,0);
+  if(fd==-1) return 0;
   static Elf_Ehdr ehdr;
   fs_read(fd,&ehdr,sizeof(ehdr));
   check_elf(&ehdr);
@@ -77,7 +78,10 @@ extern size_t fs_lseek(int fd, size_t offset, int whence);
 
 void naive_uload(PCB *pcb, const char *filename) {
   uintptr_t entry = loader(pcb, filename);
-  Log("Jump to entry = %p", entry);
-  ((void(*)())entry) ();
+  if(entry){
+    Log("Jump to entry = %p", entry);
+    ((void(*)())entry) ();
+  }
+  return;
 }
 

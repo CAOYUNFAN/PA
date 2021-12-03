@@ -84,7 +84,7 @@ int fs_open(const char *pathname, int flags, int mode){
 //   Log("File %s,id %d,size %u, offset %u",file_table[i].name,i,file_table[i].size,file_table[i].disk_offset);
     return i;
   }
-  panic("File %s not found!",pathname);
+  Log("File %s not found!",pathname);
   return -1;
 }
 

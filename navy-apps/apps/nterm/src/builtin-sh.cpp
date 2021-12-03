@@ -27,11 +27,28 @@ static int cmd_echo(char * args){
   return 0;
 }
 
+inline static pp(char * arg1){
+  for(int i=strlen(arg1)-1;i>=0;--i){
+    if(arg1[i]==' '||arg1[i]=='\n'||arg1[i]=='\r') arg1[i]='\0';
+    else return;
+  }
+}
+
+static int cmd_export(const char *args){
+  char * arg=strtok(args,' ')
+  char * arg1=strtok(arg,'=');
+  char * arg2=strtok(NULL,'=');
+  pp(arg1);pp(arg2);
+  setenv(arg1,arg2,0);
+  return 0;
+}
+
 static struct {
   const char * name;
   int (*handler) (char *);
 } cmd_table [] ={
-  {"echo",cmd_echo}
+  {"echo",cmd_echo},
+  {"export",cmd_export}
 };
 #define NR_CMD sizeof(cmd_table)/sizeof(cmd_table[0])
 
@@ -39,10 +56,9 @@ static char temp[1000];
 static void sh_handle_cmd(const char *cmd) {
 //  sh_printf("%s\n",cmd);
   if(cmd[0]=='/'){
-    strcpy(temp,cmd);int n=strlen(temp);
-    while(temp[n-1]==' '||temp[n-1]=='\n'||temp[n-1]=='\r') temp[--n]='\0';
+    strcpy(temp,cmd);int n=strlen(temp);pp(temp);
 //    printf("111%s111\n%d\n",temp,strlen(temp));
-    execv(temp,NULL);
+    if(execv(temp,NULL)==-1) sh_printf("Program do not exist!\n");
     return;
   }
   strcpy(temp,cmd);
@@ -53,7 +69,8 @@ static void sh_handle_cmd(const char *cmd) {
     if(cmd_table[i].handler(temp+strlen(cmd_)+1)<0) sh_printf("Something Wrong Seems to happen :-(\n");
     return;
   }
-  sh_printf("Unkown or Not Handled Command '%s' :-(\n",cmd_);
+  pp(temp);
+  if(execvp(temp,NULL)==-1) sh_printf("Unkown or Not Handled Command '%s' :-(\n",cmd_);
   return;
 }
 
