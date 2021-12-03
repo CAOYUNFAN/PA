@@ -12,10 +12,12 @@ static const char *keyname[] = {
 };
 
 static inline void deal_event(SDL_Event *event){
+  printf("%s %s ",temp,temp+3);
   if(temp[1]=='d') event->type=SDL_KEYDOWN;else event->type=SDL_KEYUP;
   for(int i=1;i<sizeof(keyname)/sizeof(char *);++i) 
   if(strcmp(temp+3,keyname[i])==0){
     event->key.keysym.sym=i;
+    printf("%d\n",i);
     break;
   }
   return;
