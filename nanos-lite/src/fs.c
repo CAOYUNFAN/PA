@@ -78,7 +78,7 @@ int fs_open(const char *pathname, int flags, int mode){
   for(int i=0;i<total_size;++i)
   if(strcmp(file_table[i].name,pathname)==0){
     file_table[i].open_offset=0;
-//    Log("File %s,id %d,size %u, offset %u",file_table[i].name,i,file_table[i].size,file_table[i].disk_offset);
+    Log("File %s,id %d,size %u, offset %u",file_table[i].name,i,file_table[i].size,file_table[i].disk_offset);
     return i;
   }
   panic("File %s not found!",pathname);
@@ -94,7 +94,7 @@ int fs_close(int fd){
 size_t fs_read(int fd, void *buf, size_t len){
   check_files(fd);
   if(file_table[fd].size) check_filerange(fd,&len);
-//  Log("Read from file %s,with len %u,now %u",file_table[fd].name,len,file_table[fd].disk_offset+file_table[fd].open_offset);
+  Log("Read from file %s,with len %u,now %u",file_table[fd].name,len,file_table[fd].disk_offset+file_table[fd].open_offset);
   if(file_table[fd].read!=NULL){
     size_t temp=file_table[fd].read(buf,file_table[fd].open_offset,len);
     file_table[fd].open_offset+=temp;
