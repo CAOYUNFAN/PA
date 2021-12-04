@@ -19,7 +19,7 @@ static inline void deal_event(SDL_Event *event){
   for(int i=1;i<sizeof(keyname)/sizeof(char *);++i) 
   if(strcmp(temp+3,keyname[i])==0){
     event->key.keysym.sym=i;
-    my[i]=event->type;
+    my[i]=1-event->type;
 //    printf("%d\n",i);
     break;
   }
