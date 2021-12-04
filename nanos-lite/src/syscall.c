@@ -31,7 +31,8 @@ extern size_t fs_write(int fd, const void *buf, size_t len);
 extern size_t fs_lseek(int fd, size_t offset, int whence);
 extern int fs_close(int fd);
 extern void naive_uload(PCB *pcb, const char *filename);
-void sys_exit(){
+void sys_exit(int status){
+  if(status!=0) printf("Error Code %d\n",status);
   naive_uload(NULL,"/bin/nterm");
 }
 
@@ -72,7 +73,7 @@ void do_syscall(Context *c) {
   #endif
   switch (a[0]) {
     case SYS_yield: event_yield(c); break;
-    case SYS_exit: sys_exit(); break;
+    case SYS_exit: sys_exit(a[1]); break;
     case SYS_write: c->GPRx=fs_write(a[1],(unsigned char *)a[2],a[3]); break;
     case SYS_brk: c->GPRx=sys_brk((void *)a[1]); break;
     case SYS_open: c->GPRx=fs_open((void *)a[1],a[2],a[3]); break;
