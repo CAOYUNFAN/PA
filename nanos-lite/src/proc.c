@@ -40,7 +40,7 @@ void init_proc() {
 
   // load program here
   extern void naive_uload(PCB *pcb, const char *filename);
-  naive_uload(NULL, "/bin/nterm");
+//  naive_uload(NULL, "/bin/nterm");
 }
 
 Context* schedule(Context *prev) {
