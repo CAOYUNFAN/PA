@@ -2,10 +2,10 @@
 
 Context* schedule(Context *prev);
 
-void event_yield(Context *c){
+Context * event_yield(Context *c){
   printf("EVENT_YIELD!\n");
   c=schedule(c);
-  return;
+  return c;
 }
 
 /*enum event_type{
@@ -20,7 +20,7 @@ static Context* do_event(Event e, Context* c) {
   Log("Event ID=%2d",e.event);
   #endif
   switch (e.event) {
-    case EVENT_YIELD: event_yield(c); break;
+    case EVENT_YIELD: c=event_yield(c); break;
     case EVENT_SYSCALL: do_syscall(c); break;
     default: panic("Unhandled event ID = %d", e.event);
   }
