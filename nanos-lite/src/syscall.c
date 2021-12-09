@@ -36,7 +36,7 @@ void sys_exit(int status){
   naive_uload(NULL,"/bin/nterm");
 }
 
-int sys_brk(void *addr){
+inline int sys_brk(void *addr){
   return 0;
 }
 
@@ -52,7 +52,7 @@ struct timezone {
 };
  
 
-int sys_gettimeofday(struct timeval * tv,struct timezone * tz){
+inline int sys_gettimeofday(struct timeval * tv,struct timezone * tz){
   assert(tv!=NULL);
   extern void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime);
   __am_timer_uptime((AM_TIMER_UPTIME_T *)&tv->tv_usec);
@@ -61,7 +61,7 @@ int sys_gettimeofday(struct timeval * tv,struct timezone * tz){
   return 0;
 }
 
-void sys_yield(){
+inline void sys_yield(){
   printf("sys_YIELD!\n");
   return;
 }

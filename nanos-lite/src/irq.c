@@ -2,10 +2,9 @@
 
 Context* schedule(Context *prev);
 
-Context * event_yield(Context *c){
-  printf("EVENT_YIELD!\n");
-  c=schedule(c);
-  return c;
+inline Context * event_yield(Context *c){
+//  printf("EVENT_YIELD!\n");
+  return schedule(c);
 }
 
 /*enum event_type{
