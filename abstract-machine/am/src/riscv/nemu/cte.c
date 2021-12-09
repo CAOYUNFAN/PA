@@ -40,6 +40,7 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   Context * ret=(Context *)((char *)kstack.end-sizeof(Context));
   memset(ret,0,sizeof(Context));
+  printf("Context=%p,pc=%u\n",ret,entry);
   ret->mcause=0x1800;
   ret->mepc=(uintptr_t)entry;
   ret->mcause=11;
