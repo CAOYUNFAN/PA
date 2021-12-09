@@ -1,7 +1,10 @@
 #include <common.h>
 
+Context* schedule(Context *prev);
+
 void event_yield(Context *c){
   printf("EVENT_YIELD!\n");
+  c=schedule(c);
   return;
 }
 

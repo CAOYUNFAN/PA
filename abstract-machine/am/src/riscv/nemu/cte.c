@@ -38,7 +38,12 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
 }
 
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
-  return NULL;
+  Context * ret=(Context *)((char *)kstack.end-sizeof(Context));
+  memset(ret,0,sizeof(Context));
+  ret->mcause=0x1800;
+  ret->mepc=(uintptr_t)entry;
+  ret->mcause=11;
+  return ret;
 }
 
 void yield() {

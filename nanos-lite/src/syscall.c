@@ -61,6 +61,11 @@ int sys_gettimeofday(struct timeval * tv,struct timezone * tz){
   return 0;
 }
 
+void sys_yield(){
+  printf("sys_YIELD!\n");
+  return;
+}
+
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
@@ -72,7 +77,7 @@ void do_syscall(Context *c) {
   Log("System call %u with %12d:%8x,%12d:%8x,%12d:%8x",a[0],a[1],a[1],a[2],a[2],a[3],a[3]);
   #endif
   switch (a[0]) {
-    case SYS_yield: event_yield(c); break;
+    case SYS_yield: sys_yield(); break;
     case SYS_exit: sys_exit(a[1]); break;
     case SYS_write: c->GPRx=fs_write(a[1],(unsigned char *)a[2],a[3]); break;
     case SYS_brk: c->GPRx=sys_brk((void *)a[1]); break;

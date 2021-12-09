@@ -10,6 +10,19 @@ void switch_boot_pcb() {
   current = &pcb_boot;
 }
 
+/*typedef struct{
+  void * start, *end;
+}Area;*/
+
+void context_kload(PCB * pcb,void * entry,void * args){
+  Area temp={
+    .start=(void *)pcb,
+    .end=(void *)((char *)pcb+sizeof(pcb))
+  };
+  pcb->cp=kcontext(temp,entry,args);
+  return;
+}
+
 void hello_fun(void *arg) {
   int j = 1;
   while (1) {
@@ -20,6 +33,7 @@ void hello_fun(void *arg) {
 }
 
 void init_proc() {
+  context_kload(&pcb[0], hello_fun, NULL);
   switch_boot_pcb();
 
   Log("Initializing processes...");
@@ -30,5 +44,7 @@ void init_proc() {
 }
 
 Context* schedule(Context *prev) {
-  return NULL;
+  prev=current->cp;
+  current=&pcb[0];
+  return current->cp;
 }
