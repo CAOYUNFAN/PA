@@ -92,6 +92,6 @@ void context_uload(PCB *pcb,char * filename){
   };
   pcb->cp=ucontext(&pcb->as,mystack,(void *)loader(pcb,filename));
   pcb->cp->GPRx=(intptr_t)(mystack.end);
-  printf("%lx\n",pcb->cp->GPRx);
+  printf("%lx %lx\n",pcb->cp->GPRx,pcb->cp->gpr[10]);
   return;
 }
