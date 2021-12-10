@@ -28,7 +28,7 @@ extern void context_uload(PCB *pcb,char * filename);
 void hello_fun(void *arg) {
   int j = 1;
   while (1) {
-//    Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", arg, j);
+    Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", arg, j);
     j ++;
     yield();
   }
