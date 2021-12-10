@@ -164,7 +164,7 @@ word_t expr(char *e, bool *success) {
   }
 //  printf("%d:",nr_token);
 //  for(int i=0;i<nr_token;++i) printf("%s ",tokens[i].str);
-  printf("\n");
+//  printf("\n");
   ans=eval(0,nr_token-1,success);
   if(*success) return ans;
   else{
