@@ -3,7 +3,7 @@
 Context* schedule(Context *prev);
 
 inline Context * event_yield(Context *c){
-//  printf("EVENT_YIELD!\n");
+  printf("EVENT_YIELD!\n");
   return schedule(c);
 }
 

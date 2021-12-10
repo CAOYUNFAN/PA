@@ -90,6 +90,7 @@ void context_uload(PCB *pcb,char * filename){
     .start=(void *)pcb->stack,
     .end=(void *)(pcb->stack+STACK_SIZE)
   };
-  pcb->cp=ucontext(NULL,mystack,(void *)loader(pcb,filename));
+  pcb->cp=ucontext(&pcb->as,mystack,(void *)loader(pcb,filename));
+  pcb->cp->GPRx=(intptr_t)(mystack.end);
   return;
 }
