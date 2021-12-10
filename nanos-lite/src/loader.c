@@ -85,3 +85,11 @@ void naive_uload(PCB *pcb, const char *filename) {
   return;
 }
 
+void context_uload(PCB *pcb,char * filename){
+  Area mystack={
+    .start=(void *)pcb->stack,
+    .end=(void *)(pcb->stack+STACK_SIZE)
+  };
+  pcb->cp=ucontext(NULL,mystack,(void *)loader(pcb,filename));
+  return;
+}

@@ -16,12 +16,14 @@ void switch_boot_pcb() {
 
 void context_kload(PCB * pcb,void * entry,void * args){
   Area temp={
-    .start=(void *)pcb,
-    .end=(void *)((char *)pcb+sizeof(pcb))
+    .start=(void *)pcb->stack,
+    .end=(void *)(pcb->stack+STACK_SIZE)
   };
   pcb->cp=kcontext(temp,entry,args);
   return;
 }
+
+extern void context_uload(PCB *pcb,char * filename);
 
 void hello_fun(void *arg) {
   int j = 1;
@@ -34,7 +36,7 @@ void hello_fun(void *arg) {
 
 void init_proc() {
   context_kload(&pcb[0], hello_fun, "pcb_0");
-  context_kload(&pcb[1], hello_fun, "pcb_1");
+  context_uload(&pcb[1],"/bin/pal");
   switch_boot_pcb();
 
   Log("Initializing processes...");
