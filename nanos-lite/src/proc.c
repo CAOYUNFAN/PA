@@ -39,7 +39,7 @@ void init_proc() {
 //  context_uload(&pcb[0],"/bin/hello");
   char * argv[]={"--skip",NULL};
   char * envp[]={NULL};
-  context_uload(&pcb[1],"/bin/pal",argv,envp);
+  context_uload(&pcb[1],"/bin/exec-test",argv,envp);
   switch_boot_pcb();
 
   Log("Initializing processes...");
