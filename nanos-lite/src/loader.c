@@ -94,7 +94,6 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   };
   void * entry=(void *)loader(pcb,filename);
   if(!entry) return 0;
-  pcb->cp=ucontext(&pcb->as,mystack,entry);
   int argv_count=0;
 //  int envp_count=0;
   static uintptr_t begin_ptr[1000];
@@ -119,5 +118,6 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 //  Log("total to move:%d %d",now,now*sizeof(uintptr_t));
   pcb->cp->GPRx=(uintptr_t)memcpy(end_ptr-now*sizeof(uintptr_t),begin_ptr,now*sizeof(uintptr_t));
 //  for(int i=1;begin_ptr[i]!=0;++i) Log("%p:%s,%s",begin_ptr[i],begin_ptr[i],begin_ptr[i]+1);
+  pcb->cp=ucontext(&pcb->as,mystack,entry);
   return 1;
 }
