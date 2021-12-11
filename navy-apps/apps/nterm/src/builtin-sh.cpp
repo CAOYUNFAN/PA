@@ -69,6 +69,7 @@ static void check(const char * filename,char * const argv[]){
 
 static void sh_handle_cmd(const char *cmd) {
 //  sh_printf("%s\n",cmd);
+  strcpy(temp,cmd);
   if(cmd[0]=='/'){
     char * filename=strtok(temp," ");pp(filename);
     sh_printf("AAAA\n");
@@ -79,7 +80,6 @@ static void sh_handle_cmd(const char *cmd) {
     if(execv(filename,my)==-1) sh_printf("Program do not exist!\n");
     return;
   }
-  strcpy(temp,cmd);
   int i;
   char * cmd_=strtok(temp," ");
   for(i=0;i<NR_CMD;++i)
