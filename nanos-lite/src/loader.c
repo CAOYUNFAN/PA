@@ -85,14 +85,14 @@ void naive_uload(PCB *pcb, const char *filename) {
   return;
 }
 extern void* new_page(size_t nr_page);
-void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
+bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
 //  Log("file %s",filename);
   Area mystack={
     .start=(void *)pcb->stack,
     .end=(void *)(pcb->stack+STACK_SIZE)
   };
   void * entry=(void *)loader(pcb,filename);
-  assert(entry!=NULL);
+  if(!entry) return 0;
   pcb->cp=ucontext(&pcb->as,mystack,entry);
 //  printf("%lx %lx\n",pcb->cp->GPRx,pcb->cp->gpr[10]);
   int argv_count=0;
@@ -119,5 +119,5 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 //  Log("total to move:%d %d",now,now*sizeof(uintptr_t));
   pcb->cp->GPRx=(uintptr_t)memcpy(end_ptr-now*sizeof(uintptr_t),begin_ptr,now*sizeof(uintptr_t));
 //  for(int i=1;begin_ptr[i]!=0;++i) Log("%p:%s,%s",begin_ptr[i],begin_ptr[i],begin_ptr[i]+1);
-  return;
+  return 1;
 }

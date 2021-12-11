@@ -66,12 +66,13 @@ inline void sys_yield(){
   return;
 }
 
-extern void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]);
+extern bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]);
 extern void switch_boot_pcb();
 inline int sys_execve(const char * filename,char * const argv[],char * const envp[] ){
-  context_uload(current,filename,argv,envp);
-  switch_boot_pcb();
-  yield();
+  if(context_uload(current,filename,argv,envp)){
+    switch_boot_pcb();
+    yield();
+  }
   return -1;
 }
 
