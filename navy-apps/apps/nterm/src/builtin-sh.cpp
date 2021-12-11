@@ -63,16 +63,17 @@ static char ** args(char * p){
 }
 
 static void check(const char * filename,char * const argv[]){
-  printf("%s\n",filename);
-  for(int i=0;argv[i];++i) printf("%s\n",argv[i]);
+  sh_printf("%s\n",filename);
+  for(int i=0;argv[i];++i) sh_printf("%s\n",argv[i]);
 }
 
 static void sh_handle_cmd(const char *cmd) {
 //  sh_printf("%s\n",cmd);
   if(cmd[0]=='/'){
-//    printf("111%s111\n%d\n",temp,strlen(temp));
     char * filename=strtok(temp," ");pp(filename);
+    sh_printf("AAAA\n");
     char * ndd=strtok(temp+strlen(filename)," ");
+    sh_printf("BBBB\n");
     char ** my=args(ndd);
     check(filename,my);
     if(execv(filename,my)==-1) sh_printf("Program do not exist!\n");
