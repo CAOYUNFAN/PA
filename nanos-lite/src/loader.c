@@ -86,18 +86,20 @@ void naive_uload(PCB *pcb, const char *filename) {
 }
 extern void* new_page(size_t nr_page);
 bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
-  Log("file %s with %p,%p",filename,argv,envp);
+//  Log("file %s with %p,%p",filename,argv,envp);
   if(*argv) Log("%p %s",*argv,*argv);
   Area mystack={
     .start=(void *)pcb->stack,
     .end=(void *)(pcb->stack+STACK_SIZE)
   };
   void * entry=(void *)loader(pcb,filename);
+  if(*argv) Log("%p",*argv);
   if(!entry) return 0;
   int argv_count=0;
 //  int envp_count=0;
   static uintptr_t begin_ptr[1000];
   char * end_ptr=(char *)new_page(8);
+  if(*argv) Log("%p",*argv);
   Log("%p",end_ptr);
   int now=1;
   for(;*argv;++argv){
