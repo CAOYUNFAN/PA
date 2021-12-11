@@ -98,7 +98,10 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   uintptr_t * begin_ptr=(uintptr_t *)pcb->cp->GPRx;
   uintptr_t * now=begin_ptr+1;
   for(;*argv;++argv){
+    Log("copy%d: To%pFrom%p",argv_count,end_ptr,*argv);
+    Log("%s",*argv);
     *(now++)=(uintptr_t)(end_ptr=strcpy(end_ptr-strlen(*argv),*argv));
+    Log("Copy Ready.Now%p:%d->%p",now-1,*(now-1),end_ptr);
     ++argv_count;
   }
   Log("argv_count:%d",argv_count);
