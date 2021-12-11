@@ -56,8 +56,15 @@ static char temp[1000];
 
 static char ** args(char * p){
   static char *ret[100];
-  for(int i=0;(ret[i]=strtok(p," "))!=NULL;++i) pp(ret[i]);
+  int i=0;
+  for(;(ret[i]=strtok(p," "))!=NULL;++i) pp(ret[i]);
+  ret[i]=NULL;
   return ret;
+}
+
+static void check(const char * filename,char * const argv[]){
+  printf("%s\n",filename);
+  for(int i=0;argv[i];++i) printf("%s\n",argv[i]);
 }
 
 static void sh_handle_cmd(const char *cmd) {
@@ -67,6 +74,7 @@ static void sh_handle_cmd(const char *cmd) {
     char * filename=strtok(temp," ");pp(filename);
     char * ndd=strtok(temp+strlen(filename)," ");
     char ** my=args(ndd);
+    check(filename,my);
     if(execv(filename,my)==-1) sh_printf("Program do not exist!\n");
     return;
   }
