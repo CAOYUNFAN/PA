@@ -37,8 +37,9 @@ void hello_fun(void *arg) {
 void init_proc() {
   context_kload(&pcb[0], hello_fun, "pcb_0");
 //  context_uload(&pcb[0],"/bin/hello");
-  char * const temp[]={"--skip"};
-  context_uload(&pcb[1],"/bin/pal",temp,NULL);
+  char * argv[]={"--skip",NULL};
+  char * envp[]={NULL};
+  context_uload(&pcb[1],"/bin/pal",argv,envp);
   switch_boot_pcb();
 
   Log("Initializing processes...");
