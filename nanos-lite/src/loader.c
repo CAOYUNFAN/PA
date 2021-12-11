@@ -94,7 +94,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   pcb->cp->GPRx=(intptr_t)((char *)heap.end-PGSIZE);
 //  printf("%lx %lx\n",pcb->cp->GPRx,pcb->cp->gpr[10]);
   int argv_count=0,envp_count=0;
-  char * end_ptr=(char *)heap.end;
+  char * end_ptr=(char *)heap.end-1;
   uintptr_t * begin_ptr=(uintptr_t *)pcb->cp->GPRx;
   uintptr_t * now=begin_ptr+1;
   for(;*argv;++argv){
