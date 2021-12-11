@@ -114,7 +114,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   }
 //  Log("envp_count:%d",envp_count);
   begin_ptr[now++]=0;
-  Log("total to move:%d %d",now,sizeof(uintptr_t));
+  Log("total to move:%d %d",now,now*sizeof(uintptr_t));
   pcb->cp->GPRx=(uintptr_t)memcpy(end_ptr-now*sizeof(uintptr_t),begin_ptr,now*sizeof(uintptr_t));
   return;
 }
