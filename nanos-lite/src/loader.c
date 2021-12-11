@@ -71,7 +71,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       memset((void *)(phdr.p_vaddr+phdr.p_filesz),0,phdr.p_memsz-phdr.p_filesz);
     }
   }
-//  panic("Successfully read. Not Implemnted");
 //  Log("loading ready.");
   return ehdr.e_entry;
 }
@@ -93,9 +92,6 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     .end=(void *)(pcb->stack+STACK_SIZE)
   };
   if(*argv) Log("%p",*argv);
-  void * entry=(void *)loader(pcb,filename);
-  if(*argv) Log("%p",*argv);
-  if(!entry) return 0;
   int argv_count=0;
 //  int envp_count=0;
   static uintptr_t begin_ptr[1000];
@@ -120,6 +116,8 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 //  Log("envp_count:%d",envp_count);
   begin_ptr[now++]=0;
 //  Log("total to move:%d %d",now,now*sizeof(uintptr_t));
+  void * entry=(void *)loader(pcb,filename);
+  if(!entry) return 0;
   pcb->cp=ucontext(&pcb->as,mystack,entry);
   pcb->cp->GPRx=(uintptr_t)memcpy(end_ptr-now*sizeof(uintptr_t),begin_ptr,now*sizeof(uintptr_t));
 //  for(int i=1;begin_ptr[i]!=0;++i) Log("%p:%s,%s",begin_ptr[i],begin_ptr[i],begin_ptr[i]+1);
