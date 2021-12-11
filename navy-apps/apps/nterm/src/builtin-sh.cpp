@@ -53,12 +53,21 @@ static struct {
 #define NR_CMD sizeof(cmd_table)/sizeof(cmd_table[0])
 
 static char temp[1000];
+
+static char ** args(char * p){
+  static char *ret[100];
+  for(int i=0;(ret[i]=strtok(p," "))!=NULL;++i) pp(ret[i]);
+  return ret;
+}
+
 static void sh_handle_cmd(const char *cmd) {
 //  sh_printf("%s\n",cmd);
   if(cmd[0]=='/'){
-    strcpy(temp,cmd);int n=strlen(temp);pp(temp);
 //    printf("111%s111\n%d\n",temp,strlen(temp));
-    if(execv(temp,NULL)==-1) sh_printf("Program do not exist!\n");
+    char * filename=strtok(temp," ");pp(filename);
+    char * ndd=strtok(NULL," ");
+    char ** my=args(ndd);
+    if(execv(filename,my)==-1) sh_printf("Program do not exist!\n");
     return;
   }
   strcpy(temp,cmd);
@@ -69,8 +78,9 @@ static void sh_handle_cmd(const char *cmd) {
     if(cmd_table[i].handler(temp+strlen(cmd_)+1)<0) sh_printf("Something Wrong Seems to happen :-(\n");
     return;
   }
-  pp(temp);
-  if(execvp(temp,NULL)==-1) sh_printf("Unkown or Not Handled Command '%s' :-(\n",cmd_);
+  char * ndd=strtok(NULL," ");
+  char ** my=args(ndd);
+  if(execvp(temp,my)==-1) sh_printf("Unkown or Not Handled Command '%s' :-(\n",cmd_);
   return;
 }
 
