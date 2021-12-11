@@ -23,7 +23,7 @@ void context_kload(PCB * pcb,void * entry,void * args){
   return;
 }
 
-extern void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]);
+extern bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]);
 
 void hello_fun(void *arg) {
   int j = 1;
@@ -40,7 +40,7 @@ void init_proc() {
 //  char * argv[]={"/bin/exec-test",NULL};
   char * argv[]={NULL};
   char * envp[]={NULL};
-  context_uload(&pcb[1],"/bin/menu",argv,envp);
+  assert(context_uload(&pcb[1],"/bin/nterm",argv,envp)==true);
   switch_boot_pcb();
 
   Log("Initializing processes...");
