@@ -23,7 +23,7 @@ void context_kload(PCB * pcb,void * entry,void * args){
   return;
 }
 
-extern void context_uload(PCB *pcb,char * filename);
+extern void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]);
 
 void hello_fun(void *arg) {
   int j = 1;
@@ -37,7 +37,8 @@ void hello_fun(void *arg) {
 void init_proc() {
   context_kload(&pcb[0], hello_fun, "pcb_0");
 //  context_uload(&pcb[0],"/bin/hello");
-  context_uload(&pcb[1],"/bin/pal");
+  char * temp[]={"--skip"};
+  context_uload(&pcb[1],"/bin/pal",temp,NULL);
   switch_boot_pcb();
 
   Log("Initializing processes...");
