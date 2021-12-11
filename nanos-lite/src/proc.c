@@ -28,7 +28,7 @@ extern void context_uload(PCB *pcb, const char *filename, char *const argv[], ch
 void hello_fun(void *arg) {
   int j = 1;
   while (1) {
-    Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", arg, j);
+//    Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", arg, j);
     j ++;
     yield();
   }
@@ -37,9 +37,9 @@ void hello_fun(void *arg) {
 void init_proc() {
   context_kload(&pcb[0], hello_fun, "pcb_0");
 //  context_uload(&pcb[0],"/bin/hello");
-  char * argv[]={NULL};
+  char * argv[]={"--skip",NULL};
   char * envp[]={NULL};
-  context_uload(&pcb[1],"/bin/exec-test",argv,envp);
+  context_uload(&pcb[1],"/bin/pal",argv,envp);
   switch_boot_pcb();
 
   Log("Initializing processes...");
