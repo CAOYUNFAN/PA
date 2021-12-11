@@ -76,7 +76,7 @@ static void check(const char * filename,char * const argv[]){
 }
 
 static void sh_handle_cmd(const char *cmd) {
-  sh_printf("%s\n",cmd);
+//  sh_printf("%s\n",cmd);
   strcpy(temp,cmd);
   if(cmd[0]=='/'){
     char * filename=strtok(temp," ");pp(filename);
