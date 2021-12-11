@@ -59,21 +59,21 @@ static char ** args(char * p){
   ret[0]=strtok(p," ");
   if(ret[0]){
     pp(ret[0]);
-    printf("0:%s\n",ret[0]);
+//    printf("0:%s\n",ret[0]);
     int i=1;
     for(;(ret[i]=strtok(NULL," "))!=NULL;++i){
       pp(ret[i]);
-      printf("%d:%s\n",i,ret[i]);
+//      printf("%d:%s\n",i,ret[i]);
     }
     ret[i]=NULL;
   }
   return ret;
 }
 
-static void check(const char * filename,char * const argv[]){
+/*static void check(const char * filename,char * const argv[]){
   printf("%s\n",filename);
   for(int i=0;argv[i];++i) printf("%s\n",argv[i]);
-}
+}*/
 
 static void sh_handle_cmd(const char *cmd) {
   sh_printf("%s\n",cmd);
@@ -84,7 +84,7 @@ static void sh_handle_cmd(const char *cmd) {
     char * ndd=strtok(NULL," ");
 //    printf("%s\n",ndd);
     char ** my=args(ndd);
-    check(filename,my);
+//    check(filename,my);
     if(execv(filename,my)==-1) sh_printf("Program do not exist!\n");
     return;
   }

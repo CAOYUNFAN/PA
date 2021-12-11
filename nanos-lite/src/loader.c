@@ -86,7 +86,7 @@ void naive_uload(PCB *pcb, const char *filename) {
 }
 extern void* new_page(size_t nr_page);
 bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
-//  Log("file %s",filename);
+  Log("file %s with %p,%p",filename,argv,envp);
   Area mystack={
     .start=(void *)pcb->stack,
     .end=(void *)(pcb->stack+STACK_SIZE)
@@ -94,15 +94,14 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   void * entry=(void *)loader(pcb,filename);
   if(!entry) return 0;
   pcb->cp=ucontext(&pcb->as,mystack,entry);
-//  printf("%lx %lx\n",pcb->cp->GPRx,pcb->cp->gpr[10]);
   int argv_count=0;
 //  int envp_count=0;
   static uintptr_t begin_ptr[1000];
   char * end_ptr=(char *)new_page(8);
   int now=1;
   for(;*argv;++argv){
-//    Log("copy%d: To%pFrom%p",argv_count,end_ptr,*argv);
-//    Log("%s",*argv);
+    Log("copy%d: To%pFrom%p",argv_count,end_ptr,*argv);
+    Log("%s",*argv);
     begin_ptr[now++]=(uintptr_t)(end_ptr=strcpy(end_ptr-strlen(*argv)-1,*argv));
 //    Log("Copy Ready.Now:%d->%p",now-1,end_ptr);
     ++argv_count;
