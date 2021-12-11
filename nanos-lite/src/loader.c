@@ -91,7 +91,9 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     .start=(void *)pcb->stack,
     .end=(void *)(pcb->stack+STACK_SIZE)
   };
-  pcb->cp=ucontext(&pcb->as,mystack,(void *)loader(pcb,filename));
+  void * entry=(void *)loader(pcb,filename);
+  assert(entry!=NULL);
+  pcb->cp=ucontext(&pcb->as,mystack,entry);
 //  printf("%lx %lx\n",pcb->cp->GPRx,pcb->cp->gpr[10]);
   int argv_count=0;
 //  int envp_count=0;
