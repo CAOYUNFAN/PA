@@ -69,6 +69,7 @@ inline void sys_yield(){
 extern bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]);
 extern void switch_boot_pcb();
 inline int sys_execve(const char * filename,char * const argv[],char * const envp[] ){
+  printf("%p %p\n",argv,envp);
   if(context_uload(current,filename,argv,envp)){
     switch_boot_pcb();
     yield();
