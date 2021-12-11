@@ -73,7 +73,7 @@ static void sh_handle_cmd(const char *cmd) {
   if(cmd[0]=='/'){
     char * filename=strtok(temp," ");pp(filename);
     printf("AAAA\n");
-    char * ndd=strtok(temp+strlen(filename)," ");
+    char * ndd=strtok(NULL," ");
     printf("BBBB\n");
     char ** my=args(ndd);
     check(filename,my);
