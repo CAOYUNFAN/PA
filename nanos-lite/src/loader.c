@@ -117,8 +117,8 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 //  Log("envp_count:%d",envp_count);
   begin_ptr[now++]=0;
 //  Log("total to move:%d %d",now,now*sizeof(uintptr_t));
+  pcb->cp=ucontext(&pcb->as,mystack,entry);
   pcb->cp->GPRx=(uintptr_t)memcpy(end_ptr-now*sizeof(uintptr_t),begin_ptr,now*sizeof(uintptr_t));
 //  for(int i=1;begin_ptr[i]!=0;++i) Log("%p:%s,%s",begin_ptr[i],begin_ptr[i],begin_ptr[i]+1);
-  pcb->cp=ucontext(&pcb->as,mystack,entry);
   return 1;
 }
