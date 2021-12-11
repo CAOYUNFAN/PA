@@ -63,8 +63,8 @@ static char ** args(char * p){
 }
 
 static void check(const char * filename,char * const argv[]){
-  sh_printf("%s\n",filename);
-  for(int i=0;argv[i];++i) sh_printf("%s\n",argv[i]);
+  printf("%s\n",filename);
+  for(int i=0;argv[i];++i) printf("%s\n",argv[i]);
 }
 
 static void sh_handle_cmd(const char *cmd) {
@@ -72,9 +72,9 @@ static void sh_handle_cmd(const char *cmd) {
   strcpy(temp,cmd);
   if(cmd[0]=='/'){
     char * filename=strtok(temp," ");pp(filename);
-    sh_printf("AAAA\n");
+    printf("AAAA\n");
     char * ndd=strtok(temp+strlen(filename)," ");
-    sh_printf("BBBB\n");
+    printf("BBBB\n");
     char ** my=args(ndd);
     check(filename,my);
     if(execv(filename,my)==-1) sh_printf("Program do not exist!\n");
