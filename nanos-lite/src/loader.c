@@ -86,7 +86,7 @@ void naive_uload(PCB *pcb, const char *filename) {
 }
 extern void* new_page(size_t nr_page);
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
-  Log("%s",filename);
+  Log("file %s",filename);
   Area mystack={
     .start=(void *)pcb->stack,
     .end=(void *)(pcb->stack+STACK_SIZE)
@@ -105,7 +105,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 //    Log("Copy Ready.Now%p:%d->%p",now-1,*(now-1),end_ptr);
     ++argv_count;
   }
-//  Log("argv_count:%d",argv_count);
+  Log("argv_count:%d",argv_count);
   *begin_ptr=argv_count;
   begin_ptr[now++]=0;
   for(;*envp;++envp){
