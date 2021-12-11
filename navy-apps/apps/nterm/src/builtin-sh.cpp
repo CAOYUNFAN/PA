@@ -59,10 +59,11 @@ static char ** args(char * p){
   ret[0]=strtok(p," ");
   if(ret[0]){
     pp(ret[0]);
+    printf("0:%s\n",ret[0]);
     int i=1;
     for(;(ret[i]=strtok(NULL," "))!=NULL;++i){
       pp(ret[i]);
-      printf("%d:%s",i,ret[i]);
+      printf("%d:%s\n",i,ret[i]);
     }
     ret[i]=NULL;
   }
