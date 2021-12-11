@@ -97,7 +97,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   int now=STACK_SIZE-PGSIZE+1;
   for(;argv&&*argv;++argv){
     pcb->stack[now++]=(uintptr_t)(ptr_end=strcpy(ptr_end-strlen(*argv),*argv));
-    printf("argv:%d %x\n",now-1,ptr_end);
+    printf("argv:%d %x %d\n",now-1,ptr_end,strlen(*argv));
   }
   pcb->stack[STACK_SIZE-PGSIZE]=now-1;
   pcb->stack[now++]=0;
