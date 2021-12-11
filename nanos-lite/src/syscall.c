@@ -74,7 +74,7 @@ inline int sys_execve(const char * filename,char * const argv[],char * const env
     switch_boot_pcb();
     yield();
   }
-  return -1;
+  return -2;
 }
 
 void do_syscall(Context *c) {

@@ -1,6 +1,8 @@
 #include <NDL.h>
 
 int SDL_Init(uint32_t flags) {
+  extern int setenv (const char *name,const char *value,int rewrite);
+  setenv("PATH","/bin/:/usr/bin/",0);
   return NDL_Init(flags);
 }
 
