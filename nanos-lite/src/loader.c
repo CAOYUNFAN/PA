@@ -101,7 +101,7 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   char * end_ptr=(char *)new_page(8);
   int now=1;
   for(;*argv;++argv){
-    Log("copy%d: To%pFrom%p",argv_count,end_ptr,*argv);
+    Log("copy%d: To%pFrom%p:%p",argv_count,end_ptr,argv,*argv);
     Log("%s",*argv);
     begin_ptr[now++]=(uintptr_t)(end_ptr=strcpy(end_ptr-strlen(*argv)-1,*argv));
 //    Log("Copy Ready.Now:%d->%p",now-1,end_ptr);
