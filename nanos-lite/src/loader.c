@@ -91,7 +91,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     .end=(void *)(pcb->stack+STACK_SIZE)
   };
   pcb->cp=ucontext(&pcb->as,mystack,(void *)loader(pcb,filename));
-  pcb->cp->GPRx=(intptr_t)(mystack.end);
+  pcb->cp->GPR1=(intptr_t)(mystack.end);
+  pcb->cp->GPRx=(intptr_t)(mystack.start);
 //  printf("%lx %lx\n",pcb->cp->GPRx,pcb->cp->gpr[10]);
   char * ptr_end=(char *)mystack.end-sizeof(PCB);
   uint8_t now=1;
