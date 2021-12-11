@@ -84,7 +84,6 @@ static void sh_handle_cmd(const char *cmd) {
     char * ndd=strtok(NULL," ");
 //    printf("%s\n",ndd);
     char ** my=args(ndd);
-    *((int *)0)=0;
     check(filename,my);
     printf("%p %p\n",my,*my);
     if(execv(filename,my)==-1) sh_printf("Program do not exist!\n");
