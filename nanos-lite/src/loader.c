@@ -84,35 +84,35 @@ void naive_uload(PCB *pcb, const char *filename) {
   }
   return;
 }
-
+extern void* new_page(size_t nr_page);
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
   Area mystack={
     .start=(void *)pcb->stack,
     .end=(void *)(pcb->stack+STACK_SIZE)
   };
   pcb->cp=ucontext(&pcb->as,mystack,(void *)loader(pcb,filename));
-  pcb->cp->GPRx=(intptr_t)((char *)heap.end-PGSIZE);
 //  printf("%lx %lx\n",pcb->cp->GPRx,pcb->cp->gpr[10]);
   int argv_count=0;
 //  int envp_count=0;
-  char * end_ptr=(char *)heap.end-1;
-  uintptr_t * begin_ptr=(uintptr_t *)pcb->cp->GPRx;
-  uintptr_t * now=begin_ptr+1;
+  static uintptr_t begin_ptr[1000];
+  char * end_ptr=(char *)new_page(8);
+  int now=1;
   for(;*argv;++argv){
 //    Log("copy%d: To%pFrom%p",argv_count,end_ptr,*argv);
 //    Log("%s",*argv);
-    *(now++)=(uintptr_t)(end_ptr=strcpy(end_ptr-strlen(*argv),*argv));
+    begin_ptr[now++]=(uintptr_t)(end_ptr=strcpy(end_ptr-strlen(*argv),*argv));
 //    Log("Copy Ready.Now%p:%d->%p",now-1,*(now-1),end_ptr);
     ++argv_count;
   }
 //  Log("argv_count:%d",argv_count);
   *begin_ptr=argv_count;
-  *(now++)=0;
+  begin_ptr[now++]=0;
   for(;*envp;++envp){
-    *(now++)=(uintptr_t)(end_ptr=strcpy(end_ptr-strlen(*envp),*envp));
+    begin_ptr[now++]=(uintptr_t)(end_ptr=strcpy(end_ptr-strlen(*envp)-1,*envp));
 //    ++envp_count;
   }
-  *(now++)=0;
+  begin_ptr[now++]=0;
+  pcb->cp->GPRx=(uintptr_t)memcpy(end_ptr-now*sizeof(uintptr_t),begin_ptr,now*sizeof(uintptr_t));
 //  Log("envp_count:%d",envp_count);
   return;
 }

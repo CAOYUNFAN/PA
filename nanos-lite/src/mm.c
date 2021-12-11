@@ -1,9 +1,12 @@
 #include <memory.h>
 
-static void *pf = NULL;
+static char *pf = NULL;
 
 void* new_page(size_t nr_page) {
-  return NULL;
+  if(!pf) pf=heap.end;
+  void * ret=pf;
+  pf=(void *)((char *)pf-nr_page*PGSIZE);
+  return ret;
 }
 
 #ifdef HAS_VME
