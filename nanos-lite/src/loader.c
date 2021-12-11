@@ -72,7 +72,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     }
   }
 //  panic("Successfully read. Not Implemnted");
-  Log("loading ready.");
+//  Log("loading ready.");
   return ehdr.e_entry;
 }
 
@@ -99,10 +99,10 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   char * end_ptr=(char *)new_page(8);
   int now=1;
   for(;*argv;++argv){
-//    Log("copy%d: To%pFrom%p",argv_count,end_ptr,*argv);
+    Log("copy%d: To%pFrom%p",argv_count,end_ptr,*argv);
     Log("%s",*argv);
     begin_ptr[now++]=(uintptr_t)(end_ptr=strcpy(end_ptr-strlen(*argv),*argv));
-//    Log("Copy Ready.Now%p:%d->%p",now-1,*(now-1),end_ptr);
+    Log("Copy Ready.Now:%d->%p",now-1,end_ptr);
     ++argv_count;
   }
   Log("argv_count:%d",argv_count);
