@@ -92,6 +92,7 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     .start=(void *)pcb->stack,
     .end=(void *)(pcb->stack+STACK_SIZE)
   };
+  if(*argv) Log("%p",*argv);
   void * entry=(void *)loader(pcb,filename);
   if(*argv) Log("%p",*argv);
   if(!entry) return 0;
@@ -99,8 +100,8 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 //  int envp_count=0;
   static uintptr_t begin_ptr[1000];
   char * end_ptr=(char *)new_page(8);
-  if(*argv) Log("%p",*argv);
-  Log("%p",end_ptr);
+//  if(*argv) Log("%p",*argv);
+//  Log("%p",end_ptr);
   int now=1;
   for(;*argv;++argv){
     Log("copy%d: To%pFrom%p:%p",argv_count,end_ptr,argv,*argv);
