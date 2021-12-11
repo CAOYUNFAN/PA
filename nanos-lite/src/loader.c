@@ -99,13 +99,13 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   char * end_ptr=(char *)new_page(8);
   int now=1;
   for(;*argv;++argv){
-    Log("copy%d: To%pFrom%p",argv_count,end_ptr,*argv);
-    Log("%s",*argv);
+//    Log("copy%d: To%pFrom%p",argv_count,end_ptr,*argv);
+//    Log("%s",*argv);
     begin_ptr[now++]=(uintptr_t)(end_ptr=strcpy(end_ptr-strlen(*argv)-1,*argv));
-    Log("Copy Ready.Now:%d->%p",now-1,end_ptr);
+//    Log("Copy Ready.Now:%d->%p",now-1,end_ptr);
     ++argv_count;
   }
-  Log("argv_count:%d",argv_count);
+//  Log("argv_count:%d",argv_count);
   *begin_ptr=argv_count;
   begin_ptr[now++]=0;
   for(;*envp;++envp){
@@ -114,7 +114,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   }
 //  Log("envp_count:%d",envp_count);
   begin_ptr[now++]=0;
-  Log("total to move:%d %d",now,now*sizeof(uintptr_t));
+//  Log("total to move:%d %d",now,now*sizeof(uintptr_t));
   pcb->cp->GPRx=(uintptr_t)memcpy(end_ptr-now*sizeof(uintptr_t),begin_ptr,now*sizeof(uintptr_t));
   for(int i=1;begin_ptr[i]!=0;++i) Log("%p:%s,%s",begin_ptr[i],begin_ptr[i],begin_ptr[i]+1);
   return;
