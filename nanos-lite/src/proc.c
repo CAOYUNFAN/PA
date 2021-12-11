@@ -37,7 +37,7 @@ void hello_fun(void *arg) {
 void init_proc() {
   context_kload(&pcb[0], hello_fun, "pcb_0");
 //  context_uload(&pcb[0],"/bin/hello");
-  char * temp[]={"--skip"};
+  char * const temp[]={"--skip",NULL};
   context_uload(&pcb[1],"/bin/pal",temp,NULL);
   switch_boot_pcb();
 
