@@ -89,16 +89,16 @@ static void sh_handle_cmd(const char *cmd) {
     if(execv(filename,my)==-1) sh_printf("Program do not exist!\n");
     return;
   }
-  int i;
+//  int i;
   char * cmd_=strtok(temp," ");
-  for(i=0;i<NR_CMD;++i)
+/*  for(i=0;i<NR_CMD;++i)
   if(strcmp(cmd_,cmd_table[i].name)==0){
     if(cmd_table[i].handler(temp+strlen(cmd_)+1)<0) sh_printf("Something Wrong Seems to happen :-(\n");
     return;
-  }
+  }*/
   char * ndd=strtok(NULL," ");
   char ** my=args(ndd);
-  if(execvp(temp,my)==-1) sh_printf("Unkown or Not Handled Command '%s' :-(\n",cmd_);
+  if(execvp(cmd_,my)==-1) sh_printf("Unkown or Not Handled Command '%s' :-(\n",cmd_);
   return;
 }
 
