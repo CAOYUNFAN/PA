@@ -135,7 +135,7 @@ static void sh_handle_cmd(const char *cmd) {
 
 void env_init(){
   setenv("PATH","/bin/:/usr/bin/",0);
-  sh_printf("%s",getenv("PATH"));
+//  sh_printf("%s",getenv("PATH"));
 }
 
 void builtin_sh_run() {
