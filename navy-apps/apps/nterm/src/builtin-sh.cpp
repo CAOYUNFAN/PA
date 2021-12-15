@@ -2,8 +2,23 @@
 #include <stdarg.h>
 #include <unistd.h>
 #include <SDL.h>
+#include <string.h>
 
 char handle_key(SDL_Event *ev);
+
+static char *strccpy (char *s1,const char *s2,char c){
+  char *dest = s1;
+  while (*s2 && *s2 != c)
+    *s1++ = *s2++;
+  *s1 = 0;
+  return dest;
+}
+
+
+#define NR_CMD sizeof(cmd_table)/sizeof(cmd_table[0])
+#define buf_len 1024
+#define buf_name 128
+#define DEBUG
 
 static void sh_printf(const char *format, ...) {
   static char buf[256] = {};
@@ -22,40 +37,128 @@ static void sh_prompt() {
   sh_printf("sh> ");
 }
 
-static int cmd_echo(char * args){
-  sh_printf("%s",args);
-  return 0;
-}
-
-inline static void pp(char * arg1){
-  for(int i=strlen(arg1)-1;i>=0;--i){
-    if(arg1[i]==' '||arg1[i]=='\n'||arg1[i]=='\r') arg1[i]='\0';
+inline static void clean(char * str){
+  for(int i=strlen(str)-1;i>=0;--i){
+    if(str[i]==' '||str[i]=='\n'||str[i]=='\r') str[i]='\0';
     else return;
   }
 }
 
-static int cmd_export(char *args){
-  char * arg=strtok(args," ");
-  char * arg1=strtok(arg,"=");
-  char * arg2=strtok(NULL,"=");
-  pp(arg1);pp(arg2);
-  setenv(arg1,arg2,1);
+static int cmd_echo(char * const args[]){
+  static char empty[]={'\0'};
+  bool first=1;
+  for(;*args;++args){
+    if(**args=='$'){
+      char * ch=getenv((*args)+1);
+      if (!ch) ch=empty;
+      sh_printf("%s",ch);
+    }else sh_printf("%s",*args);
+    if(first) first=0;
+    else sh_printf(" ");
+  }
+  sh_printf("\n");
   return 0;
 }
 
-static struct {
+static int cmd_export(char * const args[]){
+  static char env[buf_len],data[buf_len];
+  for(;*args;++args){
+    const char * ch=*args;
+    strccpy(env,ch,'=');
+    while(*ch&&*ch!='=')++ch;
+    while(*ch=='=')++ch;
+    strccpy(data,ch,'=');
+    setenv(env,data,1);
+    #ifdef CONFIG_DEBUG
+    printf("%s",getenv(env));
+    #endif
+  }
+  return 0;
+}
+
+static const struct {
   const char * name;
-  int (*handler) (char *);
+  int (*handler) (char * const *);
 } cmd_table [] ={
   {"echo",cmd_echo},
   {"export",cmd_export}
 };
-#define NR_CMD sizeof(cmd_table)/sizeof(cmd_table[0])
 
-static char temp[1000];
+static char ** args(const char * arg){
+  static char * ret[buf_name];
+  static char temp[buf_len];
+  while(*arg==' '||*arg=='\n') ++arg;
+  strccpy(temp,arg,' ');
+  int tot=0;
+  while(*temp!=0){
+    clean(temp);
+    ret[tot]=(char *)malloc(strlen(temp)+1);
+    strcpy(ret[tot++],temp);
+    while(*arg&&*arg!=' ') ++arg;
+    while(*arg==' '||*arg=='\n') ++arg;
+    strccpy(temp,arg,' ');
+  }
+  ret[tot]=NULL;
+  return ret;
+}
 
-static char ** args(char * p){
-  static char *ret[100];
+static void free_args(char ** f){
+  for(;*f;++f) free(*f);
+  return;
+}
+
+#ifdef DEBUG
+static void check(const char * filename,char * const argv[]){
+  printf("%s!NAME\n",filename);
+  for(int i=0;argv[i];++i) printf("%s!ARGS\n",argv[i]);
+}
+#endif
+
+static void sh_handle_cmd(const char *cmd) {
+  char ** cmd_dealt=args(cmd);
+  char * cmd_name=*cmd_dealt;
+  cmd_dealt++;
+  #ifdef DEBUG
+  check(cmd_name,cmd_dealt);
+  #endif
+  for(int i=0;i<NR_CMD;++i)
+  if(strcmp(cmd_name,cmd_table[i].name)==0){
+    int err_code;
+    if(!(err_code=cmd_table[i].handler(cmd_dealt))) sh_printf("ERROR_CODE:%d\n",err_code);
+    free_args(--cmd_dealt);
+    return;
+  }
+  if(execvp(cmd_name,cmd_dealt)==-1) sh_printf("Program %s Not Found!\n",cmd_name);
+  free_args(--cmd_dealt);
+  return;
+}
+
+void env_init(){
+  setenv("PATH","/bin/:/usr/bin/",0);
+  sh_printf("%s",getenv("PATH"));
+}
+
+void builtin_sh_run() {
+  sh_banner();
+  sh_prompt();
+
+  while (1) {
+    SDL_Event ev;
+    if (SDL_PollEvent(&ev)) {
+      if (ev.type == SDL_KEYUP || ev.type == SDL_KEYDOWN) {
+        const char *res = term->keypress(handle_key(&ev));
+        if (res) {
+          sh_handle_cmd(res);
+          sh_prompt();
+        }
+      }
+    }
+    refresh_terminal();
+  }
+}
+
+
+/*  static char *ret[100];
   ret[0]=strtok(p," ");
   if(ret[0]){
     pp(ret[0]);
@@ -67,16 +170,10 @@ static char ** args(char * p){
     }
     ret[i]=NULL;
   }
-  return ret;
-}
+  return ret;*/
 
-static void check(const char * filename,char * const argv[]){
-  printf("%s\n",filename);
-  for(int i=0;argv[i];++i) printf("%s\n",argv[i]);
-}
-
-static void sh_handle_cmd(const char *cmd) {
-//  sh_printf("%s\n",cmd);
+  /*
+  //  sh_printf("%s\n",cmd);
   strcpy(temp,cmd);
   if(cmd[0]=='/'){
     char * filename=strtok(temp," ");pp(filename);
@@ -99,24 +196,4 @@ static void sh_handle_cmd(const char *cmd) {
   char * ndd=strtok(NULL," ");
   char ** my=args(ndd);
   if(execvp(cmd_,my)==-1) sh_printf("Unkown or Not Handled Command '%s' :-(\n",cmd_);
-  return;
-}
-
-void builtin_sh_run() {
-  sh_banner();
-  sh_prompt();
-
-  while (1) {
-    SDL_Event ev;
-    if (SDL_PollEvent(&ev)) {
-      if (ev.type == SDL_KEYUP || ev.type == SDL_KEYDOWN) {
-        const char *res = term->keypress(handle_key(&ev));
-        if (res) {
-          sh_handle_cmd(res);
-          sh_prompt();
-        }
-      }
-    }
-    refresh_terminal();
-  }
-}
+  return;*/
