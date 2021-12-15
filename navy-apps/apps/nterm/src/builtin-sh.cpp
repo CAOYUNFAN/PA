@@ -18,7 +18,7 @@ static char *strccpy (char *s1,const char *s2,char c){
 #define NR_CMD sizeof(cmd_table)/sizeof(cmd_table[0])
 #define buf_len 1024
 #define buf_name 128
-#define DEBUG
+//#define DEBUG
 
 static void sh_printf(const char *format, ...) {
   static char buf[256] = {};
@@ -124,7 +124,7 @@ static void sh_handle_cmd(const char *cmd) {
   for(int i=0;i<NR_CMD;++i)
   if(strcmp(cmd_name,cmd_table[i].name)==0){
     int err_code;
-    if(!(err_code=cmd_table[i].handler(cmd_dealt))) sh_printf("ERROR_CODE:%d\n",err_code);
+    if((err_code=cmd_table[i].handler(cmd_dealt))) sh_printf("ERROR_CODE:%d\n",err_code);
     free_args(--cmd_dealt);
     return;
   }
