@@ -113,6 +113,9 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 //  Log("envp_count:%d",envp_count);
   begin_ptr[now++]=0;
 //  Log("total to move:%d %d",now,now*sizeof(uintptr_t));
+  #if defined __ISA_AM_NATIVE__
+  end_ptr=(char *)((((uintptr_t)end_ptr-now*sizeof(uintptr_t))&0xfffffffffffffff8)+now*sizeof(uintptr_t));
+  #endif
   void * entry=(void *)loader(pcb,filename);
   if(!entry) return 0;
   pcb->cp=ucontext(&pcb->as,mystack,entry);
