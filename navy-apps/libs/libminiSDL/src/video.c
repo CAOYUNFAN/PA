@@ -17,7 +17,7 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
   if(dstrect==NULL) dx=dy=0;
   else dx=dstrect->x,dy=dstrect->y;
   
-  printf("%d %d %d %d %d %d\n",sx,sy,sw,sh,dx,dy);
+//  printf("%d %d %d %d %d %d\n",sx,sy,sw,sh,dx,dy);
 //  printf("%d %d %d %d\n",src->w,src->h,dst->w,dst->h);
   unsigned char * d=(unsigned char *)dst->pixels;
   unsigned char * s=(unsigned char *)src->pixels;
