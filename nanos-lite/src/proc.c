@@ -38,9 +38,9 @@ void init_proc() {
   context_kload(&pcb[0], hello_fun, "pcb_0");
 //  context_uload(&pcb[0],"/bin/hello");
 //  char * argv[]={"/bin/exec-test",NULL};
-  char * argv[]={"--skip",NULL};
+  char * argv[]={NULL};
   char * envp[]={NULL};
-  assert(context_uload(&pcb[1],"/bin/pal",argv,envp));
+  assert(context_uload(&pcb[1],"/bin/nterm",argv,envp));
   switch_boot_pcb();
 
   Log("Initializing processes...");
