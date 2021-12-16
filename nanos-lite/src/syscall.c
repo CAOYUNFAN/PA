@@ -30,10 +30,16 @@ extern size_t fs_read(int fd, void *buf, size_t len);
 extern size_t fs_write(int fd, const void *buf, size_t len);
 extern size_t fs_lseek(int fd, size_t offset, int whence);
 extern int fs_close(int fd);
-extern void naive_uload(PCB *pcb, const char *filename);
+extern bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]);
+extern void switch_boot_pcb();
+//extern void naive_uload(PCB *pcb, const char *filename);
+static char * empty[]={NULL};
 void sys_exit(int status){
   if(status!=0) printf("Error Code %d\n",status);
-  naive_uload(NULL,"/bin/nterm");
+  //naive_uload(NULL,"/bin/nterm");
+  assert(context_uload(current,"/bin/nterm",empty,empty));
+  switch_boot_pcb();
+  yield();
 }
 
 inline int sys_brk(void *addr){
@@ -66,8 +72,6 @@ inline void sys_yield(){
   return;
 }
 
-extern bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]);
-extern void switch_boot_pcb();
 inline int sys_execve(const char * filename,char * const argv[],char * const envp[] ){
 //  printf("%p %p\n",argv,*argv);
   if(context_uload(current,filename,argv,envp)){

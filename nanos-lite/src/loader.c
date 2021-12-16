@@ -85,7 +85,6 @@ void naive_uload(PCB *pcb, const char *filename) {
 }
 extern void* new_page(size_t nr_page);
 bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
-//  Log("file %s with %p,%p",filename,argv,envp);
   Area mystack={
     .start=(void *)pcb->stack,
     .end=(void *)(pcb->stack+STACK_SIZE)
@@ -97,13 +96,9 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 //  Log("%p",end_ptr);
   int now=1;
   for(;*argv;++argv){
-  //  Log("copy%d: To%pFrom%p:%p",argv_count,end_ptr,argv,*argv);
-  //  Log("%s",*argv);
     begin_ptr[now++]=(uintptr_t)(end_ptr=strcpy(end_ptr-strlen(*argv)-1,*argv));
-//    Log("Copy Ready.Now:%d->%p",now-1,end_ptr);
     ++argv_count;
   }
-//  Log("argv_count:%d",argv_count);
   *begin_ptr=argv_count;
   begin_ptr[now++]=0;
   for(;*envp;++envp){
@@ -112,7 +107,6 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   }
 //  Log("envp_count:%d",envp_count);
   begin_ptr[now++]=0;
-//  Log("total to move:%d %d",now,now*sizeof(uintptr_t));
   #if defined __ISA_AM_NATIVE__
   end_ptr=(char *)((((uintptr_t)end_ptr-now*sizeof(uintptr_t))&0xfffffffffffffff8)+now*sizeof(uintptr_t));
   #endif
@@ -120,6 +114,5 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   if(!entry) return 0;
   pcb->cp=ucontext(&pcb->as,mystack,entry);
   pcb->cp->GPRx=(uintptr_t)memcpy(end_ptr-now*sizeof(uintptr_t),begin_ptr,now*sizeof(uintptr_t));
-//  for(int i=1;begin_ptr[i]!=0;++i) Log("%p:%s,%s",begin_ptr[i],begin_ptr[i],begin_ptr[i]+1);
   return 1;
 }
