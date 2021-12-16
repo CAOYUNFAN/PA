@@ -57,7 +57,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 
 static uint32_t buf[1000000];
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
-  printf("Update Rect %d %d %d %d With Source %d %d\n",x,y,w,h,s->w,s->h);
+//  printf("Update Rect %d %d %d %d With Source %d %d\n",x,y,w,h,s->w,s->h);
 //  NDL_OpenCanvas(&w,&h);
   if(w==0&&h==0) w=s->w,h=s->h;
   if(s->format->BytesPerPixel==4){
