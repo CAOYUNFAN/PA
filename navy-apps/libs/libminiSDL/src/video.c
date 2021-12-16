@@ -69,7 +69,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     for(int i=0;i<h;++i)
     for(int j=0;j<w;++j){
       buf[i*w+j]=my[*(temp+i*s->w+j)];
-      printf("%p",temp+i*s->w+j);
+  //    printf("%p",temp+i*s->w+j);
     }
     NDL_DrawRect(buf,x,y,w,h);
   }
