@@ -81,7 +81,7 @@ int fs_open(const char *pathname, int flags, int mode){
   for(int i=0;i<total_size;++i)
   if(strcmp(file_table[i].name,pathname)==0){
     file_table[i].open_offset=0;
-    if(strncmp(pathname,"/share/",strlen("/share/"))==0) Log("File %s,id %d,size %u, offset %u",file_table[i].name,i,file_table[i].size,file_table[i].disk_offset);
+    if(strncmp(pathname,"/share/",8)==0) Log("File %s,id %d,size %u, offset %u",file_table[i].name,i,file_table[i].size,file_table[i].disk_offset);
     return i;
   }
   Log("File %s not found!",pathname);
