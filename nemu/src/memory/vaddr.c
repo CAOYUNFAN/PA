@@ -20,7 +20,7 @@ void vaddr_write(vaddr_t addr, int len, word_t data) {
 //    case MMU_TRANSLATE:
 //      addr=isa_mmu_check(addr,len,0);
 //    case MMU_DIRECT:
-      paddr_write(addr,len,0);
+      paddr_write(addr,len,data);
 //      break;
 //    default: assert(false);
 //  }
