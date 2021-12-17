@@ -25,11 +25,12 @@ void context_kload(PCB * pcb,void * entry,void * args){
 
 extern bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]);
 
+#define FREQ 1000
 void hello_fun(void *arg) {
   int j = 1;
   while (1) {
-//    if(j%100==0) 
-    Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", arg, j);
+//   if(j%FREQ==0) 
+//    Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", arg, j / FREQ);
     j ++;
     yield();
   }
