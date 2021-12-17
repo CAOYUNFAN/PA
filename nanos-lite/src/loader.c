@@ -115,6 +115,6 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   if(!entry) return 0;
   pcb->cp=ucontext(&pcb->as,mystack,entry);
   pcb->cp->GPRx=(uintptr_t)memcpy(end_ptr-now*sizeof(uintptr_t),begin_ptr,now*sizeof(uintptr_t));
-  printf("File%s:entry=%p,Stack starts From%p\n",filename,entry,pcb->cp->GPRx);
+//  printf("File%s:entry=%p,Stack starts From%p\n",filename,entry,pcb->cp->GPRx);
   return 1;
 }
