@@ -137,6 +137,6 @@ size_t fs_lseek(int fd, size_t offset, int whence){
     case SEEK_END: file_table[fd].open_offset=file_table[fd].size+offset; break;
     default: panic("Unexpected whence=%d",whence); break;
   }
-  printf("Size:%d:After lseek:%d\n",file_table[fd].size,file_table[fd].open_offset);
+//  printf("Size:%d:After lseek:%d\n",file_table[fd].size,file_table[fd].open_offset);
   return file_table[fd].open_offset;
 }
