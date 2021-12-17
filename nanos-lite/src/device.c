@@ -18,7 +18,7 @@ size_t serial_write(const void *buf, size_t offset, size_t len) {
   yield();
   const char *now=buf;
   for(int i=0;i<len;++i,++now) putch(*now);
-  return 0;
+  return len;
 }
 
 inline static size_t min(size_t a,size_t b){return a<b?a:b;}
