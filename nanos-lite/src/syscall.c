@@ -72,8 +72,16 @@ inline void sys_yield(){
   return;
 }
 
+inline void debug(const char * filename,char * const argv[],char * const envp[] ){
+  printf("%sAAA\n",filename);
+  int i=0;
+  for(;*argv;++argv,++i) printf("%d:%sAAA\n",i,*argv);
+  i=0;
+  for(;*envp;++envp,++i) printf("%d:%sAAA\n",i,*envp);
+}
+
 inline int sys_execve(const char * filename,char * const argv[],char * const envp[] ){
-//  printf("%p %p\n",argv,*argv);
+  debug(filename,argv,envp);
   if(context_uload(current,filename,argv,envp)){
     switch_boot_pcb();
     yield();
