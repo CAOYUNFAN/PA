@@ -117,7 +117,7 @@ static void check(const char * filename,char * const argv[]){
 static void sh_handle_cmd(const char *cmd) {
   char ** cmd_dealt=args(cmd);
   char * cmd_name=*cmd_dealt;
-  cmd_dealt++;
+//  cmd_dealt++;
   #ifdef DEBUG
   check(cmd_name,cmd_dealt);
   #endif
