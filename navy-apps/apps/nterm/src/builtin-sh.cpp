@@ -48,13 +48,13 @@ static int cmd_echo(char * const args[]){
   static char empty[]={'\0'};
   bool first=1;
   for(;*args;++args){
+    if(first) first=0;
+    else sh_printf(" ");
     if(**args=='$'){
       char * ch=getenv((*args)+1);
       if (!ch) ch=empty;
       sh_printf("%s",ch);
     }else sh_printf("%s",*args);
-    if(first) first=0;
-    else sh_printf(" ");
   }
   sh_printf("\n");
   return 0;
