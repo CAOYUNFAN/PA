@@ -103,9 +103,11 @@ size_t fs_read(int fd, void *buf, size_t len){
     file_table[fd].open_offset+=temp;
     return temp;
   }else{
+    printf("Before read:%d\n",file_table[fd].open_offset);
     len=ramdisk_read(buf,file_table[fd].disk_offset+file_table[fd].open_offset,len);
 //    if(len==1024) for(int i=0;i<len;++i) printf("%c",*((char *)buf+i));
     file_table[fd].open_offset+=len;
+    printf("After read:%d\n",file_table[fd].open_offset);
     return len;
   }
 }
@@ -135,5 +137,6 @@ size_t fs_lseek(int fd, size_t offset, int whence){
     case SEEK_END: file_table[fd].open_offset=file_table[fd].size+offset; break;
     default: panic("Unexpected whence=%d",whence); break;
   }
+  printf("Size:%d:After lseek:%d\n",file_table[fd].size,file_table[fd].open_offset);
   return file_table[fd].open_offset;
 }
