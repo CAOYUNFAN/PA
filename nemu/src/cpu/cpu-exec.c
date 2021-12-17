@@ -46,6 +46,15 @@ int now=-1,cover=-1;
 #endif
 
 static void statistic() {
+
+#ifdef CONFIG_ITRACE
+	if(nemu_state.state!=NEMU_END&&nemu_state.state==NEMU_RUNNING)
+	for(int i=0;i<cover;i++){
+		if(i==now) printf(" --> %s\n",ring_buffer[i]);
+		else printf("     %s\n",ring_buffer[i]);
+	}
+#endif
+
   IFNDEF(CONFIG_TARGET_AM, setlocale(LC_NUMERIC, ""));
 #define NUMBERIC_FMT MUXDEF(CONFIG_TARGET_AM, "%ld", "%'ld")
   Log("host time spent = " NUMBERIC_FMT " us", g_timer);
@@ -120,13 +129,6 @@ void cpu_exec(uint64_t n) {
   uint64_t timer_end = get_time();
   g_timer += timer_end - timer_start;
 
-#ifdef CONFIG_ITRACE
-	if((nemu_state.state==NEMU_END||nemu_state.state==NEMU_ABORT)&&nemu_state.halt_ret!=0)
-	for(int i=0;i<cover;i++){
-		if(i==now) printf(" --> %s\n",ring_buffer[i]);
-		else printf("     %s\n",ring_buffer[i]);
-	}
-#endif
    switch (nemu_state.state) {
     case NEMU_RUNNING: nemu_state.state = NEMU_STOP; break;
 
