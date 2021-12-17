@@ -62,18 +62,20 @@ static int cmd_echo(char * const args[]){
 
 static int cmd_export(char * const args[]){
   static char env[buf_len],data[buf_len];
+  int ret=0;
   for(;*args;++args){
     const char * ch=*args;
     strccpy(env,ch,'=');
     while(*ch&&*ch!='=')++ch;
     while(*ch=='=')++ch;
     strccpy(data,ch,'=');
-    setenv(env,data,1);
+    if(strlen(data)==0) sh_printf("syntax error with %s",env),ret=1;
+    else setenv(env,data,1);
     #ifdef CONFIG_DEBUG
     printf("%s",getenv(env));
     #endif
   }
-  return 0;
+  return ret;
 }
 
 static const struct {
@@ -117,14 +119,13 @@ static void check(const char * filename,char * const argv[]){
 static void sh_handle_cmd(const char *cmd) {
   char ** cmd_dealt=args(cmd);
   char * cmd_name=*cmd_dealt;
-//  cmd_dealt++;
   #ifdef DEBUG
   check(cmd_name,cmd_dealt);
   #endif
   for(int i=0;i<NR_CMD;++i)
   if(strcmp(cmd_name,cmd_table[i].name)==0){
     int err_code;
-    if((err_code=cmd_table[i].handler(cmd_dealt))) sh_printf("ERROR_CODE:%d\n",err_code);
+    if((err_code=cmd_table[i].handler(cmd_dealt+1))) sh_printf("ERROR_CODE:%d\n",err_code);
     free_args(--cmd_dealt);
     return;
   }
