@@ -1,7 +1,7 @@
 #include <isa.h>
 #include <memory/paddr.h>
 #include <memory/vaddr.h>
-#define satp cpu.sr[180]._32
+#define satp cpu.sr[0x180]._32
 extern riscv32_CPU_state cpu;
 int isa_mmu_check(vaddr_t vaddr, int len, int type){
   enum { MMU_DIRECT, MMU_TRANSLATE, MMU_FAIL, MMU_DYNAMIC };
