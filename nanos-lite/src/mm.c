@@ -4,7 +4,7 @@ static char *pf = NULL;
 
 void* new_page(size_t nr_page) {
   if(!pf) pf=heap.end;
-  return (pf=(void *)((char *)pf-nr_page*PGSIZE));
+  return (pf=(void *)((char *)pf+nr_page*PGSIZE));
 }
 
 #ifdef HAS_VME
