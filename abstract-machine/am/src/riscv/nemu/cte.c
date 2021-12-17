@@ -12,7 +12,7 @@ Context* __am_irq_handle(Context *c) {
     if((uintptr_t)user_handler!=0x8000118c){
       for(int i=0;i<32;++i) printf("%d:%x %d\n",i,c->gpr[i],c->gpr[i]);
       printf("%x %d\n%x %d\n%x %d\n",c->mcause,c->mcause,c->mstatus,c->mstatus,c->mepc,c->mepc);
-      printf("Error %2d,pc=%8x",c->mcause,c->mepc);
+      printf("Error %2d,pc=%8x\n",c->mcause,c->mepc);
       printf("%p %p\n",&user_handler,user_handler);
     }
     
