@@ -114,7 +114,7 @@ size_t fs_read(int fd, void *buf, size_t len){
 
 size_t fs_write(int fd, const void *buf, size_t len){
   check_files(fd);
-//  Log("Print to file %s,len %d",file_table[fd].name,len);
+  Log("Print to file %s,len %d",file_table[fd].name,len);
   if(file_table[fd].size) check_filerange(fd,&len);
 //  static char temp[100000];
 //  memcpy(temp,buf,len);
