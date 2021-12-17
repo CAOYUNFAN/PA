@@ -74,11 +74,14 @@ typedef struct {
     uint32_t val;
   } instr;
 } riscv32_ISADecodeInfo;
-
-#define isa_mmu_check(vaddr, len, type) (MMU_DIRECT)
-/*int isa_mmu_check(vaddr_t vaddr, int len, int type){
+#define satp cpu.sr[180]._32
+extern riscv32_CPU_state cpu;
+//#define isa_mmu_check(vaddr, len, type) (MMU_DIRECT)
+int isa_mmu_check(vaddr_t vaddr, int len, int type){
+  enum { MMU_DIRECT, MMU_TRANSLATE, MMU_FAIL, MMU_DYNAMIC };
   assert((vaddr>>12)==((vaddr+len-1)>>12));
-  
-}*/
+  if(((unsigned)satp>>31)==0) return MMU_DIRECT;
+  else return MMU_TRANSLATE;
+}
 
 #endif
