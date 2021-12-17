@@ -103,11 +103,11 @@ size_t fs_read(int fd, void *buf, size_t len){
     file_table[fd].open_offset+=temp;
     return temp;
   }else{
-    printf("Before read:%d\n",file_table[fd].open_offset);
+//    printf("Before read:%d\n",file_table[fd].open_offset);
     len=ramdisk_read(buf,file_table[fd].disk_offset+file_table[fd].open_offset,len);
 //    if(len==1024) for(int i=0;i<len;++i) printf("%c",*((char *)buf+i));
     file_table[fd].open_offset+=len;
-    printf("After read:%d\n",file_table[fd].open_offset);
+//    printf("After read:%d\n",file_table[fd].open_offset);
     return len;
   }
 }
@@ -123,7 +123,7 @@ size_t fs_write(int fd, const void *buf, size_t len){
     file_table[fd].open_offset+=temp;
     return temp;
   }else{
-    ramdisk_write(buf,file_table[fd].disk_offset+file_table[fd].open_offset,len);
+    len=ramdisk_write(buf,file_table[fd].disk_offset+file_table[fd].open_offset,len);
     file_table[fd].open_offset+=len;
     return len;
   }
