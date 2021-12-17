@@ -106,6 +106,7 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 //    ++envp_count;
   }
 //  Log("envp_count:%d",envp_count);
+  end_ptr=(char *)((uintptr_t)end_ptr&~0x3u);
   begin_ptr[now++]=0;
   #if defined __ISA_AM_NATIVE__
   end_ptr=(char *)((((uintptr_t)end_ptr-now*sizeof(uintptr_t))&0xfffffffffffffff8)+now*sizeof(uintptr_t));
