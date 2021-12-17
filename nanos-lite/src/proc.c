@@ -28,7 +28,8 @@ extern bool context_uload(PCB *pcb, const char *filename, char *const argv[], ch
 void hello_fun(void *arg) {
   int j = 1;
   while (1) {
-//    if(j%100==0) Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", arg, j);
+//    if(j%100==0) 
+    Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", arg, j);
     j ++;
     yield();
   }
