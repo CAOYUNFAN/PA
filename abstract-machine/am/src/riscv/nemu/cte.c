@@ -9,12 +9,12 @@ Context* __am_irq_handle(Context *c) {
   if (user_handler) {
     Event ev = {0};
 
-    if((uintptr_t)user_handler!=0x8000118c){
+/*  if((uintptr_t)user_handler!=0x8000118c){
       for(int i=0;i<32;++i) printf("%d:%x %d\n",i,c->gpr[i],c->gpr[i]);
       printf("%x %d\n%x %d\n%x %d\n",c->mcause,c->mcause,c->mstatus,c->mstatus,c->mepc,c->mepc);
       printf("Error %2d,pc=%8x\n",c->mcause,c->mepc);
       printf("%p %p\n",&user_handler,user_handler);
-    }
+    }*/
     
     switch (c->mcause) {
       case 11: 
@@ -38,8 +38,7 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
   asm volatile("csrw mtvec, %0" : : "r"(__am_asm_trap));
 
   // register event handler
-  user_handler = handler;
-  printf("%p\n",handler);
+  user_handler = handler;//  printf("%p\n",handler);
   return true;
 }
 
