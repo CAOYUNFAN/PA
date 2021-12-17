@@ -76,5 +76,9 @@ typedef struct {
 } riscv32_ISADecodeInfo;
 
 #define isa_mmu_check(vaddr, len, type) (MMU_DIRECT)
+/*int isa_mmu_check(vaddr_t vaddr, int len, int type){
+  assert((vaddr>>12)==((vaddr+len-1)>>12));
+  
+}*/
 
 #endif

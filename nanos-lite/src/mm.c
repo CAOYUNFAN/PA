@@ -11,12 +11,16 @@ void* new_page(size_t nr_page) {
 
 #ifdef HAS_VME
 static void* pg_alloc(int n) {
-  return NULL;
+  void * ret=new_page(n/PGSIZE);
+  ret=(void *)((char *)ret-n*PGSIZE);
+  memset(ret,0,n*PGSIZE);
+  return ret;
 }
 #endif
 
 void free_page(void *p) {
-  panic("not implement yet");
+  return;
+  //panic("not implement yet");
 }
 
 /* The brk() system call handler. */

@@ -6,6 +6,8 @@ word_t vaddr_ifetch(vaddr_t addr, int len) {
 }
 
 word_t vaddr_read(vaddr_t addr, int len) {
+/*  int ret=isa_mmu_check(addr,len,0);
+  assert(ret!=)*/
   return paddr_read(addr, len);
 }
 
