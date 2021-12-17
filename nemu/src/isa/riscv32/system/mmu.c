@@ -1,7 +1,14 @@
 #include <isa.h>
 #include <memory/paddr.h>
 #include <memory/vaddr.h>
+#define satp cpu.sr[180]._32
 extern riscv32_CPU_state cpu;
+int isa_mmu_check(vaddr_t vaddr, int len, int type){
+  enum { MMU_DIRECT, MMU_TRANSLATE, MMU_FAIL, MMU_DYNAMIC };
+  assert((vaddr>>12)==((vaddr+len-1)>>12));
+  if(((unsigned)satp>>31)==0) return MMU_DIRECT;
+  else return MMU_TRANSLATE;
+}
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   assert((vaddr>>12)==((vaddr+len-1)>>12));
   vaddr_t high=vaddr>>22,low=(vaddr>>12)&0x3fu;
