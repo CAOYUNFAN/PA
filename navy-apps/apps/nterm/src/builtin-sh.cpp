@@ -69,7 +69,7 @@ static int cmd_export(char * const args[]){
     while(*ch&&*ch!='=')++ch;
     while(*ch=='=')++ch;
     strccpy(data,ch,'=');
-    if(strlen(data)==0) sh_printf("syntax error with %s",env),ret=1;
+    if(strlen(data)==0) sh_printf("syntax error with %s\n",env),ret=1;
     else setenv(env,data,1);
     #ifdef CONFIG_DEBUG
     printf("%s",getenv(env));
