@@ -79,7 +79,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       uintptr_t virtual_page=phdr.p_vaddr&~0xfffu,offset=phdr.p_vaddr&0xfffu;
       int total1=phdr.p_filesz,total2=phdr.p_memsz-phdr.p_filesz;//Log("2-1");
 
-      for(;total1;virtual_page+=0x1000u){Log("%d",offset);
+      for(;total1;virtual_page+=0x1000u){//Log("%d",offset);
         uintptr_t physical_page=get_page(as,virtual_page);
         int bytes=fs_read(fd,(void *)physical_page+offset,Min(pgsize-offset,total1));
         assert(bytes==Min(pgsize-offset,total1));
@@ -154,7 +154,7 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   void * entry=(void *)loader(pcb,filename);//Log("1-2");
   if(!entry) return 0;
   pcb->cp=ucontext(&pcb->as,mystack,entry);//Log("1-3");
-  pcb->cp->GPRx=(uintptr_t)prepare_args_and_stack(&pcb->as,argv,envp);Log("1-4");
+  pcb->cp->GPRx=(uintptr_t)prepare_args_and_stack(&pcb->as,argv,envp);//Log("1-4");
 //  printf("File%s:entry=%p,Stack starts From%p\n",filename,entry,pcb->cp->GPRx);
   return 1;
 }
