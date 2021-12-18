@@ -38,6 +38,14 @@ void check_elf(const Elf_Ehdr *ehdr){
 }
 
 enum file_lseek_related {SEEK_SET,SEEK_CUR,SEEK_END};
+extern uintptr_t check_page(AddrSpace *as,void * va);
+static inline uintptr_t get_page(AddrSpace * as,uintptr_t vaddr){
+  uintptr_t ret=check_page(as,(void *)vaddr);
+  if(!ret) map(as,(void *)vaddr,(void *)(ret=(uintptr_t)new_page(1)),0);
+  return ret;
+}
+
+static inline int Min(int a,int b) {return a<b?a:b;}
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
   extern int fs_open(const char *pathname, int flags, int mode);
@@ -62,13 +70,32 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     CAO_set_and_read(shdr,ehdr.e_shoff);
     total=shdr.sh_info;
   }
+  AddrSpace * as=&pcb->as;int pgsize=as->pgsize;
   static Elf_Phdr phdr;
   for(size_t i=0,j=ehdr.e_phoff;i<total;++i,j+=ehdr.e_phentsize){
     CAO_set_and_read(phdr,j);
     if(phdr.p_type==PT_LOAD){
       fs_lseek(fd,phdr.p_offset,SEEK_SET);
-      assert(fs_read(fd,(void *)phdr.p_vaddr,phdr.p_filesz)==phdr.p_filesz);
-      memset((void *)(phdr.p_vaddr+phdr.p_filesz),0,phdr.p_memsz-phdr.p_filesz);
+      uintptr_t virtual_page=phdr.p_vaddr&~0xfffu,offset=phdr.p_vaddr&0xfffu;
+      int total1=phdr.p_filesz,total2=phdr.p_memsz-phdr.p_filesz;
+
+      for(;total1;virtual_page+=0x1000u){
+        uintptr_t physical_page=get_page(as,virtual_page);
+        int bytes=fs_read(fd,(void *)physical_page+offset,Min(pgsize-offset,total1));
+        assert(bytes==Min(pgsize-offset,total1));
+        offset=(offset+bytes)%pgsize;
+        total1-=bytes;
+      }
+
+      for(;total2;virtual_page+=0x1000u){
+        uintptr_t physical_page=get_page(as,virtual_page);
+        int bytes=Min(pgsize-offset,total1);
+        memset((void *)(physical_page+offset),0,bytes);
+        offset=(offset+bytes)%pgsize;
+        total1-=bytes;
+      }
+//      assert(fs_read(fd,(void *)phdr.p_vaddr,phdr.p_filesz)==phdr.p_filesz);
+//      memset((void *)(phdr.p_vaddr+phdr.p_filesz),0,phdr.p_memsz-phdr.p_filesz);
     }
   }
 //  Log("loading ready.");
@@ -83,16 +110,19 @@ void naive_uload(PCB *pcb, const char *filename) {
   }
   return;
 }
+
 extern void* new_page(size_t nr_page);
-bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
-  Area mystack={
-    .start=(void *)pcb->stack,
-    .end=(void *)(pcb->stack+STACK_SIZE)
-  };
-  int argv_count=0;
+
+static inline char * prepare_args_and_stack(AddrSpace *as,char * const argv[],char * const envp[]){
+  int argv_count=0,pgsize=as->pgsize;
 //  int envp_count=0;
-  static uintptr_t begin_ptr[1000];
-  char * end_ptr=(char *)new_page(8);
+  #define stack_page_num 8
+  static uintptr_t begin_ptr[1024];
+  char * temp=new_page(stack_page_num);
+  for(int i=0,j=(uintptr_t)as->area.end-stack_page_num*pgsize,k=(uintptr_t)temp;i<8;i++,j+=pgsize,k+=pgsize)
+    map(as,(void *)j,(void *)k,0);
+  temp+=stack_page_num*pgsize;
+  char * end_ptr=temp;
 //  Log("%p",end_ptr);
   int now=1;
   for(;*argv;++argv){
@@ -109,12 +139,22 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   end_ptr=(char *)((uintptr_t)end_ptr&~0x3u);
   begin_ptr[now++]=0;
   #if defined __ISA_AM_NATIVE__
-  end_ptr=(char *)((((uintptr_t)end_ptr-now*sizeof(uintptr_t))&0xfffffffffffffff8)+now*sizeof(uintptr_t));
+  end_ptr=(char *)((((uintptr_t)end_ptr-now*sizeof(uintptr_t))&~0xf)+now*sizeof(uintptr_t));
   #endif
+  memcpy(end_ptr-now*sizeof(uintptr_t),begin_ptr,now*sizeof(uintptr_t));
+  return as->area.end-(temp-end_ptr);
+}
+
+bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
+  protect(&pcb->as);
+  Area mystack={
+    .start=(void *)pcb->stack,
+    .end=(void *)(pcb->stack+STACK_SIZE)
+  }; 
   void * entry=(void *)loader(pcb,filename);
   if(!entry) return 0;
   pcb->cp=ucontext(&pcb->as,mystack,entry);
-  pcb->cp->GPRx=(uintptr_t)memcpy(end_ptr-now*sizeof(uintptr_t),begin_ptr,now*sizeof(uintptr_t));
+  pcb->cp->GPRx=(uintptr_t)prepare_args_and_stack(&pcb->as,argv,envp);
 //  printf("File%s:entry=%p,Stack starts From%p\n",filename,entry,pcb->cp->GPRx);
   return 1;
 }

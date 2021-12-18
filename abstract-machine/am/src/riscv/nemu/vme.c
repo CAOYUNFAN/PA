@@ -66,6 +66,14 @@ void __am_switch(Context *c) {
   }
 }
 
+uintptr_t check_page(AddrSpace *as,void * va){
+  uintptr_t high=(uintptr_t)va>>22,low=(uintptr_t)va>>12&0x3ff;
+  uintptr_t * pos=(uintptr_t *)as->ptr+high;
+  if(*pos==0) return false;
+  uintptr_t * pos2=(uintptr_t *)(*pos&~0x3ffu);
+  return pos2[low];
+}
+
 void map(AddrSpace *as, void *va, void *pa, int prot) {
   uintptr_t high=(uintptr_t)va>>22,low=(uintptr_t)va>>12&0x3ff;
   uintptr_t * pos=(uintptr_t *)as->ptr+high;
@@ -83,5 +91,6 @@ Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   ret->mepc=(uintptr_t)entry;
   ret->mstatus=0x1800;
   ret->mcause=11;
+  ret->pdir=as->ptr;
   return ret;
 }

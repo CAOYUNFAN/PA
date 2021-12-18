@@ -4,13 +4,14 @@ static char *pf = NULL;
 
 void* new_page(size_t nr_page) {
   if(!pf) pf=heap.end;
-  return (pf=(void *)((char *)pf+nr_page*PGSIZE));
+  void * ret=pf;
+  pf=(void *)((char *)pf+nr_page*PGSIZE);
+  return ret;
 }
 
 #ifdef HAS_VME
 static void* pg_alloc(int n) {
   void * ret=new_page(n/PGSIZE);
-  ret=(void *)((char *)ret-n);
   memset(ret,0,n);
   return ret;
 }
