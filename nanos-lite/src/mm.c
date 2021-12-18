@@ -10,8 +10,8 @@ void* new_page(size_t nr_page) {
 #ifdef HAS_VME
 static void* pg_alloc(int n) {
   void * ret=new_page(n/PGSIZE);
-  ret=(void *)((char *)ret-n*PGSIZE);
-  memset(ret,0,n*PGSIZE);
+  ret=(void *)((char *)ret-n);
+  memset(ret,0,n);
   return ret;
 }
 #endif
