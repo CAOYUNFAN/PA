@@ -79,17 +79,17 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       uintptr_t virtual_page=phdr.p_vaddr&~0xfffu,offset=phdr.p_vaddr&0xfffu;
       int total1=phdr.p_filesz,total2=phdr.p_memsz-phdr.p_filesz;Log("2-1");
 
-      for(;total1;virtual_page+=0x1000u){
+      for(;total1;virtual_page+=0x1000u){Log("%d",offset);
         uintptr_t physical_page=get_page(as,virtual_page);
         int bytes=fs_read(fd,(void *)physical_page+offset,Min(pgsize-offset,total1));
         assert(bytes==Min(pgsize-offset,total1));
         offset=(offset+bytes)%pgsize;
         total1-=bytes;
-      }Log("2-2");
+      }Log("2-2,%d",offset);
 
       for(;total2;virtual_page+=0x1000u){
         uintptr_t physical_page=get_page(as,virtual_page);
-        int bytes=Min(pgsize-offset,total1);Log("V:%lx,P:%lx,L:%d",virtual_page,physical_page,bytes);
+        int bytes=Min(pgsize-offset,total1);//Log("V:%lx,P:%lx,L:%d",virtual_page,physical_page,bytes);
         memset((void *)(physical_page+offset),0,bytes);
         offset=(offset+bytes)%pgsize;
         total1-=bytes;
