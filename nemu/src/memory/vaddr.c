@@ -6,7 +6,7 @@ word_t vaddr_read(vaddr_t addr, int len) {
     case MMU_TRANSLATE:
       addr=isa_mmu_translate(addr,len,0);
     case MMU_DIRECT:
-      if(addr<0x40000000)Log("%x %d",addr,len);
+      if(addr==0x00000140)Log("%x %d",addr,len);
       return paddr_read(addr,len);
     default: assert(false);
   }
