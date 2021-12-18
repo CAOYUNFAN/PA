@@ -8,13 +8,16 @@ const char *regs[] = {
   "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
 };
 
+#define Cao_show_reg(name,data) printf("%7s 0x%08x %10d\n",name,data,data)
+
 void isa_reg_display() {
-	for(int i=0;i<32;++i)
-	printf("%s\t0x%x\t%d\n",regs[i],gpr(i),gpr(i));
-	printf("pc\t0x%x\t%d\n",cpu.pc,cpu.pc);
-	printf("mcause\t0x%x\t%d\n",sr(0x342),sr(0x342));
-	printf("mstatus\t0x%x\t%d\n",sr(0x300),sr(0x300));
-	printf("mepc\t0x%x\t%d\n",sr(0x341),sr(0x341));
+	for(int i=0;i<32;++i) 
+	Cao_show_reg(regs[i],gpr(i));
+	Cao_show_reg("pc",cpu.pc);
+	Cao_show_reg("mcause",sr(0x342));
+	Cao_show_reg("mstatus",sr(0x300));
+	Cao_show_reg("mepc",sr(0x341));
+	Cao_show_reg("satp",sr(0x180));
 	return;
 }
 
