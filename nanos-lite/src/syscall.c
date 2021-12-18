@@ -35,7 +35,7 @@ extern void switch_boot_pcb();
 extern int mm_brk(uintptr_t brk);
 //extern void naive_uload(PCB *pcb, const char *filename);
 static char * empty[]={NULL};
-void sys_exit(int status){
+void sys_exit(int status){halt(0);
   if(status!=0) printf("Error Code %d\n",status);
   //naive_uload(NULL,"/bin/nterm");
   assert(context_uload(current,"/bin/nterm",empty,empty));
