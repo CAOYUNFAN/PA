@@ -17,6 +17,6 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   paddr_t pos1=paddr_read(((satp<<10)|high)<<2,4)&~0xfffu;
   paddr_t pos2=paddr_read(pos1|(low<<2),4)&~0xfffu;
   paddr_t ret=pos2|(vaddr&0xfffu);
-  printf("virtual:%08x,pos1:%08x,delta=%08x,pos2:%08x,physical:%08x",vaddr,pos1,pos1|(low<<2),pos2,ret);
+  printf("virtual:%08x,pos1:%08x,delta=%08x,pos2:%08x,physical:%08x\n",vaddr,pos1,pos1|(low<<2),pos2,ret);
   return ret;
 }
