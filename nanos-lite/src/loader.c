@@ -92,7 +92,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
         int bytes=Min(pgsize-offset,total2);Log("Total:%d,Offset:%d,V:%lx,P:%lx,L:%d",total2,offset,virtual_page,physical_page,bytes);
         memset((void *)(physical_page+offset),0,bytes);
         offset=(offset+bytes)%pgsize;
-        total1-=bytes;
+        total2-=bytes;
       }Log("2-3");
 //      assert(fs_read(fd,(void *)phdr.p_vaddr,phdr.p_filesz)==phdr.p_filesz);
 //      memset((void *)(phdr.p_vaddr+phdr.p_filesz),0,phdr.p_memsz-phdr.p_filesz);
