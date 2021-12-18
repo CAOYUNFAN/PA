@@ -77,7 +77,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     if(phdr.p_type==PT_LOAD){
       fs_lseek(fd,phdr.p_offset,SEEK_SET);
       uintptr_t virtual_page=phdr.p_vaddr&~0xfffu,offset=phdr.p_vaddr&0xfffu;
-      int total1=phdr.p_filesz,total2=phdr.p_memsz-phdr.p_filesz;Log("2-1");
+      int total1=phdr.p_filesz,total2=phdr.p_memsz-phdr.p_filesz;//Log("2-1");
 
       for(;total1;virtual_page+=0x1000u){Log("%d",offset);
         uintptr_t physical_page=get_page(as,virtual_page);
@@ -85,15 +85,15 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
         assert(bytes==Min(pgsize-offset,total1));
         offset=(offset+bytes)%pgsize;
         total1-=bytes;
-      }Log("2-2,%d",offset);
+      }//Log("2-2,%d",offset);
 
       for(;total2;virtual_page+=0x1000u){
         uintptr_t physical_page=get_page(as,virtual_page);
-        int bytes=Min(pgsize-offset,total2);Log("Total:%d,Offset:%d,V:%lx,P:%lx,L:%d",total2,offset,virtual_page,physical_page,bytes);
+        int bytes=Min(pgsize-offset,total2);//Log("Total:%d,Offset:%d,V:%lx,P:%lx,L:%d",total2,offset,virtual_page,physical_page,bytes);
         memset((void *)(physical_page+offset),0,bytes);
         offset=(offset+bytes)%pgsize;
         total2-=bytes;
-      }Log("2-3");
+      }//Log("2-3");
 //      assert(fs_read(fd,(void *)phdr.p_vaddr,phdr.p_filesz)==phdr.p_filesz);
 //      memset((void *)(phdr.p_vaddr+phdr.p_filesz),0,phdr.p_memsz-phdr.p_filesz);
     }
@@ -146,14 +146,14 @@ static inline char * prepare_args_and_stack(AddrSpace *as,char * const argv[],ch
 }
 
 bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
-  protect(&pcb->as);Log("1-1");
+  protect(&pcb->as);//Log("1-1");
   Area mystack={
     .start=(void *)pcb->stack,
     .end=(void *)(pcb->stack+STACK_SIZE)
   }; 
-  void * entry=(void *)loader(pcb,filename);Log("1-2");
+  void * entry=(void *)loader(pcb,filename);//Log("1-2");
   if(!entry) return 0;
-  pcb->cp=ucontext(&pcb->as,mystack,entry);Log("1-3");
+  pcb->cp=ucontext(&pcb->as,mystack,entry);//Log("1-3");
   pcb->cp->GPRx=(uintptr_t)prepare_args_and_stack(&pcb->as,argv,envp);Log("1-4");
 //  printf("File%s:entry=%p,Stack starts From%p\n",filename,entry,pcb->cp->GPRx);
   return 1;
