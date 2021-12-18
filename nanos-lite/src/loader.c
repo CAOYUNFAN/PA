@@ -89,7 +89,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
       for(;total2;virtual_page+=0x1000u){
         uintptr_t physical_page=get_page(as,virtual_page);
-        int bytes=Min(pgsize-offset,total1);//Log("V:%lx,P:%lx,L:%d",virtual_page,physical_page,bytes);
+        int bytes=Min(pgsize-offset,total2);//Log("V:%lx,P:%lx,L:%d",virtual_page,physical_page,bytes);
         memset((void *)(physical_page+offset),0,bytes);
         offset=(offset+bytes)%pgsize;
         total1-=bytes;
