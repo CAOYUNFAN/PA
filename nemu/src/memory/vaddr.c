@@ -2,7 +2,7 @@
 #include <memory/paddr.h>
 
 word_t vaddr_read(vaddr_t addr, int len) {
-  Log("%x %d",addr,len);
+  if(addr<0x40000000)Log("%x %d",addr,len);
   switch(isa_mmu_check(addr,len,0)){
     case MMU_TRANSLATE:
       addr=isa_mmu_translate(addr,len,0);
