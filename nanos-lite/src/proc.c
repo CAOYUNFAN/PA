@@ -42,7 +42,7 @@ void init_proc() {
 //  char * argv[]={"/bin/exec-test",NULL};
   char * argv[]={NULL};
   char * envp[]={NULL};
-  assert(context_uload(&pcb[1],"/bin/nterm",argv,envp));
+  assert(context_uload(&pcb[1],"/bin/dummy",argv,envp));
   switch_boot_pcb();
 
   Log("Initializing processes...");
