@@ -72,6 +72,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   if(*pos==0) *pos=(uintptr_t)pgalloc_usr(as->pgsize);
   *pos&=~0x3ffu;
   pos[low]=(uintptr_t)pa;
+  printf("%p->%p->%p\n",va,*pos,pa);
   return;
 }
 
