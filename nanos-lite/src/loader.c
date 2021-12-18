@@ -146,15 +146,15 @@ static inline char * prepare_args_and_stack(AddrSpace *as,char * const argv[],ch
 }
 
 bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
-  protect(&pcb->as);
+  protect(&pcb->as);Log("1");
   Area mystack={
     .start=(void *)pcb->stack,
     .end=(void *)(pcb->stack+STACK_SIZE)
   }; 
-  void * entry=(void *)loader(pcb,filename);
+  void * entry=(void *)loader(pcb,filename);Log("2");
   if(!entry) return 0;
-  pcb->cp=ucontext(&pcb->as,mystack,entry);
-  pcb->cp->GPRx=(uintptr_t)prepare_args_and_stack(&pcb->as,argv,envp);
+  pcb->cp=ucontext(&pcb->as,mystack,entry);Log("3");
+  pcb->cp->GPRx=(uintptr_t)prepare_args_and_stack(&pcb->as,argv,envp);Log("4");
 //  printf("File%s:entry=%p,Stack starts From%p\n",filename,entry,pcb->cp->GPRx);
   return 1;
 }
