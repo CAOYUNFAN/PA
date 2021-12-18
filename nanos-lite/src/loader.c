@@ -41,7 +41,7 @@ enum file_lseek_related {SEEK_SET,SEEK_CUR,SEEK_END};
 extern uintptr_t check_page(AddrSpace *as,void * va);
 static inline uintptr_t get_page(AddrSpace * as,uintptr_t vaddr){
   uintptr_t ret=check_page(as,(void *)vaddr);
-  if(!ret) map(as,(void *)vaddr,(void *)(ret=(uintptr_t)new_page(1)),0);Log("%ld %ld\n",vaddr,ret);
+  if(!ret) map(as,(void *)vaddr,(void *)(ret=(uintptr_t)new_page(1)),0);Log("%lx %lx\n",vaddr,ret);
   return ret;
 }
 
