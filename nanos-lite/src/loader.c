@@ -110,7 +110,7 @@ void naive_uload(PCB *pcb, const char *filename) {
   return;
 }
 
-extern void* new_page(size_t nr_page);
+//extern void* new_page(size_t nr_page);
 
 static inline char * prepare_args_and_stack(AddrSpace *as,char * const argv[],char * const envp[]){
   int argv_count=0,pgsize=as->pgsize;
