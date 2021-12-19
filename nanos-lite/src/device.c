@@ -24,7 +24,7 @@ size_t serial_write(const void *buf, size_t offset, size_t len) {
 inline static size_t min(size_t a,size_t b){return a<b?a:b;}
 
 size_t events_read(void *buf, size_t offset, size_t len) {
-  yield();
+//  yield();
   struct AM_INPUT_KEYBRD_T{
     bool keydown; int keycode;
   }kbd;
@@ -48,7 +48,7 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len) {
 
 size_t fb_write(const void *buf, size_t offset, size_t len) {
 //  printf("%u %u\n",offset,len);
-  yield();
+//  yield();
   __am_gpu_config(&cfg);
   struct AM_GPU_FBDRAW_T{
     int x, y; const void *pixels; int w, h; bool sync;
