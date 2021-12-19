@@ -2,11 +2,10 @@
 #include <memory/paddr.h>
 
 word_t vaddr_read(vaddr_t addr, int len) {
-  if(addr==0xcb450513) printf("Read%x %d\n",addr,len);
   switch(isa_mmu_check(addr,len,0)){
     case MMU_TRANSLATE:
       addr=isa_mmu_translate(addr,len,0);
-    case MMU_DIRECT:if(addr==0xcb450513) printf("SSS!\n");
+    case MMU_DIRECT:
       return paddr_read(addr,len);
     default: assert(false);
   }
