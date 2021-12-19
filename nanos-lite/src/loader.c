@@ -97,6 +97,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 //      assert(fs_read(fd,(void *)phdr.p_vaddr,phdr.p_filesz)==phdr.p_filesz);
 //      memset((void *)(phdr.p_vaddr+phdr.p_filesz),0,phdr.p_memsz-phdr.p_filesz);
     }
+    pcb->max_brk=0;
   }
   return ehdr.e_entry;
 }
