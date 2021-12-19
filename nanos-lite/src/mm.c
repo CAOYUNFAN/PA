@@ -26,8 +26,11 @@ void free_page(void *p) {
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk) {//Log("USED HERE!");
   if(brk>current->max_brk){
-    for(uintptr_t i=(current->max_brk&~0xfffu)+0x1000;i<=brk;++i)
-      map(&current->as,(void *)i,new_page(1),0);
+    for(uintptr_t i=(current->max_brk&~0xfffu)+0x1000;i<=brk;++i){
+      void * temp;
+      map(&current->as,(void *)i,temp=new_page(1),0);
+      Log("Virtual %p to Physical %p",i,temp);
+    }
     current->max_brk=brk;
   }
   return 0;
