@@ -41,7 +41,7 @@ enum file_lseek_related {SEEK_SET,SEEK_CUR,SEEK_END};
 extern uintptr_t check_page(AddrSpace *as,void * va);
 static inline uintptr_t get_page(AddrSpace * as,uintptr_t vaddr){
   uintptr_t ret=check_page(as,(void *)vaddr);
-  if(!ret) map(as,(void *)vaddr,(void *)(ret=(uintptr_t)new_page(1)),0);
+  if(!ret) map(as,(void *)vaddr,(void *)(ret=(uintptr_t)new_page(1)),0);Log("%p",ret);
   return ret;
 }
 
@@ -109,8 +109,6 @@ void naive_uload(PCB *pcb, const char *filename) {
   }
   return;
 }
-
-//extern void* new_page(size_t nr_page);
 
 static inline char * prepare_args_and_stack(AddrSpace *as,char * const argv[],char * const envp[]){
   int argv_count=0,pgsize=as->pgsize;
