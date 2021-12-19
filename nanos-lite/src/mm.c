@@ -6,7 +6,7 @@ static char *pf = NULL;
 void* new_page(size_t nr_page) {
   if(!pf) pf=heap.end;
   void * ret=pf;
-  pf=(void *)((char *)pf+nr_page*PGSIZE);Log("%p",ret);
+  pf=(void *)((char *)pf+nr_page*PGSIZE);
   return ret;
 }
 
