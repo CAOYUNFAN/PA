@@ -27,7 +27,7 @@ void free_page(void *p) {
 int mm_brk(uintptr_t brk) {//Log("USED HERE!");
   if(brk>current->max_brk){
     for(uintptr_t i=(current->max_brk&~0xfffu)+0x1000;i<=brk;++i)
-      map(&current->as,(void *)i,new_page(1),0);
+      map(&current->as,(void *)i,pg_alloc(1),0);
     current->max_brk=brk;
   }
   return 0;
