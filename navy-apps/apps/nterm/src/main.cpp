@@ -13,7 +13,7 @@ void env_init();
 
 int main(int argc, char *argv[]) {
   SDL_Init(0);printf("A");
-//  env_init();
+  env_init();
   font = new BDF_Font(font_fname);
 
   // setup display
