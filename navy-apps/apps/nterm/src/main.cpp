@@ -12,7 +12,7 @@ void extern_app_run(const char *app_path);
 void env_init();
 
 int main(int argc, char *argv[]) {
-  SDL_Init(0);
+  SDL_Init(0);printf("A");
 //  env_init();
   font = new BDF_Font(font_fname);
 
