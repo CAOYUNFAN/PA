@@ -46,15 +46,14 @@ int now=-1,cover=-1;
 #endif
 
 static void statistic() {
-//	if(nemu_state.state!=NEMU_END&&nemu_state.state!=NEMU_QUIT){
+	if(nemu_state.state!=NEMU_END&&nemu_state.state!=NEMU_QUIT){
 #ifdef CONFIG_ITRACE
     for(int i=0;i<cover;i++){
   		if(i==now) printf(" --> %s\n",ring_buffer[i]);
 	  	else printf("     %s\n",ring_buffer[i]);
 	  }
 #endif
-    isa_reg_display();
-//  }
+  }
 
   IFNDEF(CONFIG_TARGET_AM, setlocale(LC_NUMERIC, ""));
 #define NUMBERIC_FMT MUXDEF(CONFIG_TARGET_AM, "%ld", "%'ld")
@@ -65,7 +64,7 @@ static void statistic() {
 }
 
 void assert_fail_msg() {
-//  isa_reg_display();
+  isa_reg_display();
   statistic();
 }
 void trace_and_difftest(Decode *s, vaddr_t pc){
