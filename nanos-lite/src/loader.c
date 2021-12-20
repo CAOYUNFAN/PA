@@ -66,6 +66,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {Log("%p %s",pcb,filenam
   extern int fs_open(const char *pathname, int flags, int mode);
   extern size_t fs_read(int fd, void *buf, size_t len);
   extern size_t fs_lseek(int fd, size_t offset, int whence);
+  extern int fs_close(int fd);
 
 #define CAO_set_and_read(name,offset) ({\
   fs_lseek(fd,offset,SEEK_SET);\
@@ -112,6 +113,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {Log("%p %s",pcb,filenam
 //      memset((void *)(phdr.p_vaddr+phdr.p_filesz),0,phdr.p_memsz-phdr.p_filesz);
     }
   }
+  assert(fs_close(fd)==0);
   return ehdr.e_entry;
 }
 
