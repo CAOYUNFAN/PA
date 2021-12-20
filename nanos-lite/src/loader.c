@@ -57,7 +57,7 @@ static inline uintptr_t get_page(AddrSpace * as,uintptr_t vaddr){
 }
 #else
 static inline void initial_page_manager(){}
-static inline uintptr_t get_page(AddrSapce *as,uintptr_t vaddr){return vaddr;}
+static inline uintptr_t get_page(AddrSpace *as,uintptr_t vaddr){return vaddr;}
 #endif
 
 static inline int Min(int a,int b) {return a<b?a:b;}
