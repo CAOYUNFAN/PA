@@ -165,7 +165,9 @@ static inline char * prepare_args_and_stack(AddrSpace *as,char * const argv[],ch
 }
 
 bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
+#ifdef HAS_VME
   protect(&pcb->as);
+#endif
   Area mystack={
     .start=(void *)pcb->stack,
     .end=(void *)(pcb->stack+STACK_SIZE)
