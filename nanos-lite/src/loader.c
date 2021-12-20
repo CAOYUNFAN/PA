@@ -62,7 +62,7 @@ static inline uintptr_t get_page(AddrSapce *as,uintptr_t vaddr){return vaddr;}
 
 static inline int Min(int a,int b) {return a<b?a:b;}
 #define Max(a,b) ((a)>(b)?(a):(b))
-static uintptr_t loader(PCB *pcb, const char *filename) {Log("%p %s\n",pcb,filename);
+static uintptr_t loader(PCB *pcb, const char *filename) {Log("%p %s",pcb,filename);
   extern int fs_open(const char *pathname, int flags, int mode);
   extern size_t fs_read(int fd, void *buf, size_t len);
   extern size_t fs_lseek(int fd, size_t offset, int whence);
@@ -111,7 +111,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {Log("%p %s\n",pcb,filen
 //      assert(fs_read(fd,(void *)phdr.p_vaddr,phdr.p_filesz)==phdr.p_filesz);
 //      memset((void *)(phdr.p_vaddr+phdr.p_filesz),0,phdr.p_memsz-phdr.p_filesz);
     }
-    pcb->max_brk=0;
   }
   return ehdr.e_entry;
 }
