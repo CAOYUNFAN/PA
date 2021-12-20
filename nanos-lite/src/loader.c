@@ -131,8 +131,10 @@ static inline char * prepare_args_and_stack(AddrSpace *as,char * const argv[],ch
   static uintptr_t begin_ptr[1024];
   char * temp=new_page(stack_page_num);Log("%p",temp);
 #ifdef HAS_VME
-  for(int i=0,j=(uintptr_t)as->area.end-stack_page_num*pgsize,k=(uintptr_t)temp;i<8;i++,j+=pgsize,k+=pgsize)
+  for(int i=0,j=(uintptr_t)as->area.end-stack_page_num*pgsize,k=(uintptr_t)temp;i<8;i++,j+=pgsize,k+=pgsize){
     map(as,(void *)j,(void *)k,0);
+    Log("%08x->%08x",j,k);
+  }
 #endif
   temp+=stack_page_num*pgsize;
   char * end_ptr=temp;
