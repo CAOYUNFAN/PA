@@ -133,7 +133,7 @@ static inline char * prepare_args_and_stack(AddrSpace *as,char * const argv[],ch
 #ifdef HAS_VME
   for(int i=0,j=(uintptr_t)as->area.end-stack_page_num*pgsize,k=(uintptr_t)temp;i<8;i++,j+=pgsize,k+=pgsize){
     map(as,(void *)j,(void *)k,0);
-    Log("%08x->%08x",j,k);
+//    Log("%08x->%08x",j,k);
   }
 #endif
   temp+=stack_page_num*pgsize;
@@ -153,9 +153,9 @@ static inline char * prepare_args_and_stack(AddrSpace *as,char * const argv[],ch
 //  Log("envp_count:%d",envp_count);
   end_ptr=(char *)((uintptr_t)end_ptr&~0x3u);
   begin_ptr[now++]=0;
-  #if defined __ISA_AM_NATIVE__
+#if defined __ISA_AM_NATIVE__
   end_ptr=(char *)((((uintptr_t)end_ptr-now*sizeof(uintptr_t))&~0xf)+now*sizeof(uintptr_t));
-  #endif
+#endif
   memcpy(end_ptr-now*sizeof(uintptr_t),begin_ptr,now*sizeof(uintptr_t));
 #ifdef HAS_VME
   return (char *)as->area.end-(temp-end_ptr);
