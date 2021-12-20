@@ -11,13 +11,13 @@
 # define Elf_Shdr Elf32_Shdr
 #endif
 
-void check_elf(const Elf_Ehdr *ehdr){
-  assert(ehdr->e_ident[EI_MAG0]==0x7f&&ehdr->e_ident[EI_MAG1]=='E');
-  assert(ehdr->e_ident[EI_MAG2]=='L'&&ehdr->e_ident[EI_MAG3]=='F');
+bool check_elf(const Elf_Ehdr *ehdr){
+  if(ehdr->e_ident[EI_MAG0]!=0x7f||ehdr->e_ident[EI_MAG1]!='E') return 0;
+  if(ehdr->e_ident[EI_MAG2]!='L'||ehdr->e_ident[EI_MAG3]!='F') return 0;
   #ifdef __LP64__
-  assert(ehdr->e_ident[EI_CLASS]==ELFCLASS64);
+  if(ehdr->e_ident[EI_CLASS]!=ELFCLASS64) return 0;
   #else
-  assert(ehdr->e_ident[EI_CLASS]==ELFCLASS32);
+  if(ehdr->e_ident[EI_CLASS]!=ELFCLASS32) return 0;
   #endif
   
   #if defined(__ISA_AM_NATIVE__)
@@ -33,8 +33,8 @@ void check_elf(const Elf_Ehdr *ehdr){
   #else
   # error Unsupported ISA
   #endif
-  assert(ehdr->e_machine==EXPECT_TYPE);
-  return;
+  if(ehdr->e_machine!=EXPECT_TYPE) return 0;
+  return 1;
 }
 
 enum file_lseek_related {SEEK_SET,SEEK_CUR,SEEK_END};
@@ -77,7 +77,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {Log("%p %s",pcb,filenam
   if(fd==-1) return 0;
   static Elf_Ehdr ehdr;
   fs_read(fd,&ehdr,sizeof(ehdr));
-  check_elf(&ehdr);
+  if(!check_elf(&ehdr)) return 0;
   size_t total=ehdr.e_phnum;
   if(total==PN_XNUM){
     Elf_Shdr shdr;
