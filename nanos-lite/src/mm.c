@@ -28,9 +28,13 @@ int mm_brk(uintptr_t brk) {Log("USED HERE! %08x %08x %p",brk,current->max_brk,cu
 #ifdef HAS_VME
   if(brk>current->max_brk){
     for(uintptr_t i=(current->max_brk&~0xfffu)+0x1000;i<=brk;i+=0x1000){
+#ifdef CAO_DEBUG
       void * temp;
       map(&current->as,(void *)i,temp=new_page(1),0);
       Log("Virtual %08x to Physical %08x",i,temp);
+#else
+      map(&current->as,(void *)i,new_page(1),0);
+#endif
     }
     current->max_brk=brk;
   }
