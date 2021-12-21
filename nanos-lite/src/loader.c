@@ -93,7 +93,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {Log("%p %s",pcb,filenam
       uintptr_t virtual_page=phdr.p_vaddr&~0xfffu,offset=phdr.p_vaddr&0xfffu;
       int total1=phdr.p_filesz,total2=phdr.p_memsz-phdr.p_filesz;
 //      pcb->max_brk=Max(pcb->max_brk,phdr.p_vaddr+phdr.p_memsz);Log("%08x",pcb->max_brk);
-
+      Log("%08x To %08x:",phdr.p_vaddr,phdr.p_vaddr+phdr.p_memsz);
       for(;total1;virtual_page+=0x1000u){
         uintptr_t physical_page=get_page(as,virtual_page);
         int bytes=fs_read(fd,(void *)physical_page+offset,Min(pgsize-offset,total1));
