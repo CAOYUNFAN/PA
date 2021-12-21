@@ -53,7 +53,7 @@ void init_proc() {
 }
 
 Context* schedule(Context *prev) {
-  current->cp=prev;
+  current->cp=prev;Log("%p %08x",current->cp,current->cp->pdir);
   current=(current==&pcb[0]?&pcb[1]:&pcb[0]);
 //  Log("Context entry=%p",current->cp);
   return current->cp;
