@@ -24,21 +24,22 @@ void free_page(void *p) {
 }
 #define CAO_DEBUG
 /* The brk() system call handler. */
-int mm_brk(uintptr_t brk) {Log("USED HERE! %08x, %08x",brk,current->max_brk);
+int mm_brk(uintptr_t increament,uintptr_t brk) {Log("USED HERE! %08x, %08x",brk+increament,current->max_brk);
 #ifdef HAS_VME
   if(!current->max_brk){
     current->max_brk=brk;
-    void * page=(void *)(brk&~0xfff);
+/*    void * page=(void *)(brk&~0xfff);
 #ifdef CAO_DEBUG
       void * temp;
       map(&current->as,page,temp=new_page(1),0);
       Log("Virtual %08x to Physical %08x",page,temp);
 #else
       map(&current->as,page,new_page(1),0);
-#endif
+#endif*/
   }
+  brk+=increament;
   if(brk>current->max_brk){
-    for(uintptr_t i=(current->max_brk&~0xfffu)+0x1000;i<=brk;i+=0x1000){
+    for(uintptr_t i=(current->max_brk&~0xfffu)+0x1000;i<brk;i+=0x1000){
 #ifdef CAO_DEBUG
       void * temp;
       map(&current->as,(void *)i,temp=new_page(1),0);
