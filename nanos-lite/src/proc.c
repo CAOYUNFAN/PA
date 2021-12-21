@@ -37,7 +37,7 @@ void hello_fun(void *arg) {
 }
 
 void init_proc() {
-  context_kload(&pcb[0], hello_fun, "pcb_0");
+  context_kload(&pcb[0], hello_fun, "pcb_0");Log("%08x",pcb[0].cp->pdir);
 //  context_uload(&pcb[0],"/bin/hello");
 //  char * argv[]={"/bin/exec-test",NULL};
   char * argv[]={NULL};
