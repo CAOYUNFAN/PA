@@ -8,7 +8,7 @@ static Context* (*user_handler)(Event, Context*) = NULL;
 extern void __am_get_cur_as(Context *c);
 extern void __am_switch(Context *c);
 Context* __am_irq_handle(Context *c) {
-  __am_get_cur_as(c);
+  if(c->pdir!=NULL) __am_get_cur_as(c);
   if (user_handler) {
     Event ev = {0};
    
