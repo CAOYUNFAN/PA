@@ -24,7 +24,7 @@ void free_page(void *p) {
 }
 
 /* The brk() system call handler. */
-int mm_brk(uintptr_t increament,uintptr_t brk) {//Log("USED HERE! %08x %08x %p",brk,current->max_brk,current);
+int mm_brk(uintptr_t increament,uintptr_t brk) {Log("USED HERE! %08x+%08x, %08x %p",increament,brk,current->max_brk,current);
 #ifdef HAS_VME
   if(!current->max_brk){
     current->max_brk=brk;
