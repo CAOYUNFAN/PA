@@ -32,7 +32,7 @@ extern size_t fs_lseek(int fd, size_t offset, int whence);
 extern int fs_close(int fd);
 extern bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]);
 extern void switch_boot_pcb();
-extern int mm_brk(uintptr_t brk);
+extern int mm_brk(uintptr_t increament,uintptr_t brk);
 static char * empty[]={NULL};
 void sys_exit(int status){//halt(0);
   if(status!=0) printf("Error Code %d\n",status);
@@ -100,7 +100,7 @@ void do_syscall(Context *c) {
     case SYS_yield: sys_yield(); break;
     case SYS_exit: sys_exit(a[1]); break;
     case SYS_write: c->GPRx=fs_write(a[1],(unsigned char *)a[2],a[3]); break;
-    case SYS_brk: c->GPRx=mm_brk(a[1]); break;
+    case SYS_brk: c->GPRx=mm_brk(a[1],a[2]); break;
     case SYS_open: c->GPRx=fs_open((void *)a[1],a[2],a[3]); break;
     case SYS_close: c->GPRx=fs_close(a[1]); break;
     case SYS_read: c->GPRx=fs_read(a[1],(void *)a[2],a[3]); break;
