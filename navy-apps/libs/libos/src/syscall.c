@@ -65,15 +65,11 @@ int _write(int fd, void *buf, size_t count) {
   return _syscall_(SYS_write,fd,(intptr_t)buf,count);
 }
 
-//extern char end;
-static uintptr_t p_break=0;
+extern char end;
+static char * p_break=&end;
 void *_sbrk(intptr_t increment) {
-  if(!p_break){
-    p_break=increment;
-    increment=0;
-  }
-  if(_syscall_(SYS_brk,increment,p_break,0)==0){
-    void * temp=(void *)p_break;
+  if(_syscall_(SYS_brk,increment,(uintptr_t)p_break,0)==0){
+    void * temp=p_break;
     p_break+=increment;
     return temp;
   }
