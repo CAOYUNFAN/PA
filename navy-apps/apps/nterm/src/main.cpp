@@ -9,11 +9,11 @@ Terminal *term = NULL;
 
 void builtin_sh_run();
 void extern_app_run(const char *app_path);
-void env_init();
+//void env_init();
 
 int main(int argc, char *argv[]) {//printf("A\n");
   SDL_Init(0);
-  env_init();
+//  env_init();
   font = new BDF_Font(font_fname);
 
   // setup display

@@ -27,7 +27,7 @@ void free_page(void *p) {
 int mm_brk(uintptr_t increament,uintptr_t brk) {Log("USED HERE! %08x+%08x, %08x %p",increament,brk,current->max_brk,current);
 #ifdef HAS_VME
   if(!current->max_brk){
-    current->max_brk=brk;
+    current->max_brk=brk+increament;
     map(&current->as,(void *)(brk&~0xffu),new_page(1),0);
   }
   brk+=increament;

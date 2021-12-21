@@ -35,13 +35,14 @@ void hello_fun(void *arg) {
     yield();
   }
 }
-char * empty[]={NULL};
+
 void init_proc() {
   context_kload(&pcb[0], hello_fun, "pcb_0");
 //  context_uload(&pcb[0],"/bin/hello");
 //  char * argv[]={"/bin/exec-test",NULL};
-  Log("envp:%p,%p",empty,*empty);
-  assert(context_uload(&pcb[1],"/bin/nterm",empty,empty));
+  char * argv[]={NULL};
+  char * envp[]={"PATH=/bin/:/usr/bin/",NULL};
+  assert(context_uload(&pcb[1],"/bin/nterm",argv,envp));
   switch_boot_pcb();
 
   Log("Initializing processes...");

@@ -134,10 +134,10 @@ static void sh_handle_cmd(const char *cmd) {
   return;
 }
 
-void env_init(){
+/*void env_init(){
   setenv("PATH","/bin/:/usr/bin/",0);
 //  sh_printf("%s",getenv("PATH"));
-}
+}*/
 
 void builtin_sh_run() {
   sh_banner();
