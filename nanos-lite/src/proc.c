@@ -43,7 +43,7 @@ void init_proc() {
   char * argv[]={NULL};
   char * envp[]={"PATH=/bin/:/usr/bin/",NULL};
   assert(context_uload(&pcb[1],"/bin/nterm",argv,envp));
-  switch_boot_pcb();Log("%p %p\n",pcb[0].cp,pcb[1].cp);
+  switch_boot_pcb();Log("%p %p",pcb[0].cp,pcb[1].cp);
 
   Log("Initializing processes...");
 
