@@ -38,10 +38,10 @@ void hello_fun(void *arg) {
 
 void init_proc() {
   context_kload(&pcb[0], hello_fun, "pcb_0");
-  char * argv[]={"/bin/exec-test",NULL};
+  char * argv[]={NULL};
 //  char * argv[]={NULL};
   char * envp[]={"PATH=/bin/:/usr/bin/",NULL};
-  assert(context_uload(&pcb[1],"/bin/pal",argv,envp));
+  assert(context_uload(&pcb[1],"/bin/bird",argv,envp));
   switch_boot_pcb();
 
   Log("Initializing processes...");
