@@ -14,7 +14,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   assert((vaddr>>12)==((vaddr+len-1)>>12));
   vaddr_t high=(unsigned)vaddr>>22,low=(vaddr>>12)&0x3ff;
   if(vaddr<=0x80000000) 
-  Log("Memory:Virtual=%x,High=%x,Low=%x",vaddr,high,low);
+  Log("Memory:Virtual=%x,High=%x,Low=%x,satp=%x",vaddr,high,low,satp);
   paddr_t pos1=paddr_read(((satp<<10)|high)<<2,4)&~0xfffu;
   paddr_t pos2=paddr_read(pos1|(low<<2),4)&~0xfffu;
   paddr_t ret=pos2|(vaddr&0xfffu);
