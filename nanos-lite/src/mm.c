@@ -22,7 +22,7 @@ void free_page(void *p) {
   return;
   //panic("not implement yet");
 }
-#define CAO_DEBUG
+//#define CAO_DEBUG
 /* The brk() system call handler. */
 int mm_brk(uintptr_t increament,uintptr_t brk) {Log("USED HERE! %08x, %08x",brk+increament,current->max_brk);
 #ifdef HAS_VME
