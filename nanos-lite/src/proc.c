@@ -41,7 +41,7 @@ void init_proc() {
   char * argv[]={NULL};
 //  char * argv[]={NULL};
   char * envp[]={"PATH=/bin/:/usr/bin/",NULL};
-  assert(context_uload(&pcb[1],"/bin/bird",argv,envp));
+  assert(context_uload(&pcb[1],"/bin/hello",argv,envp));
   switch_boot_pcb();
 
   Log("Initializing processes...");
