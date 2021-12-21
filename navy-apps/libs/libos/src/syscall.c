@@ -68,7 +68,7 @@ int _write(int fd, void *buf, size_t count) {
 //extern char end;
 static char * p_break=0;
 void *_sbrk(intptr_t increment) {
-  if(!p_break) p_break=(char *) increment;
+  if(!p_break) p_break=(char *) increment,increment=0;
   if(_syscall_(SYS_brk,increment,(uintptr_t)p_break,0)==0){
     void * temp=p_break;
     p_break+=increment;
