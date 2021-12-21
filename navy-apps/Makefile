@@ -1,5 +1,5 @@
 # Makefile for Navy Applications and Libraries
-#VME=1
+VME=1
 ### *Get a more readable version of this Makefile* by `make html` (requires python-markdown)
 html:
 	cat Makefile | sed 's/^\([^#]\)/    \1/g' | markdown_py > Makefile.html
@@ -166,7 +166,7 @@ $(CLEAN_ALL):
 .PHONY: clean-all $(CLEAN_ALL)
 
 ### Build fsimg and ramdisk for Nanos-lite
-APPS =nterm #busybox pal menu bird nslider 
+APPS =nterm pal #busybox menu bird nslider 
 TESTS =#dummy exec-test bmp-test event-test hello file-test timer-test
 
 fsimg: $(addprefix apps/, $(APPS)) $(addprefix tests/, $(TESTS))

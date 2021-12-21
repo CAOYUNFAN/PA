@@ -38,11 +38,10 @@ void hello_fun(void *arg) {
 
 void init_proc() {
   context_kload(&pcb[0], hello_fun, "pcb_0");Log("%08x",pcb[0].cp->pdir);
-//  context_uload(&pcb[0],"/bin/hello");
-//  char * argv[]={"/bin/exec-test",NULL};
-  char * argv[]={NULL};
+  char * argv[]={"/bin/exec-test",NULL};
+//  char * argv[]={NULL};
   char * envp[]={"PATH=/bin/:/usr/bin/",NULL};
-  assert(context_uload(&pcb[1],"/bin/nterm",argv,envp));
+  assert(context_uload(&pcb[1],"/bin/pal",argv,envp));
   switch_boot_pcb();Log("%p %p",pcb[0].cp,pcb[1].cp);
 
   Log("Initializing processes...");
