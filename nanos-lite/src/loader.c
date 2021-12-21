@@ -158,7 +158,7 @@ static inline char * prepare_args_and_stack(AddrSpace *as,char * const argv[],ch
 #if defined __ISA_AM_NATIVE__
   end_ptr=(char *)((((uintptr_t)end_ptr-now*sizeof(uintptr_t))&~0xf)+now*sizeof(uintptr_t));
 #endif
-  memcpy(end_ptr-now*sizeof(uintptr_t),begin_ptr,now*sizeof(uintptr_t));
+  end_ptr=memcpy(end_ptr-now*sizeof(uintptr_t),begin_ptr,now*sizeof(uintptr_t));
 #ifdef HAS_VME
   return (char *)as->area.end-(temp-end_ptr);
 #else
