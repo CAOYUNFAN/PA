@@ -137,7 +137,7 @@ void naive_uload(PCB *pcb, const char *filename) {
   return;
 }
 
-static inline char * prepare_args_and_stack(AddrSpace *as,char * const argv[],char * const envp[]){
+static char * prepare_args_and_stack(AddrSpace *as,char * const argv[],char * const envp[]){
   int argv_count=0;
 #ifdef HAS_VME
   int pgsize=as->pgsize;
