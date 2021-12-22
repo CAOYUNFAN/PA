@@ -96,22 +96,22 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
 //      Log("%08x To %08x:",phdr.p_vaddr,phdr.p_vaddr+phdr.p_memsz);
       for(;total1;virtual_page+=0x1000u){
         uintptr_t physical_page=get_page(as,virtual_page);Log("a");
-#ifndef HAS_VME
+      #ifndef HAS_VME
         assert(physical_page==virtual_page);
-#endif
+      #endif
         int bytes=fs_read(fd,(void *)physical_page+offset,Min(pgsize-offset,total1));Log("b");
         assert(bytes==Min(pgsize-offset,total1));
         offset=(offset+bytes)%pgsize;
         total1-=bytes;
-      }
+      }Log("c");
 
       for(;total2;virtual_page+=0x1000u){
-        uintptr_t physical_page=get_page(as,virtual_page);
-#ifndef HAS_VME
+        uintptr_t physical_page=get_page(as,virtual_page);Log("d");
+      #ifndef HAS_VME
         assert(physical_page==virtual_page);
-#endif
+      #endif
         int bytes=Min(pgsize-offset,total2);
-        memset((void *)(physical_page+offset),0,bytes);
+        memset((void *)(physical_page+offset),0,bytes);Log("e");
         offset=(offset+bytes)%pgsize;
         total2-=bytes;
       }
