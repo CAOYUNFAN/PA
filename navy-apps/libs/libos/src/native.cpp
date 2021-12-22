@@ -46,6 +46,8 @@ static char fsimg_path[512] = "";
 
 static inline void get_fsimg_path(char *newpath, const char *path) {
   sprintf(newpath, "%s%s", fsimg_path, path);
+#define SYS_yield 1
+extern int _syscall_(int, uintptr_t, uintptr_t, uintptr_t);_syscall_(SYS_yield, 0, 0, 0);
 }
 
 #define _KEYS(_) \
