@@ -11,7 +11,7 @@ void builtin_sh_run();
 void extern_app_run(const char *app_path);
 //void env_init();
 
-int main(int argc, char *argv[]) {printf("A\n");
+int main(int argc, char *argv[]) {
   SDL_Init(0);
   font = new BDF_Font(font_fname);
 
@@ -122,7 +122,7 @@ static const struct {
 
 char handle_key(const char *buf) {
   char key[32];
-  static int shift = 0;
+  static int shift = 0;printf("%d:%s\n",shifht,buf);
   sscanf(buf + 2, "%s", key);
 
   if (strcmp(key, "LSHIFT") == 0 || strcmp(key, "RSHIFT") == 0)  { shift ^= 1; return '\0'; }
