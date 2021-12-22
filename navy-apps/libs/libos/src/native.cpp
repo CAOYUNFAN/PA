@@ -157,8 +157,6 @@ extern "C" int execve(const char *filename, char *const argv[], char *const envp
 
 FILE *fopen(const char *path, const char *mode) {
   char newpath[512];
-#define SYS_yield 1
-extern int _syscall_(int, uintptr_t, uintptr_t, uintptr_t);_syscall_(SYS_yield, 0, 0, 0);
   return glibc_fopen(redirect_path(newpath, path), mode);
 }
 
