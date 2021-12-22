@@ -36,11 +36,11 @@ void hello_fun(void *arg) {
   }
 }
 
-void init_proc() {
+void init_proc() {Log("H");
   context_kload(&pcb[0], hello_fun, "pcb_0");
   char * argv[]={NULL};
 //  char * argv[]={NULL};
-  char * envp[]={"PATH=/bin/:/usr/bin/",NULL};
+  char * envp[]={"PATH=/bin/:/usr/bin/",NULL};Log("P");
   assert(context_uload(&pcb[1],"/bin/bmp-test",argv,envp));
   switch_boot_pcb();
 
