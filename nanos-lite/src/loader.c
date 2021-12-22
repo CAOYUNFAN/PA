@@ -150,26 +150,26 @@ static inline char * prepare_args_and_stack(AddrSpace *as,char * const argv[],ch
   }
 #endif
   temp+=stack_page_num*pgsize;
-  char * end_ptr=temp;
+  char * end_ptr=temp;Log("%08x",end_ptr);
 //  Log("%p",end_ptr);
   int now=1;
   for(;*argv;++argv){
     begin_ptr[now++]=(uintptr_t)(end_ptr=strcpy(end_ptr-strlen(*argv)-1,*argv));
     ++argv_count;
-  }
+  }Log("%08x",end_ptr);
   *begin_ptr=argv_count;
   begin_ptr[now++]=0;
   for(;*envp;++envp){
     begin_ptr[now++]=(uintptr_t)(end_ptr=strcpy(end_ptr-strlen(*envp)-1,*envp));
 //    ++envp_count;
-  }
+  }Log("%08x",end_ptr);
 //  Log("envp_count:%d",envp_count);
   end_ptr=(char *)((uintptr_t)end_ptr&~0x3u);
   begin_ptr[now++]=0;
 #if defined __ISA_AM_NATIVE__
   end_ptr=(char *)((((uintptr_t)end_ptr-now*sizeof(uintptr_t))&~0xf)+now*sizeof(uintptr_t));
 #endif
-  end_ptr=memcpy(end_ptr-now*sizeof(uintptr_t),begin_ptr,now*sizeof(uintptr_t));
+  end_ptr=memcpy(end_ptr-now*sizeof(uintptr_t),begin_ptr,now*sizeof(uintptr_t));Log("%08x",end_ptr);
 #ifdef HAS_VME
   return (char *)as->area.end-(temp-end_ptr);
 #else
