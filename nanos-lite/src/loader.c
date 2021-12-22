@@ -72,11 +72,11 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
   fs_lseek(fd,offset,SEEK_SET);\
   assert(fs_read(fd,&name,sizeof(name))==sizeof(name));\
   })
-  initial_page_manager();Log("1");
-  int fd=fs_open(filename,0,0);Log("@");
+  initial_page_manager();
+  int fd=fs_open(filename,0,0);
   if(fd==-1) return 0;
   static Elf_Ehdr ehdr;
-  fs_read(fd,&ehdr,sizeof(ehdr));Log("#");
+  fs_read(fd,&ehdr,sizeof(ehdr));
   if(!check_elf(&ehdr)) return 0;
   size_t total=ehdr.e_phnum;
   if(total==PN_XNUM){
@@ -85,7 +85,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
     total=shdr.sh_info;
   }
   AddrSpace * as=&pcb->as;int pgsize=as->pgsize;
-  static Elf_Phdr phdr;Log("$");
+  static Elf_Phdr phdr;
   for(size_t i=0,j=ehdr.e_phoff;i<total;++i,j+=ehdr.e_phentsize){
     CAO_set_and_read(phdr,j);
     if(phdr.p_type==PT_LOAD){
@@ -96,6 +96,9 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
 //      Log("%08x To %08x:",phdr.p_vaddr,phdr.p_vaddr+phdr.p_memsz);
       for(;total1;virtual_page+=0x1000u){
         uintptr_t physical_page=get_page(as,virtual_page);
+#ifndef HAS_VME
+        assert(physical_page==virtual_page);
+#endif
         int bytes=fs_read(fd,(void *)physical_page+offset,Min(pgsize-offset,total1));
         assert(bytes==Min(pgsize-offset,total1));
         offset=(offset+bytes)%pgsize;
@@ -104,6 +107,9 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
 
       for(;total2;virtual_page+=0x1000u){
         uintptr_t physical_page=get_page(as,virtual_page);
+#ifndef HAS_VME
+        assert(physical_page==virtual_page);
+#endif
         int bytes=Min(pgsize-offset,total2);
         memset((void *)(physical_page+offset),0,bytes);
         offset=(offset+bytes)%pgsize;
