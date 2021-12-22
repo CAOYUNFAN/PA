@@ -87,7 +87,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
   AddrSpace * as=&pcb->as;int pgsize=as->pgsize;
   static Elf_Phdr phdr;
   for(size_t i=0,j=ehdr.e_phoff;i<total;++i,j+=ehdr.e_phentsize){
-    CAO_set_and_read(phdr,j);
+    CAO_set_and_read(phdr,j);Log("%d",i);
     if(phdr.p_type==PT_LOAD){
       fs_lseek(fd,phdr.p_offset,SEEK_SET);
       uintptr_t virtual_page=phdr.p_vaddr&~0xfffu,offset=phdr.p_vaddr&0xfffu;
