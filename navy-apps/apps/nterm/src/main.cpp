@@ -122,7 +122,7 @@ static const struct {
 
 char handle_key(const char *buf) {
   char key[32];
-  static int shift = 0;printf("%d:%s\n",shift,buf);
+  static int shift = 0;
   sscanf(buf + 2, "%s", key);
 
   if (strcmp(key, "LSHIFT") == 0 || strcmp(key, "RSHIFT") == 0)  { shift ^= 1; return '\0'; }
@@ -144,7 +144,7 @@ char handle_key(const char *buf) {
 
 char handle_key(SDL_Event *ev) {
   static int shift = 0;
-  int key = ev->key.keysym.sym;
+  int key = ev->key.keysym.sym;printf("%d:%d\n",shift,key);
   if (key == SDLK_LSHIFT || key == SDLK_RSHIFT) { shift ^= 1; return '\0'; }
 
   if (ev->type == SDL_KEYDOWN) {
