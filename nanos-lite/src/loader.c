@@ -72,11 +72,11 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
   fs_lseek(fd,offset,SEEK_SET);\
   assert(fs_read(fd,&name,sizeof(name))==sizeof(name));\
   })
-  initial_page_manager();
-  int fd=fs_open(filename,0,0);
+  initial_page_manager();Log("1");
+  int fd=fs_open(filename,0,0);Log("@");
   if(fd==-1) return 0;
   static Elf_Ehdr ehdr;
-  fs_read(fd,&ehdr,sizeof(ehdr));
+  fs_read(fd,&ehdr,sizeof(ehdr));Log("#");
   if(!check_elf(&ehdr)) return 0;
   size_t total=ehdr.e_phnum;
   if(total==PN_XNUM){
@@ -85,7 +85,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
     total=shdr.sh_info;
   }
   AddrSpace * as=&pcb->as;int pgsize=as->pgsize;
-  static Elf_Phdr phdr;
+  static Elf_Phdr phdr;Log("$");
   for(size_t i=0,j=ehdr.e_phoff;i<total;++i,j+=ehdr.e_phentsize){
     CAO_set_and_read(phdr,j);
     if(phdr.p_type==PT_LOAD){
@@ -173,10 +173,10 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   Area mystack={
     .start=(void *)pcb->stack,
     .end=(void *)(pcb->stack+STACK_SIZE)
-  }; Log("IAMSB");
-  void * entry=(void *)loader(pcb,filename);Log("pos %p",entry);
+  };
+  void * entry=(void *)loader(pcb,filename);
   if(!entry) return 0;
-  pcb->cp=ucontext(&pcb->as,mystack,entry);Log("TOOBAD");
+  pcb->cp=ucontext(&pcb->as,mystack,entry);
   pcb->cp->GPRx=(uintptr_t)prepare_args_and_stack(&pcb->as,argv,envp);
 //  printf("File%s:entry=%p,Stack starts From%p\n",filename,entry,pcb->cp->GPRx);
   return 1;
