@@ -186,7 +186,7 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 #ifdef HAS_VME
   protect(&pcb->as);
 #endif
-  pcb->cp->GPRx=(uintptr_t)prepare_args_and_stack(&pcb->as,argv,envp);
+  uintptr_t ret=(uintptr_t)prepare_args_and_stack(&pcb->as,argv,envp);
   Area mystack={
     .start=(void *)pcb->stack,
     .end=(void *)(pcb->stack+STACK_SIZE)
@@ -194,6 +194,7 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   void * entry=(void *)loader(pcb,filename);
   if(!entry) return 0;
   pcb->cp=ucontext(&pcb->as,mystack,entry);
+  pcb->cp->GPRx=ret;
 //  printf("File%s:entry=%p,Stack starts From%p\n",filename,entry,pcb->cp->GPRx);
   return 1;
 }
