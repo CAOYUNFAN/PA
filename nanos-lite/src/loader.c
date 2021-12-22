@@ -102,7 +102,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
         int bytes=fs_read(fd,(void *)physical_page+offset,Min(pgsize-offset,total1));Log("b");
         assert(bytes==Min(pgsize-offset,total1));
         offset=(offset+bytes)%pgsize;
-        total1-=bytes;
+        total1-=bytes;Log("b-");
       }Log("c");
 
       for(;total2;virtual_page+=0x1000u){
