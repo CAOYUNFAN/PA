@@ -142,7 +142,7 @@ static inline char * prepare_args_and_stack(AddrSpace *as,char * const argv[],ch
 //  int envp_count=0;
   #define stack_page_num 8
   static uintptr_t begin_ptr[1024];
-  char * temp=new_page(stack_page_num);Log("%p",temp);
+  char * temp=new_page(stack_page_num);
 #ifdef HAS_VME
   for(int i=0,j=(uintptr_t)as->area.end-stack_page_num*pgsize,k=(uintptr_t)temp;i<8;i++,j+=pgsize,k+=pgsize){
     map(as,(void *)j,(void *)k,0);
@@ -185,10 +185,10 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     .start=(void *)pcb->stack,
     .end=(void *)(pcb->stack+STACK_SIZE)
   };
-  void * entry=(void *)loader(pcb,filename);Log("CYF");
+  void * entry=(void *)loader(pcb,filename);
   if(!entry) return 0;
-  pcb->cp=ucontext(&pcb->as,mystack,entry);Log("CC");
-  pcb->cp->GPRx=(uintptr_t)prepare_args_and_stack(&pcb->as,argv,envp);Log("P");
+  pcb->cp=ucontext(&pcb->as,mystack,entry);
+  pcb->cp->GPRx=(uintptr_t)prepare_args_and_stack(&pcb->as,argv,envp);
 //  printf("File%s:entry=%p,Stack starts From%p\n",filename,entry,pcb->cp->GPRx);
   return 1;
 }
