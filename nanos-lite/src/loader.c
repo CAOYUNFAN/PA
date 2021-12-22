@@ -97,8 +97,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
       fs_lseek(fd,phdr.p_offset,SEEK_SET);
       uintptr_t virtual_page=phdr.p_vaddr&~0xfffu,offset=phdr.p_vaddr&0xfffu;
       int total1=phdr.p_filesz,total2=phdr.p_memsz-phdr.p_filesz;
-//      pcb->max_brk=Max(pcb->max_brk,phdr.p_vaddr+phdr.p_memsz);Log("%08x",pcb->max_brk);
-//      Log("%08x To %08x:",phdr.p_vaddr,phdr.p_vaddr+phdr.p_memsz);
       for(;total1;virtual_page+=0x1000u){
         uintptr_t physical_page=get_page(as,virtual_page);
       #ifndef HAS_VME
@@ -106,6 +104,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
       #endif
         int bytes=fs_read(fd,(void *)physical_page+offset,Min(pgsize-offset,total1));
         assert(bytes==Min(pgsize-offset,total1));
+        Log("%08x:%08x->%08x",physical_page,physical_page+offset,physical_page+offset+bytes);
         offset=(offset+bytes)%pgsize;
         total1-=bytes;
       }
@@ -117,6 +116,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
       #endif
         int bytes=Min(pgsize-offset,total2);
         memset((void *)(physical_page+offset),0,bytes);
+        Log("%08x:%08x->%08x",physical_page,physical_page+offset,physical_page+offset+bytes);
         offset=(offset+bytes)%pgsize;
         total2-=bytes;
       }
