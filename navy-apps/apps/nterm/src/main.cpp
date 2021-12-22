@@ -122,7 +122,7 @@ static const struct {
 
 char handle_key(const char *buf) {
   char key[32];
-  static int shift = 0;printf("%d:%s\n",shifht,buf);
+  static int shift = 0;printf("%d:%s\n",shift,buf);
   sscanf(buf + 2, "%s", key);
 
   if (strcmp(key, "LSHIFT") == 0 || strcmp(key, "RSHIFT") == 0)  { shift ^= 1; return '\0'; }
