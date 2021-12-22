@@ -100,8 +100,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
         assert(physical_page==virtual_page);
       #endif
         int bytes=fs_read(fd,(void *)physical_page+offset,Min(pgsize-offset,total1));Log("b");
-        assert(bytes==Min(pgsize-offset,total1));
-        offset=(offset+bytes)%pgsize;
+        assert(bytes==Min(pgsize-offset,total1));Log("sudgf");
+        offset=(offset+bytes)%pgsize;Log("dsufih");
         total1-=bytes;Log("b-");
       }Log("c");
 
