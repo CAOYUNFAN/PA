@@ -107,7 +107,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
         Log("V:%08x:%08x->%08x",physical_page,physical_page+offset,physical_page+offset+bytes);
         offset=(offset+bytes)%pgsize;
         total1-=bytes;
-      }
+      }virtual_page-=0x1000u;
 
       for(;total2;virtual_page+=0x1000u){
         uintptr_t physical_page=get_page(as,virtual_page);
