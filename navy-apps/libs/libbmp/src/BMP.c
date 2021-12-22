@@ -23,7 +23,7 @@ void* BMP_Load(const char *filename, int *width, int *height) {
 //#define SYS_yield 1
 //extern int _syscall_(int, uintptr_t, uintptr_t, uintptr_t);_syscall_(SYS_yield, 0, 0, 0);
   FILE *fp = fopen(filename, "r");
-  if (!fp) return NULL;_syscall_(SYS_yield, 0, 0, 0);
+  if (!fp) return NULL;//_syscall_(SYS_yield, 0, 0, 0);
 
   struct BitmapHeader hdr;
   assert(sizeof(hdr) == 54);
@@ -32,7 +32,7 @@ void* BMP_Load(const char *filename, int *width, int *height) {
   if (hdr.bitcount != 24) return NULL;
   if (hdr.compression != 0) return NULL;
   int w = hdr.width;
-  int h = hdr.height;_syscall_(SYS_yield, 0, 0, 0);
+  int h = hdr.height;//_syscall_(SYS_yield, 0, 0, 0);
   uint32_t *pixels = malloc(w * h * sizeof(uint32_t));
 
   int line_off = (w * 3 + 3) & ~0x3;
