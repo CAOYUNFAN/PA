@@ -42,7 +42,7 @@ void init_proc() {Log("H");
 //  char * argv[]={NULL};
   char * envp[]={"PATH=/bin/:/usr/bin/",NULL};Log("P");
   assert(context_uload(&pcb[1],"/bin/bmp-test",argv,envp));
-  switch_boot_pcb();
+  switch_boot_pcb();Log("M");
 
   Log("Initializing processes...");
 
