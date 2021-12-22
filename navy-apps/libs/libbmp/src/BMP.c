@@ -20,8 +20,8 @@ struct BitmapHeader {
 } __attribute__((packed));
 
 void* BMP_Load(const char *filename, int *width, int *height) {
-#define SYS_yield 1
-extern int _syscall_(int, uintptr_t, uintptr_t, uintptr_t);_syscall_(SYS_yield, 0, 0, 0);
+//#define SYS_yield 1
+//extern int _syscall_(int, uintptr_t, uintptr_t, uintptr_t);_syscall_(SYS_yield, 0, 0, 0);
   FILE *fp = fopen(filename, "r");
   if (!fp) return NULL;_syscall_(SYS_yield, 0, 0, 0);
 
