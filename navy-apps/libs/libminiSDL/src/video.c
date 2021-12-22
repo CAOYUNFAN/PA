@@ -59,8 +59,11 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 //  printf("Update Rect %d %d %d %d With Source %d %d\n",x,y,w,h,s->w,s->h);
 //  NDL_OpenCanvas(&w,&h);
   if(x==0&&y==0&&w==0&&h==0){
-    NDL_DrawRect((uint32_t *)s->pixels,x,y,s->w,s->h);
-    return;
+    if(s->format->BytesPerPixel==4){
+      NDL_DrawRect((uint32_t *)s->pixels,x,y,s->w,s->h);
+      return;
+    }
+    w=s->w,h=s->h;
   }
   uint32_t * buf=malloc(w*h*sizeof(uint32_t));
   assert(buf!=NULL);
