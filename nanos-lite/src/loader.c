@@ -104,7 +104,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
       #endif
         int bytes=fs_read(fd,(void *)physical_page+offset,Min(pgsize-offset,total1));
         assert(bytes==Min(pgsize-offset,total1));
-        Log("%08x:%08x->%08x",physical_page,physical_page+offset,physical_page+offset+bytes);
+        Log("V:%08x:%08x->%08x",physical_page,physical_page+offset,physical_page+offset+bytes);
         offset=(offset+bytes)%pgsize;
         total1-=bytes;
       }
@@ -116,7 +116,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
       #endif
         int bytes=Min(pgsize-offset,total2);
         memset((void *)(physical_page+offset),0,bytes);
-        Log("%08x:%08x->%08x",physical_page,physical_page+offset,physical_page+offset+bytes);
+        Log("Z:%08x:%08x->%08x",physical_page,physical_page+offset,physical_page+offset+bytes);
         offset=(offset+bytes)%pgsize;
         total2-=bytes;
       }
