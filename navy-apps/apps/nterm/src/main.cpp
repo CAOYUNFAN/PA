@@ -144,7 +144,7 @@ char handle_key(const char *buf) {
 
 char handle_key(SDL_Event *ev) {
   static int shift = 0;
-  int key = ev->key.keysym.sym;printf("%d:%d\n",shift,key);
+  int key = ev->key.keysym.sym;printf("%p-%d:%d\n",&shift,shift,key);
   if (key == SDLK_LSHIFT || key == SDLK_RSHIFT) { shift ^= 1; return '\0'; }
 
   if (ev->type == SDL_KEYDOWN) {
