@@ -84,7 +84,12 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
     CAO_set_and_read(shdr,ehdr.e_shoff);
     total=shdr.sh_info;
   }
-  AddrSpace * as=&pcb->as;int pgsize=as->pgsize;
+  AddrSpace * as=&pcb->as;
+#ifdef HAS_VME
+  int pgsize=as->pgsize;
+#else
+  int pgsize=4096;
+#endif
   static Elf_Phdr phdr;
   for(size_t i=0,j=ehdr.e_phoff;i<total;++i,j+=ehdr.e_phentsize){
     CAO_set_and_read(phdr,j);
