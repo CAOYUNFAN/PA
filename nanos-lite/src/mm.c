@@ -27,15 +27,7 @@ void free_page(void *p) {
 int mm_brk(intptr_t increament,uintptr_t brk) {Log("USED HERE! %08x=%08x+%08x, %08x",brk+increament,brk,increament,current->max_brk);
 #ifdef HAS_VME
   if(!current->max_brk){Log("%d,%08x",increament,brk);
-    current->max_brk=brk;
-/*    void * page=(void *)(brk&~0xfff);
-#ifdef CAO_DEBUG
-      void * temp;
-      map(&current->as,page,temp=new_page(1),0);
-      Log("Virtual %08x to Physical %08x",page,temp);
-#else
-      map(&current->as,page,new_page(1),0);
-#endif*/
+    current->max_brk=(brk&~0xfff)-1;
   }
   brk+=increament;
   if(brk>current->max_brk){
