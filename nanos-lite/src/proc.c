@@ -45,7 +45,7 @@ void init_proc() {
   char * envp[]={"PATH=/bin/:/usr/bin/",NULL};
   assert(context_uload(&pcb[1],"/bin/bmp-test",argv,envp));
   switch_boot_pcb();
-Log("ildsgjdf");
+
   // load program here
 //  extern void naive_uload(PCB *pcb, const char *filename);
 //  naive_uload(NULL, "/bin/pal");
