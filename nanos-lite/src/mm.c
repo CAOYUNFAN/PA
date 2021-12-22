@@ -24,7 +24,7 @@ void free_page(void *p) {
 }
 //#define CAO_DEBUG
 /* The brk() system call handler. */
-int mm_brk(intptr_t increament,uintptr_t brk) {Log("USED HERE! %08x, %08x",brk+increament,current->max_brk);
+int mm_brk(intptr_t increament,uintptr_t brk) {//Log("USED HERE! %08x, %08x",brk+increament,current->max_brk);
 #ifdef HAS_VME
   if(!current->max_brk){Log("%d,%08x",increament,brk);
     current->max_brk=brk;
