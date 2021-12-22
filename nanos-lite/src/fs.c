@@ -67,8 +67,8 @@ void init_fs() {
   struct AM_GPU_CONFIG_T{
     bool present, has_accel; int width, height, vmemsz;
   } cfg;
-  extern void __am_gpu_config(struct AM_GPU_CONFIG_T *cfg);
-  __am_gpu_config(&cfg);
+  extern void __am_gpu_config(struct AM_GPU_CONFIG_T *cfg);Log("S");
+  __am_gpu_config(&cfg);Log("B");
 //  Log("width=%d,height=%d",cfg.width,cfg.height);
   file_table[FD_FB].size=cfg.width*cfg.height*sizeof(uint32_t);
   return;
