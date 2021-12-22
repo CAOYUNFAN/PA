@@ -25,7 +25,7 @@ int main() {
 
   init_fs();
 
-  init_proc();
+  init_proc();Log("adskf");
 
   Log("Finish initialization");
 
