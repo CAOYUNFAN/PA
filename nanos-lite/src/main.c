@@ -22,7 +22,7 @@ int main() {
 #ifdef HAS_CTE
   init_irq();
 #endif
-
+Log("!");
   init_fs();
 
   init_proc();
