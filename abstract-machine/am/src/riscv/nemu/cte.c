@@ -15,6 +15,8 @@ Context* __am_irq_handle(Context *c) {
     switch (c->mcause) {
       case 11: 
         if(a7==-1) ev.event = EVENT_YIELD; else ev.event=EVENT_SYSCALL; break;
+      case 0x80000007:
+        ev.event=EVENT_IRQ_TIMER; break;
       default: ev.event = EVENT_ERROR; break;
     }
 

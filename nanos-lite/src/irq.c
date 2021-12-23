@@ -7,6 +7,11 @@ inline Context * event_yield(Context *c){
   return schedule(c);
 }
 
+inline Context * event_irq_timer(Context * c){
+  Log("event_irq_timer!");
+  return schedule(c);
+}
+
 /*enum event_type{
   EVENT_NULL = 0,
   EVENT_YIELD, EVENT_SYSCALL, EVENT_PAGEFAULT, EVENT_ERROR,
@@ -21,6 +26,7 @@ static Context* do_event(Event e, Context* c) {
   switch (e.event) {
     case EVENT_YIELD: c=event_yield(c); break;
     case EVENT_SYSCALL: do_syscall(c); break;
+    case EVENT_IRQ_TIMER: c=event_irq_timer(c); break;
     default: panic("Unhandled event ID = %d", e.event);
   }
 
