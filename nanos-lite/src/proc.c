@@ -43,7 +43,7 @@ char * envp_for_main[]={"PATH=/bin/:/usr/bin/",NULL};
 void init_proc() {
   Log("Initializing processes...");
   static char * argv[]={"--skip",NULL};
-  context_kload(&pcb[0], hello_fun, "pcb_0");Log("pcb0:%08x",&pcb[0]);
+  context_kload(&pcb[0], hello_fun, "pcb_0");//Log("pcb0:%08x",&pcb[0]);
   assert(context_uload(&pcb[1],main_name,argv_for_main,envp_for_main));
   assert(context_uload(&pcb[2],"/bin/pal",argv,envp_for_main));
   assert(context_uload(&pcb[3],"/bin/bird",argv_for_main,envp_for_main));
@@ -57,11 +57,12 @@ uintptr_t fg_pcb=1,cycle_num=0;
 
 Context* schedule(Context *prev) {
   current->cp=prev;
-  Log("Previous:%08x",current);
-  for(int i=0;i<4;++i) Log("%d:%08x,%08x,%08x",i,&pcb[i],pcb[i].cp->pdir,pcb[i].cp->np);
+/*  Log("Previous:%08x",current);
+  for(int i=0;i<4;++i) Log("%d:%08x,%08x,%08x",i,&pcb[i],pcb[i].cp->pdir,pcb[i].cp->np);*/
   if(!cycle_num) current=&pcb[0];
   else current=&pcb[fg_pcb];
   cycle_num=(cycle_num+1)&((1<<3)-1);
-  Log("Later:%08x",current);assert(pcb[0].cp->pdir==0);
+//  Log("Later:%08x",current);
+  assert(pcb[0].cp->pdir==0);
   return current->cp;
 }
