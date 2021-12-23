@@ -56,7 +56,7 @@ void init_proc() {
 uintptr_t fg_pcb=1,cycle_num=0;
 
 Context* schedule(Context *prev) {
-  current->cp=prev;
+  current->cp=prev;Log("%08x,%08x",current,prev->pdir);
   if(current!=&pcb[fg_pcb]) current=&pcb[fg_pcb];
   else{
     ++cycle_num;

@@ -9,7 +9,7 @@ extern void __am_get_cur_as(Context *c);
 extern void __am_switch(Context *c);
 Context* __am_irq_handle(Context *c) {
   if(c->pdir!=NULL) __am_get_cur_as(c);
-  printf("From __am_:%08x,%08x\n",c,c->pdir);
+  //printf("From __am_:%08x,%08x\n",c,c->pdir);
   if (user_handler) {
     Event ev = {0};
    
@@ -24,7 +24,7 @@ Context* __am_irq_handle(Context *c) {
     if(ev.event==EVENT_YIELD||ev.event==EVENT_SYSCALL) c->mepc+=4;
     c = user_handler(ev, c);
     assert(c != NULL);
-  }printf("From __am_,later:%08x,%08x\n",c,c->pdir);
+  }//printf("From __am_,later:%08x,%08x\n",c,c->pdir);
   __am_switch(c);
   return c;
 }
