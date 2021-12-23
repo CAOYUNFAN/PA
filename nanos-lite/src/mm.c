@@ -29,11 +29,11 @@ int mm_brk(intptr_t increament,uintptr_t brk) {
   Log("USED HERE! %08x=%08x+%08x, %08x",brk+increament,brk,increament,current->max_brk);
 #ifdef HAS_VME
   if(!current->max_brk){Log("%d,%08x",increament,brk);
-    current->max_brk=(brk&~0xfff)-1;
+    current->max_brk=(brk&~0xfff);
   }
   brk+=increament;
   if(brk>current->max_brk){
-    for(uintptr_t i=(current->max_brk&~0xfffu)+0x1000;i<brk;i+=0x1000)
+    for(uintptr_t i=((current->max_brk-1)&~0xfffu)+0x1000;i<brk;i+=0x1000)
     if(check_map(&current->as,(void *)i)==0){
 #ifdef CAO_DEBUG
       void * temp;
