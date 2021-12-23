@@ -11,9 +11,9 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   return cpu.sr[0x305]._32;
 }
 
-word_t isa_query_intr() {
+word_t isa_query_intr() {Log("%08x",cpu.sr[0x300]._32);
   if(cpu.INTR&&((cpu.sr[0x300]._32>>3)&1)){
-    cpu.INTR = false;
+    cpu.INTR = false;Log("Timer!");
     return IRQ_TIMER;
   }
   return INTR_EMPTY;
