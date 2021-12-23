@@ -9,7 +9,7 @@ extern void __am_get_cur_as(Context *c);
 extern void __am_switch(Context *c);
 Context* __am_irq_handle(Context *c) {
   if(c->pdir!=NULL) __am_get_cur_as(c);
-  //printf("From __am_:%08x,%08x\n",c,c->pdir);
+  int a;asm("csrr %0,mscratch":"=r"(a));printf("%08x %08x\n",c,a);
   if (user_handler) {
     Event ev = {0};
    
@@ -49,7 +49,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   ret->mepc=(uintptr_t)entry;
   ret->mcause=11;
   ret->pdir=NULL;
-  ret->np=0;printf("%d\n",((char *)&ret->np-(char *)ret)/4);
+  ret->np=0;//printf("%d\n",((char *)&ret->np-(char *)ret)/4);
   ret->gpr[2]=(uintptr_t)heap.end;//printf("%08x\n",heap.end);
   return ret;
 }
