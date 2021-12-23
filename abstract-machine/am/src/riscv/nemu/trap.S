@@ -50,6 +50,7 @@ save_context2://system
   STORE zero,OFFSET_NP(sp)
 
 nextpart:
+  csrr t0, mscratch
   STORE t0,OFFSET_SP(sp)
 
   csrr t0, mcause
