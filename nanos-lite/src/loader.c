@@ -99,7 +99,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
       int total1=phdr.p_filesz,total2=phdr.p_memsz-phdr.p_filesz;
       Log("%08x,V=%08x,ALL=%08x",phdr.p_vaddr,phdr.p_filesz,phdr.p_memsz);
 
-      for(;total1;virtual_page+=0x1000u){
+      for(;total1;){
         uintptr_t physical_page=get_page(as,virtual_page);
       #ifndef HAS_VME
         assert(physical_page==virtual_page);
@@ -107,12 +107,13 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
         int bytes=fs_read(fd,(void *)physical_page+offset,Min(pgsize-offset,total1));
         assert(bytes==Min(pgsize-offset,total1));
         Log("V:%08x:%08x->%08x,with%08x",physical_page,physical_page+offset,physical_page+offset+bytes,virtual_page);
-        offset=(offset+bytes)%pgsize;
+        offset+=bytes;
+        virtual_page+=offset&~0xfff;offset&=0xfff;
         total1-=bytes;
-      }virtual_page-=0x1000u;
+      }
       assert(virtual_page+offset==phdr.p_vaddr+phdr.p_filesz);
 
-      for(;total2;virtual_page+=0x1000u){
+      for(;total2;){
         uintptr_t physical_page=get_page(as,virtual_page);
       #ifndef HAS_VME
         assert(physical_page==virtual_page);
@@ -120,7 +121,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
         int bytes=Min(pgsize-offset,total2);
         memset((void *)(physical_page+offset),0,bytes);
         Log("Z:%08x:%08x->%08x,with%08x",physical_page,physical_page+offset,physical_page+offset+bytes,virtual_page);
-        offset=(offset+bytes)%pgsize;
+        offset+=bytes;
+        virtual_page+=offset&~0xfff;offset&=0xfff;
         total2-=bytes;
       }Log("%08x",virtual_page);
       assert(virtual_page+offset==phdr.p_vaddr+phdr.p_memsz);
