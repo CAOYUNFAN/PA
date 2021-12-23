@@ -34,7 +34,7 @@ int mm_brk(intptr_t increament,uintptr_t brk) {
   brk+=increament;
   if(brk>current->max_brk){
     for(uintptr_t i=(current->max_brk&~0xfffu)+0x1000;i<brk;i+=0x1000)
-    if(!check_map(&current->as,(void *)i)){
+    if(check_map(&current->as,(void *)i)==0){
 #ifdef CAO_DEBUG
       void * temp;
       map(&current->as,(void *)i,temp=new_page(1),0);
