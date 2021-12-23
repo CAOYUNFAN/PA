@@ -36,14 +36,15 @@ void hello_fun(void *arg) {
   }
 }
 
+char main_name[]="/bin/nterm";
+char * argv_for_main[]={NULL};
+char * envp_for_main[]={"PATH=/bin/:/usr/bin/",NULL};
+
 void init_proc() {
   Log("Initializing processes...");
 
   context_kload(&pcb[0], hello_fun, "pcb_0");
-  char * argv[]={NULL};
-//  char * argv[]={NULL};
-  char * envp[]={"PATH=/bin/:/usr/bin/",NULL};
-  assert(context_uload(&pcb[1],"/bin/nterm",argv,envp));
+  assert(context_uload(&pcb[1],main_name,argv_for_main,envp_for_main));
   switch_boot_pcb();
 
   // load program here
