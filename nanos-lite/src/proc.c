@@ -57,7 +57,7 @@ uintptr_t fg_pcb=1,cycle_num=0;
 
 Context* schedule(Context *prev) {
   current->cp=prev;
-  for(int i=0;i<4;++i) Log("%d:%08x,%08x",i,&pcb[i],pcb[i].cp->pdir);Log("end!%08x",current);assert(pcb[0].cp->pdir==0);
+  for(int i=0;i<4;++i) Log("%d:%08x,%08x,%08x",i,&pcb[i],pcb[i].cp->pdir,pcb[i].cp->np);Log("end!%08x",current);assert(pcb[0].cp->pdir==0);
   if(!cycle_num) current=&pcb[0];
   else current=&pcb[fg_pcb];
   cycle_num=(cycle_num+1)&((1<<3)-1);
