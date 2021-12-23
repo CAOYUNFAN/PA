@@ -93,5 +93,6 @@ Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   ret->mstatus=0x1808;
   ret->mcause=11;
   ret->pdir=as->ptr;
+  ret->np=1;
   return ret;
 }

@@ -116,7 +116,7 @@ void cpu_exec(uint64_t n) {
   }
 
   uint64_t timer_start = get_time();
-
+#define DISABLE_CLK
   Decode s;
    for (;n > 0; n --) {
     fetch_decode_exec_updatepc(&s);
@@ -124,10 +124,12 @@ void cpu_exec(uint64_t n) {
     trace_and_difftest(&s, cpu.pc);
     if (nemu_state.state != NEMU_RUNNING) break;
     IFDEF(CONFIG_DEVICE, device_update());
+  #ifndef DISABLE_CLK
     word_t intr = isa_query_intr();
     if (intr != INTR_EMPTY) {
       cpu.pc = isa_raise_intr(intr, cpu.pc);
     }
+  #endif
   }
 
   uint64_t timer_end = get_time();
