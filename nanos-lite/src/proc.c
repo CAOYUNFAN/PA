@@ -36,8 +36,8 @@ void hello_fun(void *arg) {
   }
 }
 
-char main_name[]="/bin/nterm";
-char * argv_for_main[]={NULL};
+char main_name[]="/bin/pal";
+char * argv_for_main[]={"--skip",NULL};
 char * envp_for_main[]={"PATH=/bin/:/usr/bin/",NULL};
 
 void init_proc() {
