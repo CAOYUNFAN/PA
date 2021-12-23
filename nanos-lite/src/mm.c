@@ -26,9 +26,9 @@ void free_page(void *p) {
 /* The brk() system call handler. */
 extern uintptr_t check_map(AddrSpace *as,void * va);
 int mm_brk(intptr_t increament,uintptr_t brk) {
-  Log("USED HERE! %08x=%08x+%08x, %08x",brk+increament,brk,increament,current->max_brk);
+//  Log("USED HERE! %08x=%08x+%08x, %08x",brk+increament,brk,increament,current->max_brk);
 #ifdef HAS_VME
-  if(!current->max_brk){Log("%d,%08x",increament,brk);
+  if(!current->max_brk){//Log("%d,%08x",increament,brk);
     current->max_brk=(brk&~0xfff);
   }
   brk+=increament;
@@ -38,7 +38,7 @@ int mm_brk(intptr_t increament,uintptr_t brk) {
 #ifdef CAO_DEBUG
       void * temp;
       map(&current->as,(void *)i,temp=new_page(1),0);
-      Log("Virtual %08x to Physical %08x",i,temp);
+//      Log("Virtual %08x to Physical %08x",i,temp);
 #else
       map(&current->as,(void *)i,new_page(1),0);
 #endif
