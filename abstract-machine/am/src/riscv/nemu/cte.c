@@ -9,6 +9,7 @@ extern void __am_get_cur_as(Context *c);
 extern void __am_switch(Context *c);
 Context* __am_irq_handle(Context *c) {
   if(c->pdir!=NULL) __am_get_cur_as(c);
+  printf("From __am_:%08x,%08x",c,c->pdir);
   if (user_handler) {
     Event ev = {0};
    
