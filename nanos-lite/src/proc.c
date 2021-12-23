@@ -43,7 +43,7 @@ void init_proc() {
   char * argv[]={NULL};
 //  char * argv[]={NULL};
   char * envp[]={"PATH=/bin/:/usr/bin/",NULL};
-  assert(context_uload(&pcb[1],"/bin/nemu",argv,envp));
+  assert(context_uload(&pcb[1],"/bin/nterm",argv,envp));
   switch_boot_pcb();
 
   // load program here
