@@ -41,7 +41,7 @@ enum file_lseek_related {SEEK_SET,SEEK_CUR,SEEK_END};
 
 #ifdef HAS_VME
 void* new_page(size_t nr_page);
-extern uintptr_t check_page(AddrSpace *as,void * va);
+
 typedef struct{
   uintptr_t virtual,physical;
 }checker;
@@ -98,6 +98,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
       uintptr_t virtual_page=phdr.p_vaddr&~0xfffu,offset=phdr.p_vaddr&0xfffu;
       int total1=phdr.p_filesz,total2=phdr.p_memsz-phdr.p_filesz;
       Log("%08x,V=%08x,ALL=%08x",phdr.p_vaddr,phdr.p_filesz,phdr.p_memsz);
+
       for(;total1;virtual_page+=0x1000u){
         uintptr_t physical_page=get_page(as,virtual_page);
       #ifndef HAS_VME
@@ -105,11 +106,10 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
       #endif
         int bytes=fs_read(fd,(void *)physical_page+offset,Min(pgsize-offset,total1));
         assert(bytes==Min(pgsize-offset,total1));
-        Log("V:%08x:%08x->%08x",physical_page,physical_page+offset,physical_page+offset+bytes);
+        Log("V:%08x:%08x->%08x,with%08x",physical_page,physical_page+offset,physical_page+offset+bytes,virtual_page);
         offset=(offset+bytes)%pgsize;
         total1-=bytes;
       }virtual_page-=0x1000u;
-
       assert(virtual_page+offset==phdr.p_vaddr+phdr.p_filesz);
 
       for(;total2;virtual_page+=0x1000u){
@@ -119,7 +119,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
       #endif
         int bytes=Min(pgsize-offset,total2);
         memset((void *)(physical_page+offset),0,bytes);
-        Log("Z:%08x:%08x->%08x",physical_page,physical_page+offset,physical_page+offset+bytes);
+        Log("Z:%08x:%08x->%08x,with%08x",physical_page,physical_page+offset,physical_page+offset+bytes,virtual_page);
         offset=(offset+bytes)%pgsize;
         total2-=bytes;
       }
