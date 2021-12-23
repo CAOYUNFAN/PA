@@ -30,7 +30,7 @@ size_t events_read(void *buf, size_t offset, size_t len) {
   __am_input_keybrd(&kbd);
   if(kbd.keycode==0) return 0;
   if(kbd.keycode>=2&&kbd.keycode<=4){
-    fg_pcb=kbd.keycode-1;cycle_num=0;
+    fg_pcb=kbd.keycode-1;cycle_num=1;
     yield();
   }
   if(kbd.keydown) sprintf(buf,"kd %s",keyname[kbd.keycode]);
