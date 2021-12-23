@@ -40,10 +40,10 @@ void init_proc() {
   Log("Initializing processes...");
 
   context_kload(&pcb[0], hello_fun, "pcb_0");
-  char * argv[]={"--skip",NULL};
+  char * argv[]={NULL};
 //  char * argv[]={NULL};
   char * envp[]={"PATH=/bin/:/usr/bin/",NULL};
-  assert(context_uload(&pcb[1],"/bin/pal",argv,envp));
+  assert(context_uload(&pcb[1],"/bin/nemu",argv,envp));
   switch_boot_pcb();
 
   // load program here
