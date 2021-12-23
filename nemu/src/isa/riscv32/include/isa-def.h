@@ -14,6 +14,7 @@ typedef struct {
   } sr[4096];
   
   vaddr_t pc;
+  bool INTR;
 } riscv32_CPU_state;
 
 // decode
