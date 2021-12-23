@@ -49,8 +49,8 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   ret->mepc=(uintptr_t)entry;
   ret->mcause=11;
   ret->pdir=NULL;
-  ret->np=0;
-  ret->gpr[2]=(uintptr_t)heap.end;printf("%08x\n",heap.end);
+  ret->np=0;printf("%d\n",((char *)&ret->np-(char *)ret)/4);
+  ret->gpr[2]=(uintptr_t)heap.end;//printf("%08x\n",heap.end);
   return ret;
 }
 
