@@ -5,7 +5,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
    * Then return the address of the interrupt/exception vector.
    */
   cpu.sr[0x341]._32=epc;
-  cpu.sr[0x342]._32=NO;Log("ERRERNO:%08x",NO);
+  cpu.sr[0x342]._32=NO;//Log("ERRERNO:%08x",NO);
   rtlreg_t old=(cpu.sr[0x300]._32>>3)&1;
   cpu.sr[0x300]._32^=(cpu.sr[0x300]._32&((1<<7)|(1<<3)))^(old<<7);
   return cpu.sr[0x305]._32;
