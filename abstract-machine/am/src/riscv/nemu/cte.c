@@ -8,7 +8,7 @@ static Context* (*user_handler)(Event, Context*) = NULL;
 extern void __am_get_cur_as(Context *c);
 extern void __am_switch(Context *c);
 Context* __am_irq_handle(Context *c) {
-  int a;asm("csrr %0,mscratch":"=r"(a)); printf("AS\n%08x %08x %08x %08x\n",c,c->pdir,a,c->np);
+//  int a;asm("csrr %0,mscratch":"=r"(a)); printf("AS\n%08x %08x %08x %08x\n",c,c->pdir,a,c->np);
 
   if(c->pdir!=NULL) __am_get_cur_as(c);
   if (user_handler) {
@@ -26,7 +26,7 @@ Context* __am_irq_handle(Context *c) {
     c = user_handler(ev, c);
     assert(c != NULL);
   }//printf("From __am_,later:%08x,%08x\n",c,c->pdir);
-  __am_switch(c);printf("%08x %08x\n",c,c->pdir);
+  __am_switch(c);//printf("%08x %08x\n",c,c->pdir);
   return c;
 }
 
