@@ -30,7 +30,7 @@ void hello_fun(void *arg) {
   int j = 1;
   while (1) {
 //    if(j%FREQ==0) 
-    int temp;asm("csrr %0,satp":"=r"(temp));Log("%d",temp);
+    int temp;asm("csrr %0,satp":"=r"(temp));Log("%08x",temp);
     Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", arg, j);
     j ++;
     yield();
