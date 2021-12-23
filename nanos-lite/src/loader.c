@@ -124,7 +124,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
         offset+=bytes;
         virtual_page+=offset&~0xfff;offset&=0xfff;
         total2-=bytes;
-      }Log("%08x",virtual_page);
+      }
       assert(virtual_page+offset==phdr.p_vaddr+phdr.p_memsz);
 //      assert(fs_read(fd,(void *)phdr.p_vaddr,phdr.p_filesz)==phdr.p_filesz);
 //      memset((void *)(phdr.p_vaddr+phdr.p_filesz),0,phdr.p_memsz-phdr.p_filesz);
