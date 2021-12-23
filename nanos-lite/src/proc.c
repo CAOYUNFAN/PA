@@ -37,7 +37,7 @@ void hello_fun(void *arg) {
 }
 
 char main_name[]="/bin/nterm";
-char * argv_for_main[]={"--skip",NULL};
+char * argv_for_main[]={NULL};
 char * envp_for_main[]={"PATH=/bin/:/usr/bin/",NULL};
 
 void init_proc() {
@@ -51,15 +51,15 @@ void init_proc() {
 //  extern void naive_uload(PCB *pcb, const char *filename);
 //  naive_uload(NULL, "/bin/pal");
 }
+uintptr_t fg_pcb=1,cycle_num=0;
 
 Context* schedule(Context *prev) {
   current->cp=prev;
-  static int num=0;
-  if(current!=&pcb[1]) current=&pcb[1];
+  if(current!=&pcb[fg_pcb]) current=&pcb[fg_pcb];
   else{
-    ++num;
-    if(num==100){
-      num=0;
+    ++cycle_num;
+    if(cycle_num>=100){
+      cycle_num=0;
       current=&pcb[0];
     }
   }
