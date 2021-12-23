@@ -13,7 +13,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
 
 word_t isa_query_intr() {//Log("%08x",cpu.sr[0x300]._32);
   if(cpu.INTR&&((cpu.sr[0x300]._32>>3)&1)){
-    cpu.INTR = false;Log("%08x",IRQ_TIMER);
+    cpu.INTR = false;//Log("%08x",IRQ_TIMER);
     return IRQ_TIMER;
   }
   return INTR_EMPTY;

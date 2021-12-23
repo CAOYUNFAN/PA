@@ -8,7 +8,7 @@ inline Context * event_yield(Context *c){
 }
 
 inline Context * event_irq_timer(Context * c){
-  Log("event_irq_timer!");
+//  Log("event_irq_timer!");
   return schedule(c);
 }
 
