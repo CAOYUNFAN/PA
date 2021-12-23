@@ -62,7 +62,7 @@ Context* schedule(Context *prev) {
   if(!cycle_num) current=&pcb[0];
   else current=&pcb[fg_pcb];
   cycle_num=(cycle_num+1)&((1<<3)-1);
-//  Log("Later:%08x",current);
+  Log("Later:%08x",current);
   assert(pcb[0].cp->pdir==0);
   return current->cp;
 }
