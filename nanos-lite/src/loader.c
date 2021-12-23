@@ -41,7 +41,7 @@ enum file_lseek_related {SEEK_SET,SEEK_CUR,SEEK_END};
 
 #ifdef HAS_VME
 void* new_page(size_t nr_page);
-
+/*
 typedef struct{
   uintptr_t virtual,physical;
 }checker;
@@ -49,11 +49,17 @@ static checker a[1024];
 static int tot=0;
 static inline void initial_page_manager(){tot=0;return;}
 
-static inline uintptr_t get_page(AddrSpace * as,uintptr_t vaddr){
+static uintptr_t get_page(AddrSpace * as,uintptr_t vaddr){
   for(int i=0;i<tot;++i) if(a[i].virtual==vaddr) return a[i].physical;
   a[tot].virtual=vaddr;a[tot].physical=(uintptr_t) new_page(1);
   map(as,(void *)vaddr,(void *)a[tot].physical,0);
   return a[tot++].physical;
+}*/
+extern uintptr_t check_map(AddrSpace *as,void * va);
+static inline uintptr_t get_page(AddrSpace *as,uintptr_t vaddr){
+  uintptr_t ret=check_map(as,(void *)vaddr);
+  if(!ret) map(as,(void *)vaddr,(void *)(ret=(uintptr_t)new_page(1)),0);
+  return ret;
 }
 #else
 static inline void initial_page_manager(){}
@@ -72,7 +78,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
   fs_lseek(fd,offset,SEEK_SET);\
   assert(fs_read(fd,&name,sizeof(name))==sizeof(name));\
   })
-  initial_page_manager();
+//  initial_page_manager();
   int fd=fs_open(filename,0,0);
   if(fd==-1) return 0;
   static Elf_Ehdr ehdr;

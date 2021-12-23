@@ -24,6 +24,7 @@ void free_page(void *p) {
 }
 #define CAO_DEBUG
 /* The brk() system call handler. */
+extern uintptr_t check_map(AddrSpace *as,void * va);
 int mm_brk(intptr_t increament,uintptr_t brk) {
   Log("USED HERE! %08x=%08x+%08x, %08x",brk+increament,brk,increament,current->max_brk);
 #ifdef HAS_VME
@@ -32,7 +33,8 @@ int mm_brk(intptr_t increament,uintptr_t brk) {
   }
   brk+=increament;
   if(brk>current->max_brk){
-    for(uintptr_t i=(current->max_brk&~0xfffu)+0x1000;i<brk;i+=0x1000){
+    for(uintptr_t i=(current->max_brk&~0xfffu)+0x1000;i<brk;i+=0x1000)
+    if(!check_map(&current->as,(void *)i)){
 #ifdef CAO_DEBUG
       void * temp;
       map(&current->as,(void *)i,temp=new_page(1),0);
