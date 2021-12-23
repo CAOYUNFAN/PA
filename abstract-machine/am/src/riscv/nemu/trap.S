@@ -80,6 +80,7 @@ nextpart:
   beqz t0, next
   addi sp, sp, CONTEXT_SIZE
   csrw mscratch,sp
+  addi sp, sp, -CONTEXT_SIZE
 next:
   MAP(REGS, POP)
   LOAD sp,OFFSET_SP(sp)
