@@ -8,6 +8,8 @@ def_EHelper(nemu_trap) {
 
 #define Cao_get_reg(csr) (&cpu.sr[csr]._32)
 #define MEPC cpu.sr[0x341]._32
+#define MSTATUS cpu.sr[0x300]._32
+#define MASK ((1<<3)|(1<<7))
 
 def_EHelper(csrrw) {
   rtlreg_t *now=Cao_get_reg(id_src2->imm);
@@ -25,6 +27,8 @@ def_EHelper(csrrs) {
 
 def_EHelper(mret){
   rtl_mv(s,&s->dnpc,&MEPC);
+  rtlreg_t temp=(MSTATUS>>7)&1;
+  MSTATUS^=(MSTATUS&MASK)^((1<<7)|(temp<<3));
 }
 
 #define def_e_call_from_M_mode 11
