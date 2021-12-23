@@ -53,7 +53,7 @@ void init_proc() {
 //  extern void naive_uload(PCB *pcb, const char *filename);
 //  naive_uload(NULL, "/bin/pal");
 }
-uintptr_t fg_pcb=1,cycle_num=1;
+uintptr_t fg_pcb=1,cycle_num=0;
 
 Context* schedule(Context *prev) {
   current->cp=prev;
