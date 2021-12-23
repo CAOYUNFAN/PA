@@ -38,6 +38,7 @@ void sys_exit(int status){//halt(0);
   if(status!=0) printf("Error Code %d\n",status);
   assert(context_uload(current,"/bin/nterm",empty,empty));
   switch_boot_pcb();
+  printf("exit!\n");
   yield();
 }
 
