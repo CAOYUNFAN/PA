@@ -8,7 +8,7 @@ static Context* (*user_handler)(Event, Context*) = NULL;
 extern void __am_get_cur_as(Context *c);
 extern void __am_switch(Context *c);
 Context* __am_irq_handle(Context *c) {
-  int a;asm("csrr %0,mscratch":"=r"(a)); printf("%08x %08x %08x\n",c,c->pdir,a);
+  int a;asm("csrr %0,mscratch":"=r"(a)); printf("AS%08x %08x %08x\n",c,c->pdir,a);
   asm("  csrrw sp, mscratch, sp\n"
       "  bnez sp,__begin_am_irq_handle\n"
       "  csrr sp,mscratch\n"
