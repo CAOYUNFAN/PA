@@ -26,7 +26,7 @@ Context* __am_irq_handle(Context *c) {
     c = user_handler(ev, c);
     assert(c != NULL);
   }//printf("From __am_,later:%08x,%08x\n",c,c->pdir);
-  __am_switch(c);//printf("%08x %08x\n",c,c->pdir);
+  __am_switch(c);printf("%08x %08x\n",c,c->pdir);
   return c;
 }
 
