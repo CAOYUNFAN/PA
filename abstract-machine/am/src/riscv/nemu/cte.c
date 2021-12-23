@@ -10,7 +10,7 @@ extern void __am_switch(Context *c);
 Context* __am_irq_handle(Context *c) {
   if(c->pdir!=NULL) __am_get_cur_as(c);
   if (user_handler) {
-    Event ev = {0};
+    Event ev = {0};printf("%08x\n",c->mcause);
    
     switch (c->mcause) {
       case 11: 
