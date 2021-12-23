@@ -196,7 +196,7 @@ static char * prepare_args_and_stack(AddrSpace *as,char * const argv[],char * co
 
 bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
 #ifdef HAS_VME
-  protect(&pcb->as);Log("%10s:%08x",filename,pcb->as.ptr);
+  protect(&pcb->as);Log("%10s:%08x,%p",filename,pcb->as.ptr,pcb);
 #endif
   uintptr_t ret=(uintptr_t)prepare_args_and_stack(&pcb->as,argv,envp);
   Area mystack={
