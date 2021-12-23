@@ -40,7 +40,6 @@ void sys_exit(int status){//halt(0);
   if(status!=0) printf("Error Code %d\n",status);
   assert(context_uload(current,main_name,argv_for_main,envp_for_main));
   switch_boot_pcb();
-  printf("exit!\n");
   yield();
 }
 
