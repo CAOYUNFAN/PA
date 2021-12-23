@@ -52,17 +52,8 @@ __am_asm_trap:
 
   mv a0, sp
 
-  csrrw sp, mscratch, sp
-  bnez sp,__begin_am_irq_handle
-  csrr sp,mscratch
-__begin_am_irq_handle:
-  csrw mscratch, zero
   jal __am_irq_handle
 
-  LOAD t0, OFFSET_NP(a0)
-  beqz t0, __restore_context
-  csrw mscratch,sp
-__restore_context:
   mv sp, a0
 
   LOAD t1, OFFSET_STATUS(sp)

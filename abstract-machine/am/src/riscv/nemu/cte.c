@@ -7,7 +7,14 @@ static Context* (*user_handler)(Event, Context*) = NULL;
 #define a7 c->gpr[17]
 extern void __am_get_cur_as(Context *c);
 extern void __am_switch(Context *c);
-Context* __am_irq_handle(Context *c) {printf("%08x %08x\n",c,c->pdir);
+Context* __am_irq_handle(Context *c) {
+  int a;asm("csrr %0,mscratch":"=r"(a)); printf("%08x %08x %08x\n",c,c->pdir,a);
+  asm("  csrrw sp, mscratch, sp\n"
+      "  bnez sp,__begin_am_irq_handle\n"
+      "  csrr sp,mscratch\n"
+      "__begin_am_irq_handle:\n"
+      "  csrw mscratch, zero");
+
   if(c->pdir!=NULL) __am_get_cur_as(c);
   if (user_handler) {
     Event ev = {0};
@@ -25,6 +32,9 @@ Context* __am_irq_handle(Context *c) {printf("%08x %08x\n",c,c->pdir);
     assert(c != NULL);
   }//printf("From __am_,later:%08x,%08x\n",c,c->pdir);
   __am_switch(c);printf("%08x %08x\n",c,c->pdir);
+  asm("  beqz %0, __restore_context\n"
+      "  csrw mscratch,sp\n"
+      "__restore_context:": :"r"(c->np));
   return c;
 }
 
