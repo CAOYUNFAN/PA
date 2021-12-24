@@ -9,7 +9,7 @@ extern void __am_get_cur_as(Context *c);
 extern void __am_switch(Context *c);
 Context* __am_irq_handle(Context *c) {
   if(c->np) __am_get_cur_as(c);
-  printf("IN  %08x %08x %d\n",c,c->pdir,c->np);
+//  printf("IN  %08x %08x %d\n",c,c->pdir,c->np);
   if (user_handler) {
     Event ev = {0};
    
@@ -26,7 +26,7 @@ Context* __am_irq_handle(Context *c) {
     assert(c != NULL);
   }//printf("From __am_,later:%08x,%08x\n",c,c->pdir);
   if(c->np) __am_switch(c);
-  printf("OUT %08x %08x %d\n",c,c->pdir,c->np);
+//  printf("OUT %08x %08x %d\n",c,c->pdir,c->np);
   return c;
 }
 
