@@ -49,6 +49,7 @@ save_context2://system
   addi sp, sp, -CONTEXT_SIZE
   MAP(REGS, PUSH)
   STORE zero,OFFSET_NP(sp)
+  STORE zero, OFFSET_PDIR(sp)
 
 nextpart:
   csrr t0, mscratch
@@ -61,7 +62,6 @@ nextpart:
   STORE t0, OFFSET_CAUSE(sp)
   STORE t1, OFFSET_STATUS(sp)
   STORE t2, OFFSET_EPC(sp)
-  STORE zero, OFFSET_PDIR(sp)
   # set mstatus.MPRV to pass difftest
   li a0, (1 << 17)
   or t1, t1, a0
