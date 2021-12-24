@@ -10,7 +10,7 @@ extern void __am_switch(Context *c);
 Context* __am_irq_handle(Context *c) {
   printf("AS\n%08x %08x %08x\n",c,c->pdir,c->np);
 
-  if(c->pdir!=NULL) __am_get_cur_as(c);
+  if(c->np) __am_get_cur_as(c);
   if (user_handler) {
     Event ev = {0};
    
