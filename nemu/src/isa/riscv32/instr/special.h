@@ -26,11 +26,9 @@ def_EHelper(csrrs) {
 }
 
 def_EHelper(mret){
-  Log("%08x",MSTATUS);
   rtl_mv(s,&s->dnpc,&MEPC);
   rtlreg_t temp=(MSTATUS>>7)&1;
   MSTATUS^=(MSTATUS&MASK)^((1<<7)|(temp<<3));
-  Log("%08x",MSTATUS);
 }
 
 #define def_e_call_from_M_mode 11
