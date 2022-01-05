@@ -6,7 +6,7 @@ extern riscv32_CPU_state cpu;
 #ifndef isa_mmu_check
 int isa_mmu_check(vaddr_t vaddr, int len, int type){
   enum { MMU_DIRECT, MMU_TRANSLATE, MMU_FAIL, MMU_DYNAMIC };
-  assert((vaddr>>12)==((vaddr+len-1)>>12));
+  Assert((vaddr>>12)==((vaddr+len-1)>>12),"%08x+%d=%08x",vaddr,len,vaddr+len);
   if(((unsigned)satp>>31)==0) return MMU_DIRECT;
   else return MMU_TRANSLATE;
 }
