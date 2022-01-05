@@ -24,7 +24,7 @@ Context* __am_irq_handle(Context *c) {
     if(ev.event==EVENT_YIELD||ev.event==EVENT_SYSCALL) c->mepc+=4;
     c = user_handler(ev, c);
     assert(c != NULL);
-  }//printf("From __am_,later:%08x,%08x\n",c,c->pdir);
+  }printf("From __am_,later:%08x,%08x,%08x\n",c,c->GPRx,&c->GPRx);
   __am_switch(c);
 //  printf("OUT %08x %08x %d\n",c,c->pdir,c->np);
   return c;
