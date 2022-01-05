@@ -1,14 +1,15 @@
 #include <common.h>
 
 Context* schedule(Context *prev);
-
+extern uintptr_t cycle_num; 
 inline Context * event_yield(Context *c){
-//  printf("EVENT_YIELD!\n");
+//  Log("EVENT_YIELD!");
+  cycle_num=0;
   return schedule(c);
 }
 
 inline Context * event_irq_timer(Context * c){
-  Log("event_irq_timer!");
+//  Log("event_irq_timer!");
   return schedule(c);
 }
 
