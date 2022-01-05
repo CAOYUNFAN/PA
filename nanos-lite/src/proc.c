@@ -56,12 +56,19 @@ void init_proc() {
 uintptr_t fg_pcb=1,cycle_num=0;
 
 Context* schedule(Context *prev) {
-//  Log("Previous:%08x",current);
+  bool flag;
+  if(!cycle_num||current!=&pcb[fg_pcb]) flag=1;else flag=0;
+  if(flag)Log("Previous:%08x",current);
+
   current->cp=prev;
-//  for(int i=0;i<4;++i) Log("%d:%08x,%08x,%08x",i,&pcb[i],pcb[i].cp->pdir,pcb[i].cp->np);
+
+  if(flag) for(int i=0;i<4;++i) Log("%d:%08x,%08x,%08x",i,&pcb[i],pcb[i].cp->pdir,pcb[i].cp->np);
+
   if(!cycle_num) current=&pcb[0];
   else current=&pcb[fg_pcb];
   cycle_num=(cycle_num+1)&((1<<7)-1);
-//  Log("Later:%08x",current);
+
+  if(flag) Log("Later:%08x",current);
+
   return current->cp;
 }
