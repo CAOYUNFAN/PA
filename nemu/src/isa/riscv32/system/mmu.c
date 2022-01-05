@@ -6,13 +6,12 @@ extern riscv32_CPU_state cpu;
 #ifndef isa_mmu_check
 int isa_mmu_check(vaddr_t vaddr, int len, int type){
   enum { MMU_DIRECT, MMU_TRANSLATE, MMU_FAIL, MMU_DYNAMIC };
-  Assert((vaddr>>12)==((vaddr+len-1)>>12),"%08x+%d=%08x",vaddr,len,vaddr+len);
   if(((unsigned)satp>>31)==0) return MMU_DIRECT;
   else return MMU_TRANSLATE;
 }
 #endif
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
-  assert((vaddr>>12)==((vaddr+len-1)>>12));
+  Assert((vaddr>>12)==((vaddr+len-1)>>12),"%08x+%d=%08x",vaddr,len,vaddr+len);
   vaddr_t high=(unsigned)vaddr>>22,low=(vaddr>>12)&0x3ff;
 //  if(vaddr<=0x80000000) 
 //  Log("Memory:Virtual=%x,High=%x,Low=%x,satp=%x",vaddr,high,low,satp);
