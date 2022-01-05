@@ -208,6 +208,6 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   pcb->cp=ucontext(&pcb->as,mystack,entry);
   pcb->cp->GPRx=ret;
   pcb->max_brk=0;
-  Log("File%s:entry=%p,Stack starts From%p(%08x),pcb->cp=%08x",filename,entry,pcb->cp->GPRx,&pcb->cp->GPRx,pcb->cp);
+  Log("File%s:entry=%p,Stack starts From%p(%08x),pcb->cp=%08x,pcb->cp->pdir=%08x",filename,entry,pcb->cp->GPRx,&pcb->cp->GPRx,pcb->cp,pcb->cp->pdir);
   return 1;
 }
