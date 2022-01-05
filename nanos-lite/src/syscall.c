@@ -40,7 +40,7 @@ void sys_exit(int status){//halt(0);
   if(status!=0) printf("Error Code %d\n",status);
   assert(context_uload(current,main_name,argv_for_main,envp_for_main));
   switch_boot_pcb();
-  yield();
+//  yield();
 }
 
 typedef long __time_t;
@@ -65,7 +65,8 @@ inline int sys_gettimeofday(struct timeval * tv,struct timezone * tz){
 }
 
 inline void sys_yield(){
-  printf("sys_YIELD!\n");
+//  Log("sys_YIELD!");
+  yield();
   return;
 }
 
@@ -83,7 +84,7 @@ inline int sys_execve(const char * filename,char * const argv[],char * const env
 //  debug(filename,argv,envp);
   if(context_uload(current,filename,argv,envp)){
     switch_boot_pcb();
-    yield();
+//    yield();
   }
   return -2;
 }
