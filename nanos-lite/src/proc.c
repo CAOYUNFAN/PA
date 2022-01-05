@@ -66,7 +66,7 @@ Context* schedule(Context *prev) {
 
   if(!cycle_num) current=&pcb[0];
   else current=&pcb[fg_pcb];
-  cycle_num=(cycle_num+1)&((1<<7)-1);
+  cycle_num=(cycle_num+1)&((1<<5)-1);
 
   if(flag) Log("Later:%08x",current);
 
