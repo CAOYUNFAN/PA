@@ -63,6 +63,7 @@ Context* schedule(Context *prev) {
   #endif
 
   current->cp=prev;
+  static int xx=0;++xx;
 
   #ifdef cyf_DBG
   if(flag) for(int i=0;i<4;++i) Log("%d:%08x,%08x,%08x",i,&pcb[i],pcb[i].cp->pdir,pcb[i].cp->np);
@@ -80,5 +81,6 @@ Context* schedule(Context *prev) {
   if(flag) Log("Later:%08x",current);
   #endif
 
+  if(xx==1) Log("current%08x,%08x",current,&pcb[0]);
   return current->cp;
 }
