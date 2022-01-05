@@ -3,7 +3,7 @@
 Context* schedule(Context *prev);
 extern uintptr_t cycle_num; 
 inline Context * event_yield(Context *c){
-//  Log("EVENT_YIELD!");
+  Log("EVENT_YIELD!");
   cycle_num=0;
   return schedule(c);
 }
