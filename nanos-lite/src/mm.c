@@ -4,7 +4,7 @@
 static char *pf = NULL;
 
 void* new_page(size_t nr_page) {
-  if(!pf) pf=heap.end+32*4096;Log("%08x",pf);
+  if(!pf) pf=heap.end+32*4096,Log("%08x",pf);
   void * ret=pf;
   pf=(void *)((char *)pf+nr_page*4096);
   return ret;
