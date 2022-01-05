@@ -18,6 +18,7 @@ void isa_reg_display() {
 	Cao_show_reg("mstatus",sr(0x300));
 	Cao_show_reg("mepc",sr(0x341));
 	Cao_show_reg("satp",sr(0x180));
+	Cao_show_reg("mscratch",sr(0x340));
 	return;
 }
 
