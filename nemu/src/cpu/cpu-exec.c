@@ -116,7 +116,7 @@ void cpu_exec(uint64_t n) {
   }
 
   uint64_t timer_start = get_time();
-//#define DISABLE_CLK
+  #define DISABLE_CLK
   Decode s;
    for (;n > 0; n --) {
     fetch_decode_exec_updatepc(&s);
