@@ -68,7 +68,7 @@ static inline uintptr_t get_page(AddrSpace *as,uintptr_t vaddr){return vaddr;}
 
 static inline int Min(int a,int b) {return a<b?a:b;}
 #define Max(a,b) ((a)>(b)?(a):(b))
-static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filename);
+static uintptr_t loader(PCB *pcb, const char *filename) {Log("%p %s",pcb,filename);
   extern int fs_open(const char *pathname, int flags, int mode);
   extern size_t fs_read(int fd, void *buf, size_t len);
   extern size_t fs_lseek(int fd, size_t offset, int whence);
@@ -112,7 +112,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filen
       #endif
         int bytes=fs_read(fd,(void *)physical_page+offset,Min(pgsize-offset,total1));
         assert(bytes==Min(pgsize-offset,total1));
-//        Log("V:%08x:%08x->%08x,with%08x",physical_page,physical_page+offset,physical_page+offset+bytes,virtual_page);
+        Log("V:%08x:%08x->%08x,with%08x",physical_page,physical_page+offset,physical_page+offset+bytes,virtual_page);
         offset+=bytes;
         virtual_page+=offset&~0xfff;offset&=0xfff;
         total1-=bytes;
