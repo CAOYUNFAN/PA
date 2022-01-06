@@ -69,12 +69,8 @@ Context* schedule(Context *prev) {
   if(flag) for(int i=0;i<4;++i) Log("%d:%08x,%08x,%08x",i,&pcb[i],pcb[i].cp->pdir,pcb[i].cp->np);
   #endif
   assert(fg_pcb);
-  if(current==&pcb_boot) current=&pcb[0];
-  else if(current==&pcb[0]) current=&pcb[fg_pcb];
-  else{
-    if(!cycle_num) current=&pcb[0];
-    else current=&pcb[fg_pcb];
-  }
+  if(!cycle_num&&current!=&pcb[0]) current=&pcb[0];
+  else current=&pcb[fg_pcb];
   cycle_num=(cycle_num+1)&((1<<7)-1);
 
   #ifdef cyf_DBG
