@@ -73,7 +73,7 @@ nextpart:
   jal __am_irq_handle
 
   LOAD t0, OFFSET_NP(a0)
-  bnez t0, next
+  beqz t0, next
   csrw mscratch,sp
 next:
   mv sp, a0
