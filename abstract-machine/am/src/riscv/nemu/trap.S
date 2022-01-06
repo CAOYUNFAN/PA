@@ -71,19 +71,17 @@ nextpart:
 
   mv a0, sp
   jal __am_irq_handle
+
+  LOAD t0, OFFSET_NP(a0)
+  bnez t0, next
+  csrw mscratch,sp
+next:
   mv sp, a0
 
   LOAD t1, OFFSET_STATUS(sp)
   LOAD t2, OFFSET_EPC(sp)
   csrw mstatus, t1
   csrw mepc, t2
-
-  LOAD t0, OFFSET_NP(sp)
-  beqz t0, next
-  addi sp, sp, CONTEXT_SIZE
-  csrw mscratch,sp
-  addi sp, sp, -CONTEXT_SIZE
-next:
   MAP(REGS, POP)
   LOAD sp,OFFSET_SP(sp)
   mret
