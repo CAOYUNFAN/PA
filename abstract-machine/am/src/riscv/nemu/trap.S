@@ -79,8 +79,8 @@ nextpart:
   csrw mepc, t2
 
   LOAD t0, OFFSET_NP(sp)
-  beqz t0, next
   addi sp, sp, CONTEXT_SIZE
+  beqz t0, next
   csrw mscratch,sp
   addi sp, sp, -CONTEXT_SIZE
 next:
