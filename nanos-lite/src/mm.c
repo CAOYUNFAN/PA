@@ -6,7 +6,7 @@ static char *pf = NULL;
 void* new_page(size_t nr_page) {
   void * ret=pf;
   pf=(void *)((char *)pf+nr_page*4096);
-  Log("allocate page:ret%08x->pf%08x",ret,pf);
+//  Log("allocate page:ret%08x->pf%08x",ret,pf);
   return ret;
 }
 
