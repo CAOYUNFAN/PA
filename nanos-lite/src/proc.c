@@ -55,7 +55,7 @@ void init_proc() {
 //  extern void naive_uload(PCB *pcb, const char *filename);
 //  naive_uload(NULL, "/bin/pal");
 }
-uintptr_t fg_pcb=1,cycle_num=0;
+uintptr_t fg_pcb=1,force_yield=0;
 
 Context* schedule(Context *prev) {
   #ifdef cyf_DBG
@@ -66,13 +66,14 @@ Context* schedule(Context *prev) {
 
   current->cp=prev;
 //  static int xx=0;++xx;
-
+  static int cycle_num=0;
   #ifdef cyf_DBG
   if(flag) for(int i=0;i<4;++i) Log("%d:%08x,%08x,%08x",i,&pcb[i],pcb[i].cp->pdir,pcb[i].cp->np);
   #endif
   assert(fg_pcb);
-  if(!cycle_num&&current!=&pcb[0]) current=&pcb[0];
+  if((!cycle_num||force_yield)&&current!=&pcb[0]) current=&pcb[0];
   else current=&pcb[fg_pcb];
+  force_yield=0;
   cycle_num=(cycle_num+1)&((1<<7)-1);
 
   #ifdef cyf_DBG

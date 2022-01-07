@@ -1,10 +1,10 @@
 #include <common.h>
 
 Context* schedule(Context *prev);
-extern uintptr_t cycle_num; 
+extern uintptr_t force_yield; 
 inline Context * event_yield(Context *c){
 //  Log("EVENT_YIELD!");
-//  cycle_num=0;
+  force_yield=0;
   return schedule(c);
 }
 

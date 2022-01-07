@@ -21,7 +21,7 @@ size_t serial_write(const void *buf, size_t offset, size_t len) {
 }
 
 inline static size_t min(size_t a,size_t b){return a<b?a:b;}
-extern uintptr_t fg_pcb,cycle_num;
+extern uintptr_t fg_pcb;
 size_t events_read(void *buf, size_t offset, size_t len) {
   struct AM_INPUT_KEYBRD_T{
     bool keydown; int keycode;
@@ -30,7 +30,7 @@ size_t events_read(void *buf, size_t offset, size_t len) {
   __am_input_keybrd(&kbd);
   if(kbd.keycode==0) return 0;
   if(kbd.keycode>=2&&kbd.keycode<=4){
-    fg_pcb=kbd.keycode-1;cycle_num=2;
+    fg_pcb=kbd.keycode-1;
     yield();
   }
   if(kbd.keydown) sprintf(buf,"kd %s",keyname[kbd.keycode]);
