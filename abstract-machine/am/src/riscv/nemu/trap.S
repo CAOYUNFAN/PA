@@ -74,6 +74,7 @@ nextpart:
 
   LOAD t0, OFFSET_NP(a0)
   beqz t0, next
+  addi sp,sp,CONTEXT_SIZE
   csrw mscratch,sp
 next:
   mv sp, a0
