@@ -66,7 +66,6 @@ Context* schedule(Context *prev) {
 
 //  current->cp=prev;
   if(current->cp!=NULL&&current!=&pcb[0]) memcpy(current->cp,prev,sizeof(Context));
-  Log("%08x",pcb[0].cp->gpr[10]);
 //  static int xx=0;++xx;
 
   #ifdef cyf_DBG
