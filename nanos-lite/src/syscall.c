@@ -36,10 +36,10 @@ extern int mm_brk(uintptr_t increament,uintptr_t brk);
 extern char main_name[];
 extern char * argv_for_main[];
 extern char * envp_for_main[];
-void sys_exit(Context *c,int status){//halt(0);
+Context * sys_exit(int status){//halt(0);
   if(status!=0) printf("Error Code %d\n",status);
   assert(context_uload(current,main_name,argv_for_main,envp_for_main));
-  c=current->cp;
+  return current->cp;
 }
 
 typedef long __time_t;
@@ -79,14 +79,13 @@ inline void sys_yield(){
   printf("ENDDEBUG!\n");
 }*/
 
-inline void sys_execve(Context * c,const char * filename,char * const argv[],char * const envp[] ){
+inline Context * sys_execve(Context * c,const char * filename,char * const argv[],char * const envp[] ){
 //  debug(filename,argv,envp);
   if(!context_uload(current,filename,argv,envp)) c->GPRx=-2;
-  else c=current->cp;
-  return;
+  return c=current->cp;
 }
 
-void do_syscall(Context *c) {
+Context * do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
   a[1] = c->GPR2;
@@ -98,7 +97,7 @@ void do_syscall(Context *c) {
   #endif
   switch (a[0]) {
     case SYS_yield: sys_yield(); break;
-    case SYS_exit: sys_exit(c,a[1]); break;
+    case SYS_exit: c=sys_exit(a[1]); break;
     case SYS_write: c->GPRx=fs_write(a[1],(unsigned char *)a[2],a[3]); break;
     case SYS_brk: c->GPRx=mm_brk(a[1],a[2]); break;
     case SYS_open: c->GPRx=fs_open((void *)a[1],a[2],a[3]); break;
@@ -106,9 +105,10 @@ void do_syscall(Context *c) {
     case SYS_read: c->GPRx=fs_read(a[1],(void *)a[2],a[3]); break;
     case SYS_lseek: c->GPRx=fs_lseek(a[1],a[2],a[3]); break;
     case SYS_gettimeofday: c->GPRx=sys_gettimeofday((struct timeval *)a[1],(struct timezone *)a[2]); break;
-    case SYS_execve: sys_execve(c,(char *)a[1],(char **)a[2],(char **)a[3]);break;
+    case SYS_execve: c=sys_execve(c,(char *)a[1],(char **)a[2],(char **)a[3]);break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
+  return c;
 }
 
 /*
