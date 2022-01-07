@@ -78,6 +78,7 @@ Context* schedule(Context *prev) {
   if(flag) Log("Later:%08x",current);
   #endif
 
-//  if(xx<=2) Log("current%08x,%08x",current,&pcb[0]);
+//  if(xx<=2) 
+  Log("current%08x,%08x,%d",current,&pcb[0],current-&pcb[0]);
   return current->cp;
 }
