@@ -65,6 +65,7 @@ Context* schedule(Context *prev) {
   #endif
 
 //  current->cp=prev;
+  Log("AAA");
   memcpy(current->cp,prev,sizeof(Context));
 //  static int xx=0;++xx;
 
