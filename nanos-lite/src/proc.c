@@ -64,7 +64,8 @@ Context* schedule(Context *prev) {
   if(flag)Log("Previous:%08x",current);
   #endif
 
-  current->cp=prev;
+//  current->cp=prev;
+  memcpy(current->cp,prev,sizeof(Context));
 //  static int xx=0;++xx;
 
   #ifdef cyf_DBG
