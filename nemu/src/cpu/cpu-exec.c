@@ -123,7 +123,7 @@ void cpu_exec(uint64_t n) {
     trace_and_difftest(&s, cpu.pc);
     if (nemu_state.state != NEMU_RUNNING) break;
     IFDEF(CONFIG_DEVICE, device_update());
-  #define DISABLE_CLK
+//  #define DISABLE_CLK
   #ifndef DISABLE_CLK
     word_t intr = isa_query_intr();
     if (intr != INTR_EMPTY) {
