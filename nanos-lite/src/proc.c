@@ -20,7 +20,7 @@ void context_kload(PCB * pcb,void * entry,void * args){
     .end=(void *)(pcb->stack+STACK_SIZE)
   };
   pcb->cp=kcontext(temp,entry,args);
-  Log("pcb->cp:%08x,pcb->cp->sp:%08x",pcb->cp,pcb->cp->gpr[2]);
+//  Log("pcb->cp:%08x,pcb->cp->sp:%08x",pcb->cp,pcb->cp->gpr[2]);
   return;
 }
 
@@ -66,6 +66,7 @@ Context* schedule(Context *prev) {
 
 //  current->cp=prev;
   if(current->cp!=NULL) memcpy(current->cp,prev,sizeof(Context));
+  Log("%08x",pcb[0].cp->gpr[10]);
 //  static int xx=0;++xx;
 
   #ifdef cyf_DBG
