@@ -21,6 +21,7 @@ inline Context * event_irq_timer(Context * c){
 extern void do_syscall(Context *c) ;
 
 static Context* do_event(Event e, Context* c) {
+  Log("Before:%08x,%08x",c,c->gpr[2]);
   #ifdef CONFIG_ETRACE
   Log("Event ID=%2d",e.event);
   #endif
@@ -30,7 +31,7 @@ static Context* do_event(Event e, Context* c) {
     case EVENT_IRQ_TIMER: c=event_irq_timer(c); break;
     default: panic("Unhandled event ID = %d", e.event);
   }
-  Log("%08x,%08x",c,c->gpr[2]);
+  Log("After:%08x,%08x",c,c->gpr[2]);
   return c;
 }
 
