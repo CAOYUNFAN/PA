@@ -28,7 +28,7 @@ extern bool context_uload(PCB *pcb, const char *filename, char *const argv[], ch
 
 #define FREQ 1000
 void hello_fun(void *arg) {
-  int j = 1;
+  static int j = 1;
   while (1) {
 //    if(j%FREQ==0) 
     Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", arg, j);
@@ -65,7 +65,7 @@ Context* schedule(Context *prev) {
   #endif
 
 //  current->cp=prev;
-  if(current->cp!=NULL) memcpy(current->cp,prev,sizeof(Context));
+  if(current->cp!=NULL&&current!=&pcb[0]) memcpy(current->cp,prev,sizeof(Context));
 //  static int xx=0;++xx;
 
   #ifdef cyf_DBG
