@@ -77,6 +77,7 @@ nextpart:
   beqz t0, next
   addi sp,sp,CONTEXT_SIZE
   csrw mscratch,sp
+  addi sp,sp,-CONTEXT_SIZE
 next:
   LOAD t1, OFFSET_STATUS(sp)
   LOAD t2, OFFSET_EPC(sp)
