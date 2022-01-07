@@ -38,7 +38,7 @@ extern char * argv_for_main[];
 extern char * envp_for_main[];
 Context * sys_exit(int status){//halt(0);
   if(status!=0) printf("Error Code %d\n",status);
-  assert(context_uload(current,main_name,argv_for_main,envp_for_main));
+  assert(context_uload(current,main_name,argv_for_main,envp_for_main));Log("%08x",current->cp);
   return current->cp;
 }
 
