@@ -80,6 +80,6 @@ Context* schedule(Context *prev) {
   #endif
 
 //  if(xx<=2) 
-//  Log("current%08x,%08x,%d",current,&pcb[0],current-&pcb[0]);
+  Log("current%08x,%08x,%d",current,&pcb[0],current-&pcb[0]);
   return current->cp;
 }
