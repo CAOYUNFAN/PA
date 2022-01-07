@@ -37,11 +37,11 @@ extern char main_name[];
 extern char * argv_for_main[];
 extern char * envp_for_main[];
 
-Context * sys_execve(Context * c,const char * filename,char * const argv[],char * const envp[]);
+uintptr_t sys_execve(const char * filename,char * const argv[],char * const envp[]);
 
-Context * sys_exit(Context * c,int status){//halt(0);
+void sys_exit(int status){//halt(0);
   if(status!=0) printf("Error Code %d\n",status);
-  return sys_execve(c,main_name,argv_for_main,envp_for_main);
+  assert(sys_execve(main_name,argv_for_main,envp_for_main)==-2);
 }
 
 typedef long __time_t;
@@ -81,16 +81,15 @@ inline void sys_yield(){
   printf("ENDDEBUG!\n");
 }*/
 
-Context * sys_execve(Context * c,const char * filename,char * const argv[],char * const envp[] ){
+uintptr_t sys_execve(const char * filename,char * const argv[],char * const envp[] ){
 //  debug(filename,argv,envp);
-  if(!context_uload(current,filename,argv,envp)){
-    c->GPRx=-2;
-    return c;
-  }
-  return current->cp;
+  if(context_uload(current,filename,argv,envp)){
+    switch_boot_pcb();yield();
+  } 
+  return -2;
 }
 
-Context * do_syscall(Context *c) {
+void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
   a[1] = c->GPR2;
@@ -102,7 +101,7 @@ Context * do_syscall(Context *c) {
   #endif
   switch (a[0]) {
     case SYS_yield: sys_yield(); break;
-    case SYS_exit: c=sys_exit(c,a[1]); break;
+    case SYS_exit: sys_exit(a[1]); break;
     case SYS_write: c->GPRx=fs_write(a[1],(unsigned char *)a[2],a[3]); break;
     case SYS_brk: c->GPRx=mm_brk(a[1],a[2]); break;
     case SYS_open: c->GPRx=fs_open((void *)a[1],a[2],a[3]); break;
@@ -110,10 +109,9 @@ Context * do_syscall(Context *c) {
     case SYS_read: c->GPRx=fs_read(a[1],(void *)a[2],a[3]); break;
     case SYS_lseek: c->GPRx=fs_lseek(a[1],a[2],a[3]); break;
     case SYS_gettimeofday: c->GPRx=sys_gettimeofday((struct timeval *)a[1],(struct timezone *)a[2]); break;
-    case SYS_execve: c=sys_execve(c,(char *)a[1],(char **)a[2],(char **)a[3]);break;
+    case SYS_execve: c->GPRx=sys_execve((char *)a[1],(char **)a[2],(char **)a[3]);break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
-  return c;
 }
 
 /*
