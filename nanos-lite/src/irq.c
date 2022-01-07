@@ -4,7 +4,7 @@ Context* schedule(Context *prev);
 extern uintptr_t force_yield; 
 inline Context * event_yield(Context *c){
 //  Log("EVENT_YIELD!");
-  force_yield=0;
+  force_yield=1;
   return schedule(c);
 }
 
