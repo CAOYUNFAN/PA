@@ -68,7 +68,7 @@ static inline uintptr_t get_page(AddrSpace *as,uintptr_t vaddr){return vaddr;}
 
 static inline int Min(int a,int b) {return a<b?a:b;}
 #define Max(a,b) ((a)>(b)?(a):(b))
-static uintptr_t loader(PCB *pcb, const char *filename) {Log("%p %s",pcb,filename);
+static uintptr_t loader(PCB *pcb, const char *filename) {//Log("%p %s",pcb,filename);
   extern int fs_open(const char *pathname, int flags, int mode);
   extern size_t fs_read(int fd, void *buf, size_t len);
   extern size_t fs_lseek(int fd, size_t offset, int whence);
@@ -208,6 +208,6 @@ bool context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   pcb->cp=ucontext(&pcb->as,mystack,entry);
   pcb->cp->GPRx=ret;
   pcb->max_brk=0;
-  Log("File%s:entry=%p,Stack starts From%p(%08x),pcb->cp=%08x,pcb->cp->pdir=%08x",filename,entry,pcb->cp->GPRx,&pcb->cp->GPRx,pcb->cp,pcb->cp->pdir);
+//  Log("File%s:entry=%p,Stack starts From%p(%08x),pcb->cp=%08x,pcb->cp->pdir=%08x",filename,entry,pcb->cp->GPRx,&pcb->cp->GPRx,pcb->cp,pcb->cp->pdir);
   return 1;
 }
