@@ -20,7 +20,7 @@ void context_kload(PCB * pcb,void * entry,void * args){
     .end=(void *)(pcb->stack+STACK_SIZE)
   };
   pcb->cp=kcontext(temp,entry,args);
-  Log("pcb->cp:%08x,pcb->cp->sp:%08x",pcb->cp,pcb->cp->gpr[2]);
+//  Log("pcb->cp:%08x,pcb->cp->sp:%08x",pcb->cp,pcb->cp->gpr[2]);
   return;
 }
 
@@ -49,7 +49,7 @@ void init_proc() {
   assert(context_uload(&pcb[2],"/bin/pal",argv,envp_for_main));
   assert(context_uload(&pcb[3],"/bin/bird",argv_for_main,envp_for_main));
   switch_boot_pcb();
-  Log("pcb0:%08x,pcb1:%08x,pcb2:%08x,pcb3:%08x",&pcb[0],&pcb[1],&pcb[2],&pcb[3]);
+//  Log("pcb0:%08x,pcb1:%08x,pcb2:%08x,pcb3:%08x",&pcb[0],&pcb[1],&pcb[2],&pcb[3]);
 
   // load program here
 //  extern void naive_uload(PCB *pcb, const char *filename);
