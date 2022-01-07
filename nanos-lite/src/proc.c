@@ -20,6 +20,7 @@ void context_kload(PCB * pcb,void * entry,void * args){
     .end=(void *)(pcb->stack+STACK_SIZE)
   };
   pcb->cp=kcontext(temp,entry,args);
+  Log("pcb->cp:%08x,pcb->cp->sp:%08x",pcb->cp,pcb->cp->GPR[2]);
   return;
 }
 
