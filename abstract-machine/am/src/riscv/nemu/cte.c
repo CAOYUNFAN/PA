@@ -53,7 +53,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   ret->np=0;//printf("%d\n",((char *)&ret->np-(char *)ret)/4);
 //  extern void* new_page(size_t nr_page);
   ret->gpr[2]=(uintptr_t)ret;//(uintptr_t)new_page(8)+8*4096;//printf("%08x\n",heap.end);
-  printf("%08x,%08x\n",ret,kstack.end);
+//  printf("%08x,%08x\n",ret,kstack.end);
 //  printf("kcontext %08x\n",heap.start);
   return ret;
 }
