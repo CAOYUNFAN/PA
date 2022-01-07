@@ -30,7 +30,7 @@ static Context* do_event(Event e, Context* c) {
     case EVENT_IRQ_TIMER: c=event_irq_timer(c); break;
     default: panic("Unhandled event ID = %d", e.event);
   }
-
+  Log("%08x",c);
   return c;
 }
 
