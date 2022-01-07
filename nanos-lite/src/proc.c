@@ -19,8 +19,8 @@ void context_kload(PCB * pcb,void * entry,void * args){
     .start=(void *)pcb->stack,
     .end=(void *)(pcb->stack+STACK_SIZE)
   };
-  pcb->cp=kcontext(temp,entry,args);Log("%08x",args);
-//  Log("pcb->cp:%08x,pcb->cp->sp:%08x",pcb->cp,pcb->cp->gpr[2]);
+  pcb->cp=kcontext(temp,entry,args);
+  Log("pcb->cp:%08x,pcb->cp->sp:%08x",pcb->cp,pcb->cp->gpr[2]);
   return;
 }
 
@@ -31,7 +31,7 @@ void hello_fun(void *arg) {
   int j = 1;
   while (1) {
 //    if(j%FREQ==0) 
-    Log("Hello World from Nanos-lite with arg '%08x' for the %dth time!", arg, j);
+    Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", arg, j);
     j ++;
     yield();
   }
@@ -64,8 +64,7 @@ Context* schedule(Context *prev) {
   if(flag)Log("Previous:%08x",current);
   #endif
 
-//  current->cp=prev;
-  if(current->cp!=NULL) memcpy(current->cp,prev,sizeof(Context));//Log("%08x",pcb[0].cp->GPRx);
+  current->cp=prev;
 //  static int xx=0;++xx;
 
   #ifdef cyf_DBG
