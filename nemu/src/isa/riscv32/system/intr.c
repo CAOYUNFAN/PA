@@ -11,8 +11,8 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   return cpu.sr[0x305]._32;
 }
 
-word_t isa_query_intr() {//Log("%08x",cpu.sr[0x300]._32);
-  if(cpu.INTR&&((cpu.sr[0x300]._32>>3)&1)&&((cpu.sr[0x304]._32>>7)&1)&&((cpu.sr[0x344]._32>>7)&1)){
+word_t isa_query_intr() {//Log("%08x",cpu.sr[0x300]._32);//&&((cpu.sr[0x304]._32>>7)&1)&&((cpu.sr[0x344]._32>>7)&1)
+  if(cpu.INTR&&((cpu.sr[0x300]._32>>3)&1)){
     cpu.INTR = false;//Log("%08x",IRQ_TIMER);
     return IRQ_TIMER;
   }
