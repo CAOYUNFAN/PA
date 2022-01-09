@@ -16,6 +16,7 @@ void isa_reg_display() {
 	Cao_show_reg("pc",cpu.pc);
 	Cao_show_reg("mcause",sr(0x342));
 	Cao_show_reg("mstatus",sr(0x300));
+	Cao_show_reg("mie",sr(0x304));
 	Cao_show_reg("mepc",sr(0x341));
 	Cao_show_reg("satp",sr(0x180));
 	Cao_show_reg("mscratch",sr(0x340));
