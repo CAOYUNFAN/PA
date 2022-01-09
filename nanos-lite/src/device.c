@@ -29,10 +29,7 @@ size_t events_read(void *buf, size_t offset, size_t len) {
   extern void __am_input_keybrd(struct AM_INPUT_KEYBRD_T *kbd);
   __am_input_keybrd(&kbd);
   if(kbd.keycode==0) return 0;
-  if(kbd.keycode>=2&&kbd.keycode<=4){
-    fg_pcb=kbd.keycode-1;
-    yield();
-  }
+  if(kbd.keycode>=2&&kbd.keycode<=4) fg_pcb=kbd.keycode-1;
   if(kbd.keydown) sprintf(buf,"kd %s",keyname[kbd.keycode]);
   else sprintf(buf,"ku %s",keyname[kbd.keycode]);
   return min(len,strlen(buf));

@@ -70,11 +70,12 @@ Context* schedule(Context *prev) {
   #ifdef cyf_DBG
   if(flag) for(int i=0;i<4;++i) Log("%d:%08x,%08x,%08x",i,&pcb[i],pcb[i].cp->pdir,pcb[i].cp->np);
   #endif
-  assert(fg_pcb);
-  if((!cycle_num||force_yield)&&current!=&pcb[0]) current=&pcb[0];
-  else current=&pcb[fg_pcb];
-  force_yield=0;
-  cycle_num=(cycle_num+1)&((1<<7)-1);
+  assert(fg_pcb>0&&fg_pcb<4);
+  if(current!=&pcb[fg_pcb]) current=&pcb[fg_pcb];
+  else if(force_yield||!cycle_num){
+    current=&pcb[fg_pcb];
+    cycle_num=force_yield=0;
+  }else cycle_num=(cycle_num+1)&((1<<7)-1);
 
   #ifdef cyf_DBG
   if(flag) Log("Later:%08x",current);
