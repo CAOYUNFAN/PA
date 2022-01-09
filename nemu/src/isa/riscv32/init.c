@@ -22,7 +22,8 @@ void init_isa() {
   /* Load built-in image. */
   memcpy(guest_to_host(RESET_VECTOR), img, sizeof(img));
   cpu.sr[0x300]._32=0x1800;
-  cpu.sr[0x304]._32=0;
+  cpu.sr[0x304]._32=0x80;
+  cpu.sr[0x344]._32=0x80;
   cpu.sr[0x180]._32=0;
   /* Initialize this virtual computer system. */
   restart();
