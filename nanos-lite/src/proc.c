@@ -71,6 +71,7 @@ Context* schedule(Context *prev) {
   if(flag) for(int i=0;i<4;++i) Log("%d:%08x,%08x,%08x",i,&pcb[i],pcb[i].cp->pdir,pcb[i].cp->np);
   #endif
   assert(fg_pcb>0&&fg_pcb<4);
+  assert((uintptr_t)current<=(uintptr_t)prev&&(uintptr_t)current+sizeof(PCB)>=(uintptr_t)prev+sizeof(Context));
   if(current!=&pcb[fg_pcb]) current=&pcb[fg_pcb];
   else if(force_yield||!cycle_num){
     current=&pcb[fg_pcb];
