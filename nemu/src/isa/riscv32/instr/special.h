@@ -24,10 +24,11 @@ def_EHelper(csrrs) {
   rtl_mv(s,id_dest->preg,now);
   rtl_or(s,now,now,t0);
 }
-
+extern int cyf_M;
 def_EHelper(mret){
   rtl_mv(s,&s->dnpc,&MEPC);
   rtlreg_t temp=(MSTATUS>>7)&1;
+  assert(cyf_M==0);cyf_M=1;
   MSTATUS^=(MSTATUS&MASK)^((1<<7)|(temp<<3));
 }
 
