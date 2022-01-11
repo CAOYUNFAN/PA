@@ -10,6 +10,7 @@ extern void __am_switch(Context *c);
 Context* __am_irq_handle(Context *c) {
   __am_get_cur_as(c);
 //  printf("IN  %08x %08x %d\n",c,c->pdir,c->np);
+  printf("From __am_,before:%08x,%08x,%08x\n",c,c->GPRx,&c->GPRx);
   if (user_handler) {
     Event ev = {0};
    
