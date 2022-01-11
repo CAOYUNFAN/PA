@@ -72,7 +72,7 @@ Context* schedule(Context *prev) {
   #endif
   assert(fg_pcb>0&&fg_pcb<4);
   Log("current:%08x->%08x,prev=%08x",current,(uintptr_t)current+sizeof(PCB),prev);
-  assert((uintptr_t)current<=(uintptr_t)prev&&(uintptr_t)current+sizeof(PCB)>=(uintptr_t)prev+sizeof(Context));
+  assert(((uintptr_t)current<=(uintptr_t)prev&&(uintptr_t)current+sizeof(PCB)>=(uintptr_t)prev+sizeof(Context))||current==&pcb_boot);
   if(current!=&pcb[fg_pcb]) current=&pcb[fg_pcb];
   else if(force_yield||!cycle_num){
     current=&pcb[fg_pcb];
