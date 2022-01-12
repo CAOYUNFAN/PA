@@ -77,7 +77,7 @@ Context* schedule(Context *prev) {
   else if(force_yield||!cycle_num){
     current=&pcb[0];
     cycle_num=force_yield=0;
-  }else cycle_num=(cycle_num+1)&((1<<7)-1);
+  }else cycle_num=(cycle_num+1)&((1<<13)-1);
 
   #ifdef cyf_DBG
   if(flag) Log("Later:%08x",current);
