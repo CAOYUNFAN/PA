@@ -90,7 +90,7 @@ Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   Context * ret=(Context *)((char *)kstack.end-sizeof(Context));
   memset(ret,0,sizeof(ret));
   ret->mepc=(uintptr_t)entry;
-  ret->mstatus=0x1888;
+  ret->mstatus=0x1880;
   ret->mcause=11;
   ret->pdir=as->ptr;
   ret->np=1;
