@@ -22,7 +22,7 @@ word_t isa_query_intr() {//Log("%08x",cpu.sr[0x300]._32);//&&((cpu.sr[0x304]._32
     #ifdef MY_DEBUG
     assert(cyf_M);
     #endif
-    cpu.INTR = false;Log("%08x",IRQ_TIMER);
+    cpu.INTR = false;//Log("%08x",IRQ_TIMER);
     return IRQ_TIMER;
   }
   return INTR_EMPTY;
